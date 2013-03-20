@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -22,7 +23,6 @@ public class MapOverview extends Activity implements LocationListener {
 
 	
 	private GoogleMap map;
-	private static final LatLng ROMA = new LatLng(42.093230818037,11.7971813678741);
 	private LocationManager locationManager;
 	private String provider;
 	
@@ -43,6 +43,8 @@ public class MapOverview extends Activity implements LocationListener {
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		map.setMapType(1);
 		map.setMyLocationEnabled(true);
+		LatLng latLng = new LatLng(37.8333, -119.5);
+		map.moveCamera( CameraUpdateFactory.newLatLng(latLng) );
 		
 		LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
 	    boolean enabledGPS = service

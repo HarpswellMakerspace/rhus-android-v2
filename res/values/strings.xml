@@ -4,7 +4,9 @@
     <string name="app_name">Observer</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_map">Map</string>
-    <string name="title_activity_map_overview">MapOverview</string>
+    <string name="title_activity_map_overview">Saved Observations</string>
+    <string name="title_activity_organizations">Choose Organization</string>
+    <string name="title_activity_projects">Choose Project</string>
+    <string name="title_activity_dashboard">Dashboard</string>
 
 </resources>

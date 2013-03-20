@@ -225,6 +225,12 @@ public class LoginActivity extends Activity {
 			mAuthTask = null;
 			showProgress(false);
 
+			finish();
+			Intent intent = new Intent("org.calflora.observer.action.ORGANIZATIONS");
+			startActivity(intent);
+			
+			/*
+			Results of validation - skip for now
 			if (success) {
 				// Success, launch the map intent
 				
@@ -237,6 +243,7 @@ public class LoginActivity extends Activity {
 						.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
 			}
+			*/
 		}
 
 		@Override
