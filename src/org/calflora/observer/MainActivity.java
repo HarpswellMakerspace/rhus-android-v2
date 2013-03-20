@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 				
-		Intent intent = new Intent("org.calflora.observer.action.MAPOVERVIEW");
+		Intent intent = new Intent("org.calflora.observer.action.LOGIN");
 		startActivity(intent);
 	}
 	
