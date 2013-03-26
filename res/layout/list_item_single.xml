@@ -9,6 +9,8 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:minHeight="@dimen/chooser_list_item_height"
+            android:paddingBottom="@dimen/chooser_list_item_padding_bottom"
+            android:paddingLeft="@dimen/chooser_list_item_padding_left"
             android:textSize="@dimen/chooser_list_item_text_size"
             android:width="100dip" />
 

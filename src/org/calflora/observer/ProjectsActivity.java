@@ -1,9 +1,18 @@
 package org.calflora.observer;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.calflora.observer.model.Project;
+import org.calflora.observer.model.ProjectStub;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -14,47 +23,36 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 
 public class ProjectsActivity extends Activity {
+	
+	static final String mockJSON ="{\"id\":\"projectID1\", \"center_lat\":37.52483,\"center_lng\":-122.409,\"tilepackage\":\"https://www.calflora.org/tilep/YosemiteBaseCache.tpk\",\"tilepackageSize\":1367509}";
+	List<Map<String,Object>> projectsData; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_projects);
 		
+		TextView tv = (TextView)findViewById(R.id.projectsOrganizationLabel);
+		tv.setText(Observer.organization.name);
+		
 		ListView lv = (ListView)findViewById(R.id.projectsListView);
 		
-		/*
-	     List<HashMap<String, String>> fillMaps = new ArrayList<HashMap<String, String>>();
-	        for(int i = 0; i < 10; i++){
-	            HashMap<String, String> map = new HashMap<String, String>();
-	            map.put("rowid", "" + i);
-	            map.put("col_1", "col_1_item_" + i);
-	            map.put("col_2", "col_2_item_" + i);
-	            map.put("col_3", "col_3_item_" + i);
-	            fillMaps.add(map);
-	        }
-	      */
 		List<Map<String, String>> listData = new ArrayList<Map<String, String>>();
 		Map<String, String> map = null;
 		
-		map = new HashMap<String, String>();
-
-		map.put("rowid", "1");
-		map.put("col_1", "Native Plants");
-		listData.add(map);
-		
-		map = new HashMap<String, String>();
-		map.put("rowid", "2");
-		map.put("col_1", "Invasive Weed Management");
-		listData.add(map);
-
-		map = new HashMap<String, String>();
-		map.put("rowid", "3");
-		map.put("col_1", "Looking for trees of all kinds");
-		listData.add(map);
-
+		int i=1;
+		for(ProjectStub p: Observer.organization.projects){
+			if(p.name != null){
+				map = new HashMap<String, String>();
+				map.put("rowid", String.valueOf(i));
+				map.put("col_1", (String) p.name);
+				listData.add(map);
+				i++;
+			}
+		}
 
 		String[] from = new String[] {"col_1"};
 		int[] to = new int[] { R.id.col1 };
@@ -62,11 +60,38 @@ public class ProjectsActivity extends Activity {
 		SimpleAdapter adapter = new SimpleAdapter( this, listData, R.layout.list_item_single, from, to);
         lv.setAdapter(adapter);
         
+        
+        
         lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
+				
+				
+				  //TODO: Exceptions should result in no advance
+				Project project = null;
+		    	InputStream is = new ByteArrayInputStream(mockJSON.getBytes());
+		    	
+		    	try {
+		    		project = Observer.mapper.readValue(is, Project.class);
+				} catch (JsonParseException e) {
+					Observer.toast("Error loading...", getApplicationContext());
+					e.printStackTrace();
+					return;
+				} catch (JsonMappingException e) {
+					Observer.toast("Error loading...", getApplicationContext());
+					e.printStackTrace();
+					return;
+				} catch (IOException e) {
+					Observer.toast("Error loading...", getApplicationContext());
+					e.printStackTrace();
+					return;
+				}
+				
+				Observer.project = project;
+				//TODO: download and unzip the project resources
+				
 				
 				Intent intent = new Intent("org.calflora.observer.action.MAPOVERVIEW");
 				startActivity(intent);
@@ -76,6 +101,7 @@ public class ProjectsActivity extends Activity {
 
 
         });
+        
 	}
 
 	@Override

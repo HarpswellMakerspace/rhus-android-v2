@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -225,6 +226,12 @@ public class LoginActivity extends Activity {
 			mAuthTask = null;
 			showProgress(false);
 
+			
+			SharedPreferences settings = getPreferences(MODE_PRIVATE);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putString("APIKey", "MYAPIKEY");
+			editor.commit();
+	
 			finish();
 			Intent intent = new Intent("org.calflora.observer.action.ORGANIZATIONS");
 			startActivity(intent);
