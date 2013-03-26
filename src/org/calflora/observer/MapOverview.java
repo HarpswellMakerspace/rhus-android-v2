@@ -17,10 +17,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.MapFragment;
 
 public class MapOverview extends Activity implements LocationListener {
 
+	private static int ZOOM = 9;
 	
 	private GoogleMap map;
 	private LocationManager locationManager;
@@ -43,7 +45,10 @@ public class MapOverview extends Activity implements LocationListener {
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		map.setMapType(1);
 		map.setMyLocationEnabled(true);
-		LatLng latLng = new LatLng(37.8333, -119.5);
+	
+		map.addTileOverlay(new TileOverlayOptions().tileProvider(new MapTileProvider(getResources().getAssets())));
+	    
+		LatLng latLng = new LatLng(Observer.project.center_lat, Observer.project.center_lng);
 		map.moveCamera( CameraUpdateFactory.newLatLng(latLng) );
 		
 		LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);

@@ -230,7 +230,10 @@ public class LoginActivity extends Activity {
 			SharedPreferences settings = getPreferences(MODE_PRIVATE);
 			SharedPreferences.Editor editor = settings.edit();
 			editor.putString("APIKey", "MYAPIKEY");
-			editor.commit();
+			boolean bCommitted = editor.commit();
+			if (!bCommitted) 
+		        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
+
 	
 			finish();
 			Intent intent = new Intent("org.calflora.observer.action.ORGANIZATIONS");

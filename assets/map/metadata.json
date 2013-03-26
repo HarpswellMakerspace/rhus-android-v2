@@ -1,0 +1,11 @@
+{
+  "name": "assets",
+  "version": "1.0.0",
+  "description": "",
+  "type": "overlay",
+  "format": "png",
+  "minzoom": "7",
+  "maxzoom": "9",
+  "bounds": "-120.31974129,37.43957539,-118.71302634,38.32052635",
+  "profile": "mercator"
+}
