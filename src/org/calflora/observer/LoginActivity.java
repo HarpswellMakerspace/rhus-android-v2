@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -227,7 +228,7 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			
-			SharedPreferences settings = getPreferences(MODE_PRIVATE);
+			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 			SharedPreferences.Editor editor = settings.edit();
 			editor.putString("APIKey", "MYAPIKEY");
 			boolean bCommitted = editor.commit();

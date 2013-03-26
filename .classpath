@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="libs/jackson-core-2.1.4.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-databind-2.1.4.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-annotations-2.1.4.jar"/>
+	<classpathentry kind="lib" path="libs/smart_json_databsase-BETA_1_4_0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

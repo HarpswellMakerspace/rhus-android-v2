@@ -1,6 +1,14 @@
 package org.calflora.observer;
 
+import java.io.IOException;
+
+import org.calflora.observer.model.Project;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +33,7 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		
-	     SharedPreferences settings = getPreferences(MODE_PRIVATE);
+	     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 	     String APIKey = settings.getString("APIKey", null);
 	     if(APIKey != null){
 	    	 //TODO: Revalidate API key ??
@@ -33,14 +41,48 @@ public class MainActivity extends Activity {
 	    	
 	    	 //TODO: And check to see that they have an organization and project selected
 	    	 //If so, we just take them them to the Dashboard or Map
+	    	 
+	    	 //First load the organization and project!
+	    	 String projectJSON = settings.getString("project", null);
+	    	 if(projectJSON == null){
+	    		 launchLoginActivity();
+	    		 return;
+	    	 }
+	    	 
+	    	 // TODO: This exception handling should go in parent activity class 
+	    	 try {
+	    		 Observer.project = Observer.mapper.readValue(projectJSON, Project.class);
+	    	 } catch (JsonParseException e) {
+	    		 Observer.toast("Error loading...", getApplicationContext());
+	    		 e.printStackTrace();
+	    		 launchLoginActivity();
+	    		 return;
+	    	 } catch (JsonMappingException e) {
+	    		 Observer.toast("Error loading...", getApplicationContext());
+	    		 e.printStackTrace();
+	    		 launchLoginActivity();
+	    		 return;
+	    	 } catch (IOException e) {
+	    		 Observer.toast("Error loading...", getApplicationContext());
+	    		 e.printStackTrace();
+	    		 launchLoginActivity();
+	    		 return;
+	    	 }
+
+
 	    	 Intent intent = new Intent("org.calflora.observer.action.MAPOVERVIEW");
 	    	 startActivity(intent);
 	    	 
 	     } else {
 
-	    	 Intent intent = new Intent("org.calflora.observer.action.LOGIN");
-	    	 startActivity(intent);
+	    	 launchLoginActivity();
+	    	
 	     }
+	}
+	
+	public void launchLoginActivity(){
+		 Intent intent = new Intent("org.calflora.observer.action.LOGIN");
+    	 startActivity(intent);
 	}
 	
 	

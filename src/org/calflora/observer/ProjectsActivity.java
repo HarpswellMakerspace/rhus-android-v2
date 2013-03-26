@@ -12,11 +12,15 @@ import org.calflora.observer.model.Project;
 import org.calflora.observer.model.ProjectStub;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -93,6 +97,19 @@ public class ProjectsActivity extends Activity {
 				//TODO: download and unzip the project resources
 				
 				
+				SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+				SharedPreferences.Editor editor = settings.edit();
+				
+				try{
+					editor.putString("project", Observer.mapper.writeValueAsString(project));
+					editor.commit();
+				} catch (JsonProcessingException e) {
+					Observer.toast("Error Writing JSON", getApplicationContext());
+					e.printStackTrace();
+					return;
+				}
+										
+			
 				Intent intent = new Intent("org.calflora.observer.action.MAPOVERVIEW");
 				startActivity(intent);
 				

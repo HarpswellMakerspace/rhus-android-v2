@@ -1,5 +1,15 @@
 package org.calflora.observer;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+
+import net.smart_json_databsase.InitJSONDatabaseExcepiton;
+import net.smart_json_databsase.JSONDatabase;
+import net.smart_json_databsase.JSONEntity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +20,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -27,6 +41,7 @@ public class MapOverview extends Activity implements LocationListener {
 	private GoogleMap map;
 	private LocationManager locationManager;
 	private String provider;
+	private Location lastLocation;
 	
 	public MapOverview() {
 		super();
@@ -82,6 +97,62 @@ public class MapOverview extends Activity implements LocationListener {
 
             //do something
         }
+        
+        
+        ((Button) findViewById(R.id.addPointButton)).setOnClickListener(
+        		new OnClickListener(){
+        			public void onClick(View v){
+        				//Map<String,Object> dataPoint = new HashMap<String,Object>();
+        				JSONEntity dataPoint = new JSONEntity();
+        				try {
+							dataPoint.put("latitude", lastLocation.getLatitude());
+	        				dataPoint.put("longitude", lastLocation.getLongitude());
+						} catch (JSONException e1) {
+							Observer.toast("JSON Failed", getApplicationContext());
+							e1.printStackTrace();
+							return;
+						}
+        				
+        				//And insert into JSON Datastore
+        				//In the future this will got into 'Observer' as part of 'newObservation' for staging.
+        				
+        				int id = Observer.database.store(dataPoint);
+        				addMarker(dataPoint);
+        				
+        			}
+        		}
+        		);
+	}
+	
+	
+	
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		addMarkersFromDatabase();
+	}
+
+	public void addMarkersFromDatabase(){
+		Collection<JSONEntity> points = Observer.database.fetchAllEntities();
+		for( JSONEntity p: points){
+			addMarker(p);
+		}
+		
+	}
+	
+	public void addMarker(JSONEntity p){ // TODO: Probably want to pass a Observation type, not a JSONEntity
+		MarkerOptions options = new MarkerOptions();
+		LatLng latLng;
+		try {
+			latLng = new LatLng(p.getDouble("latitude"), p.getDouble("longitude"));
+		} catch (JSONException e) {
+			Observer.toast("Bad point data", getApplicationContext());
+			e.printStackTrace();
+			return;
+		}
+		options.position(latLng);
+		map.addMarker(options);
 	}
 
 	@Override
@@ -93,8 +164,7 @@ public class MapOverview extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
-		
+		lastLocation = location;
 	}
 
 	@Override
