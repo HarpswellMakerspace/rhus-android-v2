@@ -5,6 +5,7 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -44,19 +45,27 @@ public class WorkspaceActivity extends FragmentActivity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
+		//actionBar.setBackgroundDrawable(R.drawable.map);
+		//Drawable d = getApplicationContext().getResources().getDrawable(R.drawable.map);
+		//actionBar.setBackgroundDrawable(d);
+	
 		actionBar.addTab(actionBar.newTab()
 				.setIcon(R.drawable.map)
-				.setTabListener(this));
+				.setTabListener(this)
+				);
 		actionBar.addTab(actionBar.newTab()
-				.setText("List")
-				.setTabListener(this));
+				.setIcon(R.drawable.map)
+				.setTabListener(this)
+				);
 		actionBar.addTab(actionBar.newTab()
-				.setText("Pending")
-				.setTabListener(this));
+				.setIcon(R.drawable.map)
+				.setTabListener(this)
+				);
 		actionBar.addTab(actionBar.newTab()
-				.setText(R.drawable.newbutton)
-				.setTabListener(this));
+				.setIcon(R.drawable.newbutton)
+				.setTabListener(this)
+				);
+		
 		
 
 	}

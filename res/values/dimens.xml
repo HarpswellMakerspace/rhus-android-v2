@@ -7,5 +7,6 @@
     <dimen name="chooser_list_item_text_size">18dp</dimen>
     <dimen name="chooser_list_item_padding_bottom">10dp</dimen>
     <dimen name="chooser_list_item_padding_left">10dp</dimen>
+    <dimen name="max_tab_width">5dp</dimen>
 
 </resources>
