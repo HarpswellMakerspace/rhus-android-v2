@@ -22,6 +22,17 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
+    </style><!-- style for the tabs -->
+    
+    <style name="WorkspaceActionBarTabStyle" parent="android:style/Widget.Holo.Light.ActionBar.TabView">
+        <!--  <item name="android:background">@drawable/actionbar_tab_bg</item> -->
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+    
+    <style name="Theme.Workspace" parent="android:style/Theme.Holo.Light">
+        <item name="android:actionBarTabStyle">@style/WorkspaceActionBarTabStyle</item>
     </style>
 
 </resources>

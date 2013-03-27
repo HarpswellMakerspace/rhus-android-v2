@@ -3,6 +3,7 @@ package org.calflora.observer;
 import java.util.Locale;
 
 import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -66,6 +67,7 @@ public class WorkspaceActivity extends FragmentActivity implements
 					}
 				});
 
+		
 		actionBar.addTab(actionBar.newTab()
 				.setIcon(R.drawable.map)
 				.setTabListener(this));
@@ -144,7 +146,7 @@ public class WorkspaceActivity extends FragmentActivity implements
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -156,6 +158,8 @@ public class WorkspaceActivity extends FragmentActivity implements
 			case 1:
 				return getString(R.string.title_section2).toUpperCase(l);
 			case 2:
+				return getString(R.string.title_section3).toUpperCase(l);
+			case 3:
 				return getString(R.string.title_section3).toUpperCase(l);
 			}
 			return null;

@@ -33,7 +33,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.Workspace" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAlu0reGu9zqOh-I0fuvzfREuv9DJ8QzLo" />
@@ -98,7 +98,9 @@
         </activity>
         <activity
             android:name="org.calflora.observer.WorkspaceActivity"
-            android:label="@string/title_activity_workspace" >
+            android:label="@string/title_activity_workspace" 
+            android:theme="@style/Theme.Workspace"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
