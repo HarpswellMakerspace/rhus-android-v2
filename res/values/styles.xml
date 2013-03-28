@@ -23,6 +23,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
     </style><!-- style for the tabs -->
+
+	<style name="WindowTitleBackground">
+        <item name="android:background">@android:drawable/title_bar</item>
+ 	</style>
     
     <style name="WorkspaceActionBarTabStyle" parent="android:style/Widget.Holo.Light.Tab">
         <item name="android:paddingLeft">10dp</item>
