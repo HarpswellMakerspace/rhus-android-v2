@@ -50,19 +50,19 @@ public class WorkspaceActivity extends FragmentActivity implements
 		//actionBar.setBackgroundDrawable(d);
 	
 		actionBar.addTab(actionBar.newTab()
-				.setIcon(R.drawable.map)
+				.setIcon(R.drawable.light_map)
 				.setTabListener(this)
 				);
 		actionBar.addTab(actionBar.newTab()
-				.setIcon(R.drawable.map)
+				.setIcon(R.drawable.light_list)
 				.setTabListener(this)
 				);
 		actionBar.addTab(actionBar.newTab()
-				.setIcon(R.drawable.map)
+				.setIcon(R.drawable.light_map)
 				.setTabListener(this)
 				);
 		actionBar.addTab(actionBar.newTab()
-				.setIcon(R.drawable.newbutton)
+				.setIcon(R.drawable.light_add)
 				.setTabListener(this)
 				);
 		
