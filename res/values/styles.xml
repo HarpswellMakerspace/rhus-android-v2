@@ -31,9 +31,6 @@
     <style name="WorkspaceActionBarTabStyle" parent="android:style/Widget.Holo.Light.Tab">
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
-        <item name="android:width">200dp</item>
-        
-        <item name="android:layout_width">200dp</item>
     </style>
     
     <style name="Theme.Workspace" parent="android:style/Theme.Holo">
