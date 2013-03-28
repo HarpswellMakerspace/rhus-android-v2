@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/pending_title_label"
@@ -25,7 +26,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/pending_tab_text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="10dp" />
+
     </LinearLayout>
     
 </RelativeLayout>
