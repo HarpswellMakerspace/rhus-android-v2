@@ -13,5 +13,6 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="pending_tab_text">Pending</string>
+    <string name="title_activity_new_observation">New_observation</string>
 
 </resources>
