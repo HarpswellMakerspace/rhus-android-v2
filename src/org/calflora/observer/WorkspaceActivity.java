@@ -19,11 +19,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class WorkspaceActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
+	RelativeLayout pendingTab;
+	TextView pendingNumberLabel;
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -48,6 +52,12 @@ public class WorkspaceActivity extends FragmentActivity implements
 		//actionBar.setBackgroundDrawable(R.drawable.map);
 		//Drawable d = getApplicationContext().getResources().getDrawable(R.drawable.map);
 		//actionBar.setBackgroundDrawable(d);
+		
+		pendingTab = (RelativeLayout)getLayoutInflater().inflate(R.layout.tab_pending, null);		
+		
+		pendingNumberLabel = (TextView) pendingTab.findViewById(R.id.pending_number_label);
+
+		pendingNumberLabel.setText("000"); //TODO: query the json database for not pending
 	
 		actionBar.addTab(actionBar.newTab()
 				.setIcon(R.drawable.light_map)
@@ -58,13 +68,14 @@ public class WorkspaceActivity extends FragmentActivity implements
 				.setTabListener(this)
 				);
 		actionBar.addTab(actionBar.newTab()
-				.setIcon(R.drawable.light_map)
+				.setCustomView(pendingTab)
 				.setTabListener(this)
 				);
 		actionBar.addTab(actionBar.newTab()
 				.setIcon(R.drawable.light_add)
 				.setTabListener(this)
 				);
+		
 		
 		
 
