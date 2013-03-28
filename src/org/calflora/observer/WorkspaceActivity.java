@@ -83,6 +83,7 @@ public class WorkspaceActivity extends FragmentActivity implements
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		//mViewPager.setCurrentItem(tab.getPosition());
+		
 	}
 
 	@Override

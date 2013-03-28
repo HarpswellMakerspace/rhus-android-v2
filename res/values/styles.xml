@@ -24,8 +24,8 @@
         <item name="android:padding">16dp</item>
     </style><!-- style for the tabs -->
 
-	<style name="WindowTitleBackground">
-        <item name="android:background">@android:drawable/title_bar</item>
+	<style name="WindowTitleBackground" parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@drawable/title_bar</item>
  	</style>
     
     <style name="WorkspaceActionBarTabStyle" parent="android:style/Widget.Holo.Light.Tab">
@@ -38,6 +38,7 @@
     
     <style name="Theme.Workspace" parent="android:style/Theme.Holo">
         <item name="android:actionBarTabStyle">@style/WorkspaceActionBarTabStyle</item>
+        <item name="android:actionBarStyle">@style/WindowTitleBackground</item>
         <!--  <item name="android:actionBarTabStyle">@style/tab_nav</item>
         <item name="android:actionBarTabTextStyle">@style/tab_nav_text</item> -->
         <item name="android:actionBarSize">80dp</item>
