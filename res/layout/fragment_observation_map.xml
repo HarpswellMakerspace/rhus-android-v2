@@ -9,7 +9,7 @@
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/linearLayout1"
+        android:layout_alignBottom="@+id/linearLayout2"
         android:layout_alignParentRight="true" />
     
 </LinearLayout>

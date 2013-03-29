@@ -24,7 +24,10 @@ public class WorkspaceActivity extends Activity implements
 	RelativeLayout pendingTab;
 	TextView pendingNumberLabel;
 	
-	ObservationMapFragment plantMapFragment;
+	ObservationMapFragment observationMapFragment;
+	ObservationMapFragment observationListFragment;
+	ObservationUploadFragment observationUploadFragment;
+
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
