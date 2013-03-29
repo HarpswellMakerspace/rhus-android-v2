@@ -111,6 +111,10 @@
             android:name="org.calflora.observer.New_observation"
             android:label="@string/title_activity_new_observation" >
         </activity>
+        <activity
+            android:name="org.calflora.observer.Example"
+            android:label="@string/title_activity_example" >
+        </activity>
     </application>
 
 </manifest>
