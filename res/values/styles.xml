@@ -33,7 +33,7 @@
         <item name="android:paddingRight">10dp</item>
     </style>
     
-    <style name="Theme.Workspace" parent="android:style/Theme.Holo">
+    <style name="Theme.Workspace" parent="android:style/Theme.Holo.Light">
         <item name="android:actionBarTabStyle">@style/WorkspaceActionBarTabStyle</item>
         <item name="android:actionBarStyle">@style/WindowTitleBackground</item>
         <!--  <item name="android:actionBarTabStyle">@style/tab_nav</item>
