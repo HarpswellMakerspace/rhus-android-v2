@@ -4,15 +4,11 @@ import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.app.FragmentManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
-import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,11 +18,13 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class WorkspaceActivity extends FragmentActivity implements
+public class WorkspaceActivity extends Activity implements
 		ActionBar.TabListener {
 
 	RelativeLayout pendingTab;
 	TextView pendingNumberLabel;
+	
+	ObservationMapFragment plantMapFragment;
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,6 +51,8 @@ public class WorkspaceActivity extends FragmentActivity implements
 		//Drawable d = getApplicationContext().getResources().getDrawable(R.drawable.map);
 		//actionBar.setBackgroundDrawable(d);
 		
+		plantMapFragment = new ObservationMapFragment();
+		
 		pendingTab = (RelativeLayout)getLayoutInflater().inflate(R.layout.tab_pending, null);		
 		
 		pendingNumberLabel = (TextView) pendingTab.findViewById(R.id.pending_number_label);
@@ -76,7 +76,8 @@ public class WorkspaceActivity extends FragmentActivity implements
 				.setTabListener(this)
 				);
 		
-		
+		plantMapFragment = new ObservationMapFragment();
+
 		
 
 	}
@@ -94,6 +95,16 @@ public class WorkspaceActivity extends FragmentActivity implements
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		//mViewPager.setCurrentItem(tab.getPosition());
+		
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		transaction.replace(R.id.workspace_fragment_container, plantMapFragment);
+
+		// Commit the transaction
+		transaction.commit();
 		
 	}
 
@@ -113,11 +124,13 @@ public class WorkspaceActivity extends FragmentActivity implements
 	 * A dummy fragment representing a section of the app, but that simply
 	 * displays dummy text.
 	 */
+	/*
 	public static class DummySectionFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
+	/*
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
 		public DummySectionFragment() {
@@ -135,5 +148,6 @@ public class WorkspaceActivity extends FragmentActivity implements
 			return rootView;
 		}
 	}
+	*/
 
 }
