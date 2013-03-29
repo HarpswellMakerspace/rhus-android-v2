@@ -25,7 +25,7 @@ public class WorkspaceActivity extends Activity implements
 	TextView pendingNumberLabel;
 	
 	ObservationMapFragment observationMapFragment;
-	ObservationMapFragment observationListFragment;
+	ObservationListFragment observationListFragment;
 	ObservationUploadFragment observationUploadFragment;
 
 	
@@ -54,7 +54,10 @@ public class WorkspaceActivity extends Activity implements
 		//Drawable d = getApplicationContext().getResources().getDrawable(R.drawable.map);
 		//actionBar.setBackgroundDrawable(d);
 		
-		plantMapFragment = new ObservationMapFragment();
+		observationMapFragment = new ObservationMapFragment();
+		observationListFragment = new ObservationListFragment();
+		observationUploadFragment = new ObservationUploadFragment();
+
 		
 		pendingTab = (RelativeLayout)getLayoutInflater().inflate(R.layout.tab_pending, null);		
 		
@@ -78,10 +81,6 @@ public class WorkspaceActivity extends Activity implements
 				.setIcon(R.drawable.light_add)
 				.setTabListener(this)
 				);
-		
-		plantMapFragment = new ObservationMapFragment();
-
-		
 
 	}
 
@@ -104,7 +103,19 @@ public class WorkspaceActivity extends Activity implements
 
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
-		transaction.replace(R.id.workspace_fragment_container, plantMapFragment);
+		switch (tab.getPosition()){
+		case 0:
+			transaction.replace(R.id.workspace_fragment_container, observationMapFragment);
+			break;
+		case 1:
+			transaction.replace(R.id.workspace_fragment_container, observationListFragment);
+			break;
+		case 2:
+			transaction.replace(R.id.workspace_fragment_container, observationUploadFragment);
+			break;
+		case 3:
+			break;
+		}
 
 		// Commit the transaction
 		transaction.commit();
