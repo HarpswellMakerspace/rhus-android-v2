@@ -24,13 +24,24 @@
         <item name="android:padding">16dp</item>
     </style><!-- style for the tabs -->
 
+	
 	<style name="WindowTitleBackground" parent="android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/title_bar</item>
  	</style>
+ 	
+	<style name="myTextAppearance">
+	    <item name="android:textColor">#FFF</item>
+        <item name="android:textColorLink">#FFF</item>
+	</style>
     
     <style name="WorkspaceActionBarTabStyle" parent="android:style/Widget.Holo.Light.Tab">
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
+        <item name="android:textAppearance">@style/myTextAppearance</item>
+    </style>
+    
+     <style name="Workspace.Actionbar.TabText" parent="android:style/Widget.Holo.Light.ActionBar.TabText.Inverse">
+        <item name="android:textColor">#FFF</item>
     </style>
     
     <style name="Theme.Workspace" parent="android:style/Theme.Holo.Light">
@@ -48,8 +59,8 @@
         -->
        
         <!--  <item name="android:actionBarStyle">@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse</item> -->
-        <item name="android:actionBarStyle">@style/WindowTitleBackground</item>
-        
+      
+          <item name="android:actionBarStyle">@style/WindowTitleBackground</item>
         
         
 <!--          <item name="android:actionBarWidgetTheme">@android:style/Theme.Holo</item> 
@@ -69,13 +80,13 @@
         <item name="android:actionModeCloseDrawable">@android:drawable/ic_cab_done_holo_dark</item>
                
         <item name="android:actionModeBackground">@android:drawable/cab_background_top_holo_dark</item>
-               
-        <item name="android:actionBarTabStyle">@style/Widget.Holo.Light.ActionBar.TabView.Inverse</item>
+               -->
+        <item name="android:actionBarTabStyle">@android:style/Widget.Holo.Light.ActionBar.TabView.Inverse</item>
  
-        <item name="android:actionBarTabBarStyle">@style/Widget.Holo.Light.ActionBar.TabBar.Inverse</item>
-   
-        <item name="android:actionBarTabTextStyle">@style/Widget.Holo.Light.ActionBar.TabText.Inverse</item>
-        -->
+        <item name="android:actionBarTabBarStyle">@android:style/Widget.Holo.Light.ActionBar.TabBar.Inverse</item>
+     
+        <item name="android:actionBarTabTextStyle">@android:style/Widget.Holo.Light.ActionBar.TabText.Inverse</item>
+     
         <item name="android:actionBarDivider">@drawable/list_divider_holo_dark</item>
         <item name="android:actionBarItemBackground">@drawable/item_background_holo_dark</item>
         
@@ -83,15 +94,12 @@
         
         <!--
         <item name="android:actionModeStyle">@style/Widget.Holo.Light.ActionMode.Inverse</item>
-   
         <item name="android:actionModeCloseButtonStyle">@style/Widget.Holo.ActionButton.CloseMode</item>  
         <item name="android:actionModePopupWindowStyle">@android:style/Widget.Holo.PopupWindow.ActionMode</item> 
         <item name="android:actionModeCutDrawable">@android:drawable/ic_menu_cut_holo_dark</item>
         <item name="android:actionModeCopyDrawable">@android:drawable/ic_menu_copy_holo_dark</item>
         <item name="android:actionModePasteDrawable">@android:drawable/ic_menu_paste_holo_dark</item>
         <item name="android:actionModeSelectAllDrawable">@android:drawable/ic_menu_selectall_holo_dark</item>
-        -->
-        <!--
         <item name="android:actionModeShareDrawable">@android:drawable/ic_menu_share_holo_dark</item>
         <item name="android:actionModeFindDrawable">@android:drawable/ic_menu_find_holo_dark</item>
         <item name="android:actionModeWebSearchDrawable">@android:drawable/ic_menu_search_holo_dark</item>
