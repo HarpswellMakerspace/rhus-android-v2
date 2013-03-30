@@ -2,8 +2,14 @@ package org.calflora.observer;
 
 import java.util.Locale;
 
+import net.smart_json_databsase.JSONEntity;
+
+import org.json.JSONException;
+
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class ObservationActivity extends FragmentActivity implements
@@ -54,7 +62,49 @@ public class ObservationActivity extends FragmentActivity implements
 				.setTabListener(this)
 				);
 		
-		actionBar.setHomeButtonEnabled(true);
+		//actionBar.setHomeButtonEnabled(true);
+		
+		View homeIcon = findViewById(android.R.id.home);
+		((View) homeIcon.getParent()).setVisibility(View.GONE);
+		
+		TextView titleView = (TextView) findViewById(R.id.actionSheetTitleView);
+		titleView.setText("New Observation");
+		
+		ImageButton cancelButton = (ImageButton) findViewById(R.id.cancelButton);
+		cancelButton.setOnClickListener(
+        		new OnClickListener(){
+        			public void onClick(View v){
+        				onCancel();
+        			}
+        		}
+        		);
+		
+		ImageButton doneButton = (ImageButton) findViewById(R.id.doneButton);
+		doneButton.setOnClickListener(
+        		new OnClickListener(){
+        			public void onClick(View v){
+        				//Map<String,Object> dataPoint = new HashMap<String,Object>();
+        				JSONEntity dataPoint = new JSONEntity();
+        				try {
+							//dataPoint.put("latitude", lastLocation.getLatitude());
+	        				//dataPoint.put("longitude", lastLocation.getLongitude());
+        					dataPoint.put("latitude", 43);
+	        				dataPoint.put("longitude", 112);
+						} catch (JSONException e1) {
+							Observer.toast("JSON Failed", getApplicationContext());
+							e1.printStackTrace();
+							return;
+						}
+        				
+        				//And insert into JSON Datastore
+        				//In the future this will got into 'Observer' as part of 'newObservation' for staging.
+        				
+        				int id = Observer.database.store(dataPoint);
+        				done();
+        			}
+        		}
+        		);
+		
 	}
 
 
@@ -83,76 +133,32 @@ public class ObservationActivity extends FragmentActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	/**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			// Show 3 total pages.
-			return 3;
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
-			}
-			return null;
-		}
+	@Override
+	public void onBackPressed() {
+		onCancel();
+		return;
 	}
-
 	
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		/*
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.fragment_new_observation_dummy, container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			return rootView;
-		}
-		*/
+	protected void onCancel(){
+		AlertDialog ad = new AlertDialog.Builder(this).setMessage(
+				"Clicking OK will discard all your data for this entry.").setTitle(
+						"Are you sure?").setCancelable(false)
+						.setPositiveButton(android.R.string.ok,
+								new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								// User selects OK, cancel this observation
+								done();
+							}
+						}).setNeutralButton(android.R.string.cancel,
+								new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								// User selects Cancel, do nothing
+							}
+						}).show();	    
+		return;
 	}
+	
 
 }

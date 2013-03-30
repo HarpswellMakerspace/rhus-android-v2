@@ -40,7 +40,8 @@
 
         <activity
             android:name="org.calflora.observer.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -97,7 +98,8 @@
         </activity>
         <activity
             android:name="org.calflora.observer.ObservationActivity"
-            android:label="@string/title_activity_observation" >
+            android:label="@string/title_activity_observation" 
+            android:theme="@style/Theme.Workspace.ActionSheet" >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.EDITOBSERVATION" />
 

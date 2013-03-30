@@ -110,14 +110,12 @@
     
     <!--  Action Sheet Themes -->
     <style name="Workspace.ActionBarStyle.ActionSheet" parent="style/Workspace.ActionBarStyle">
-        <item name="android:displayOptions">homeAsUp|showHome</item>
+        <item name="android:displayOptions">showCustom|showHome</item>
+        <item name="android:customNavigationLayout">@layout/actionbar_action_sheet</item>        
 	</style>
 	
      <style name="Theme.Workspace.ActionSheet" parent="style/Theme.Workspace">
-        <item name="android:actionBarStyle">@style/Workspace.ActionBarStyle.ActionSheet</item>
-        <item name="android:homeAsUpIndicator">@drawable/newbutton</item>
-        <!-- <item name="android:customNavigationLayout">@layout/custom</item> -->
-        
+        <item name="android:actionBarStyle">@style/Workspace.ActionBarStyle.ActionSheet</item>   
      </style>
     
 </resources>
