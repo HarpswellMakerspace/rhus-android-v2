@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -33,12 +33,13 @@
         <item name="android:paddingRight">10dp</item>
     </style>
     
-    <style name="Theme.Workspace" parent="android:style/Theme.Holo">
+    <style name="Theme.Workspace" parent="android:style/Theme.Holo.Light">
         <item name="android:actionBarTabStyle">@style/WorkspaceActionBarTabStyle</item>
         <item name="android:actionBarStyle">@style/WindowTitleBackground</item>
         <!--  <item name="android:actionBarTabStyle">@style/tab_nav</item>
         <item name="android:actionBarTabTextStyle">@style/tab_nav_text</item> -->
         <item name="android:actionBarSize">50dp</item>
         <item name="android:showAsAction">always</item>
+        <item name="android:windowBackground">#fff</item>
     </style>
 </resources>

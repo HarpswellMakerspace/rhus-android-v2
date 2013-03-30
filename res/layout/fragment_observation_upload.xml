@@ -7,13 +7,19 @@
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="370dp" >
+        android:layout_height="290dp" >
     </ListView>
 
     <ProgressBar
         android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleHorizontal"
+        style="@style/Theme.Workspace"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="40dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:src="@drawable/newbutton" />
 
 </LinearLayout>
