@@ -24,7 +24,7 @@
         <item name="android:padding">16dp</item>
     </style><!-- style for the tabs -->
 
-	<style name="WindowTitleBackground" parent="android:style/Widget.Holo.Light.ActionBar">
+	<style name="WindowTitleBackground" parent="android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/title_bar</item>
  	</style>
     
@@ -37,7 +37,6 @@
 
         
         <item name="android:actionBarTabStyle">@style/WorkspaceActionBarTabStyle</item>
-        <item name="android:actionBarStyle">@style/WindowTitleBackground</item>
         <!--  <item name="android:actionBarTabStyle">@style/tab_nav</item>
         <item name="android:actionBarTabTextStyle">@style/tab_nav_text</item> -->
         <item name="android:actionBarSize">50dp</item>
@@ -48,9 +47,13 @@
         	<item name="android:windowContentOverlay">@android:drawable/ab_solid_shadow_holo</item>
         -->
        
-        <item name="android:actionBarStyle">@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse</item>
-        <item name="android:actionBarWidgetTheme">@android:style/Theme.Holo</item> 
-      
+        <!--  <item name="android:actionBarStyle">@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse</item> -->
+        <item name="android:actionBarStyle">@style/WindowTitleBackground</item>
+        
+        
+        
+<!--          <item name="android:actionBarWidgetTheme">@android:style/Theme.Holo</item> 
+      -->
 
         
         <!-- Below Copied from themes.xml, the DarkActionBar styles -->
@@ -76,7 +79,8 @@
         <item name="android:actionBarDivider">@drawable/list_divider_holo_dark</item>
         <item name="android:actionBarItemBackground">@drawable/item_background_holo_dark</item>
         
-        <item name="android:actionMenuTextColor">#FFF</item>
+        <item name="android:actionMenuTextColor">#F00</item>
+        
         <!--
         <item name="android:actionModeStyle">@style/Widget.Holo.Light.ActionMode.Inverse</item>
    
