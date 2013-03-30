@@ -1,34 +1,28 @@
 package org.calflora.observer;
 
-import java.util.Locale;
-
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class WorkspaceActivity extends Activity implements
 		ActionBar.TabListener {
 
-	RelativeLayout pendingTab;
-	TextView pendingNumberLabel;
+	private enum Tabs { MAP, LIST, UPLOAD };
+	private Tabs selectedTab;
 	
-	ObservationMapFragment observationMapFragment;
-	ObservationListFragment observationListFragment;
-	ObservationUploadFragment observationUploadFragment;
-
+	private RelativeLayout pendingTab;
+	private TextView pendingNumberLabel;
+	
+	private ObservationMapFragment observationMapFragment;
+	private ObservationListFragment observationListFragment;
+	private ObservationUploadFragment observationUploadFragment;
+	
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -85,6 +79,22 @@ public class WorkspaceActivity extends Activity implements
 
 	}
 
+
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		if(selectedTab != Tabs.MAP){
+			FragmentManager fragmentManager = getFragmentManager();
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			selectedTab = Tabs.MAP;
+			transaction.replace(R.id.workspace_fragment_container, observationMapFragment);
+			transaction.commit();
+		}
+	}
+
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -106,12 +116,15 @@ public class WorkspaceActivity extends Activity implements
 		// and add the transaction to the back stack
 		switch (tab.getPosition()){
 		case 0:
+			selectedTab = Tabs.MAP;
 			transaction.replace(R.id.workspace_fragment_container, observationMapFragment);
 			break;
 		case 1:
+			selectedTab = Tabs.LIST;
 			transaction.replace(R.id.workspace_fragment_container, observationListFragment);
 			break;
 		case 2:
+			selectedTab = Tabs.UPLOAD;
 			transaction.replace(R.id.workspace_fragment_container, observationUploadFragment);
 			break;
 		case 3:
@@ -134,37 +147,5 @@ public class WorkspaceActivity extends Activity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
-
 	
-
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	/*
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-	/*
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_workspace_dummy,
-					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			return rootView;
-		}
-	}
-	*/
-
 }
