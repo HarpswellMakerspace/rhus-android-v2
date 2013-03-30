@@ -9,7 +9,6 @@
         android:layout_width="186dp"
         android:layout_height="wrap_content"
         android:text="Medium Text"
-        android:textAlignment="center"
       />
 
     <TextView

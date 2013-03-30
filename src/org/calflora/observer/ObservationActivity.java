@@ -36,7 +36,7 @@ public class ObservationActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fragment_new_observation);
+		setContentView(R.layout.activity_new_observation);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -53,6 +53,8 @@ public class ObservationActivity extends FragmentActivity implements
 				.setText("Assessment")
 				.setTabListener(this)
 				);
+		
+		actionBar.setHomeButtonEnabled(true);
 	}
 
 
