@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class New_observation extends FragmentActivity implements
+public class ObservationActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	/**

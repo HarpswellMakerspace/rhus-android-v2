@@ -1,14 +1,10 @@
 package org.calflora.observer;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import net.smart_json_databsase.JSONEntity;
 
 import org.json.JSONException;
-
-import net.smart_json_databsase.InitJSONDatabaseExcepiton;
-import net.smart_json_databsase.JSONDatabase;
-import net.smart_json_databsase.JSONEntity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,14 +21,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.MapFragment;
 
 public class MapOverview extends Activity implements LocationListener {
 

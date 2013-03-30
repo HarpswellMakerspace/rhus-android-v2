@@ -42,12 +42,9 @@
             android:name="org.calflora.observer.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
-
-                <!--
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                -->
             </intent-filter>
         </activity>
         <activity
@@ -57,15 +54,6 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.LOGIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="org.calflora.observer.MapOverview"
-            android:label="@string/title_activity_map_overview" >
-            <intent-filter>
-                <action android:name="org.calflora.observer.action.MAPOVERVIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -102,18 +90,31 @@
             android:label="@string/title_activity_workspace"
             android:theme="@style/Theme.Workspace" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="org.calflora.observer.action.WORKSPACE" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="org.calflora.observer.New_observation"
+            android:name="org.calflora.observer.NewObservationActivity"
             android:label="@string/title_activity_new_observation" >
+            <intent-filter>
+                <action android:name="org.calflora.observer.action.NEWOBSERVATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name="org.calflora.observer.Example"
             android:label="@string/title_activity_example" >
+        </activity><activity
+            android:name="org.calflora.observer.PlantSelectorActivity"
+            android:label="@string/title_activity_plant_selector" >
+            <intent-filter>
+                <action android:name="org.calflora.observer.action.PLANTSELECTOR" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -110,7 +110,7 @@ public class ProjectsActivity extends Activity {
 				}
 										
 			
-				Intent intent = new Intent("org.calflora.observer.action.MAPOVERVIEW");
+				Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
 				startActivity(intent);
 				
 				

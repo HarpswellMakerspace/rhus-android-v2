@@ -7,6 +7,7 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -114,6 +115,8 @@ public class WorkspaceActivity extends Activity implements
 			transaction.replace(R.id.workspace_fragment_container, observationUploadFragment);
 			break;
 		case 3:
+			 Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
+	    	 startActivity(intent);
 			break;
 		}
 
