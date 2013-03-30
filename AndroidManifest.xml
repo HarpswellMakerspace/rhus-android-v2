@@ -96,8 +96,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.calflora.observer.NewObservationActivity"
-            android:label="@string/title_activity_new_observation" >
+            android:name="org.calflora.observer.ObservationActivity"
+            android:label="@string/title_activity_observation" >
+            <intent-filter>
+                <action android:name="org.calflora.observer.action.EDITOBSERVATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="org.calflora.observer.action.NEWOBSERVATION" />
 
@@ -107,9 +112,11 @@
         <activity
             android:name="org.calflora.observer.Example"
             android:label="@string/title_activity_example" >
-        </activity><activity
+        </activity>
+        <activity
             android:name="org.calflora.observer.PlantSelectorActivity"
-            android:label="@string/title_activity_plant_selector" >
+            android:label="@string/title_activity_plant_selector"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.PLANTSELECTOR" />
 

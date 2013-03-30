@@ -40,6 +40,5 @@
         <item name="android:actionBarTabTextStyle">@style/tab_nav_text</item> -->
         <item name="android:actionBarSize">50dp</item>
         <item name="android:showAsAction">always</item>
-        <item name="android:windowBackground">#fff</item>
     </style>
 </resources>

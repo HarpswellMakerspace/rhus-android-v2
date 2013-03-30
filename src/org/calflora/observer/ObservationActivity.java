@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +23,14 @@ import android.widget.TextView;
 public class ObservationActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
+	
+	protected void done(){
+		
+		Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+	}
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a

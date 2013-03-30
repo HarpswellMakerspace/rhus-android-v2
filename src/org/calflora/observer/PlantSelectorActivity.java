@@ -65,7 +65,7 @@ public class PlantSelectorActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
-				Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
+				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
 				startActivity(intent);
 
 
