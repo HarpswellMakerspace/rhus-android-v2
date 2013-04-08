@@ -15,17 +15,15 @@
         android:minWidth="100dp"
         android:src="@drawable/test" />
 
-<!-- 
       <fragment
-        android:id="@+id/observation_map"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignBottom="@+id/plant_photo_image"
-        android:layout_alignLeft="@+id/plant_photo_image"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/plant_photo_image"
-        android:layout_marginLeft="158dp" />
- -->
+          android:id="@+id/observation_map"
+          android:name="com.google.android.gms.maps.MapFragment"
+          android:layout_width="120dp"
+          android:layout_height="120dp"
+          android:layout_alignBottom="@+id/plant_photo_image"
+          android:layout_alignLeft="@+id/plant_photo_image"
+          android:layout_alignParentRight="true"
+          android:layout_alignTop="@+id/plant_photo_image"
+          android:layout_marginLeft="158dp" />
 
 </RelativeLayout>
