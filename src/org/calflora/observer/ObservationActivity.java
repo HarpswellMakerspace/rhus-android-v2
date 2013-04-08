@@ -147,7 +147,7 @@ public class ObservationActivity extends Activity implements
 			// Assessment, or ODK configured 2nd tab
 		    transaction = fragmentManager.beginTransaction();
 				//selectedTab = Tabs.SUMMARY;
-			//	transaction.replace(R.id.observation_fragment_container,observationAssessmentFragment );
+				transaction.replace(R.id.observation_fragment_container,observationAssessmentFragment );
 				transaction.commit();
 			break;
 			
