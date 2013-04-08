@@ -1,9 +1,12 @@
 package org.calflora.observer;
 
+import org.json.JSONException;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -37,8 +40,12 @@ public class ObservationSummaryFragment extends Fragment {
 			// Custom offline layer.
 			// map.addTileOverlay(new TileOverlayOptions().tileProvider(new MapTileProvider(getResources().getAssets())));
 		    
-			LatLng latLng = new LatLng(Observer.project.center_lat, Observer.project.center_lng);
-			map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 14) );
+			LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
+			map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 12) );
+						
+			MarkerOptions options = new MarkerOptions();
+			options.position(latLng);
+			map.addMarker(options);
 		}
 		return layout;
 	}
