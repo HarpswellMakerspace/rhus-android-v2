@@ -16,5 +16,9 @@
     <string name="title_activity_observation">Observation</string>
     <string name="title_activity_example">Example</string>
     <string name="title_activity_plant_selector">PlantSelectorActivity</string>
+    <string name="common_plants">Common</string>
+    <string name="scientific_plants">Scientific</string>
+    <string name="all_plants">All Plants</string>
+    <string name="project_plants">Project Plants</string>
 
 </resources>

@@ -2,4 +2,6 @@
 <resources>
    <color name="transparent">#00000000</color>
    <color name="white">#FFF</color>
+   <color name="main_theme_color">#79be80</color>
+   <color name="black">#000</color>
 </resources>

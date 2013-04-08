@@ -13,44 +13,51 @@
         android:id="@+id/plantSelectionList"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_weight="0.43" >
+        android:layout_weight="0.24" >
     </ListView>
 
     <RadioGroup
-        android:id="@+id/radioGroup2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:id="@+id/RadioGroup01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/plant_selector_radio_button_top_padding" >
 
         <RadioButton
-            android:id="@+id/radio0"
-            android:layout_width="261dp"
+            android:id="@+id/RadioButton02"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="RadioButton" />
+            android:text="@string/common_plants" />
 
         <RadioButton
-            android:id="@+id/radio2"
-            android:layout_width="match_parent"
+            android:id="@+id/RadioButton01"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/scientific_plants" />
     </RadioGroup>
 
     <RadioGroup
-        android:id="@+id/radioGroup1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:id="@+id/radioGroup3"
+        android:layout_width="286dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/plant_selector_radio_button_top_padding" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/project_plants" />
 
         <RadioButton
             android:id="@+id/radio1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
-
-        <RadioButton
-            android:id="@+id/radio1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/all_plants" />
     </RadioGroup>
 
 </LinearLayout>
