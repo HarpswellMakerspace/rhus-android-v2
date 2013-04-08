@@ -6,16 +6,10 @@ import net.smart_json_databsase.JSONEntity;
 
 import org.json.JSONException;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.location.Criteria;
+
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.Menu;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

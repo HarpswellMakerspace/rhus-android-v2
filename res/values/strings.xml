@@ -9,13 +9,10 @@
     <string name="title_activity_projects">Choose Project</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="title_activity_workspace">Workspace</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
     <string name="pending_tab_text">Pending</string>
     <string name="title_activity_observation">Observation</string>
     <string name="title_activity_example">Example</string>
-    <string name="title_activity_plant_selector">PlantSelectorActivity</string>
+    <string name="title_activity_plant_selector">Select a Plant</string>
     <string name="common_plants">Common</string>
     <string name="scientific_plants">Scientific</string>
     <string name="all_plants">All Plants</string>

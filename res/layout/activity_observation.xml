@@ -3,7 +3,7 @@
     android:layout_height="fill_parent" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/observation_plant_thumbnail"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
@@ -14,14 +14,16 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="238dp"
         android:layout_marginTop="32dp"
+        android:minHeight="62dp"
+        android:minWidth="62dp"
         android:src="@drawable/test" />
 
     <TextView
         android:id="@+id/common_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_alignTop="@+id/imageView1"
+        android:layout_alignLeft="@+id/observation_plant_thumbnail"
+        android:layout_alignTop="@+id/observation_plant_thumbnail"
         android:layout_marginLeft="65dp"
         android:text="Plant Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -30,9 +32,23 @@
         android:id="@+id/taxon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/common_name"
+        android:layout_below="@+id/common_name"
         android:text="Scientific Name"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:id="@+id/observation_fragment_container"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="false"
+        android:layout_marginTop="@dimen/observation_fragment_layout_margin"
+        android:background="@color/main_theme_color"
+        android:orientation="vertical" >
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -19,9 +19,9 @@ public class WorkspaceActivity extends Activity implements
 	private RelativeLayout pendingTab;
 	private TextView pendingNumberLabel;
 	
-	private WorkspaceMapFragment observationMapFragment;
-	private WorkspaceListFragment observationListFragment;
-	private WorkspaceUploadFragment observationUploadFragment;
+	private WorkspaceMapFragment workspaceMapFragment;
+	private WorkspaceListFragment workspaceListFragment;
+	private WorkspaceUploadFragment workspaceUploadFragment;
 	
 	
 	/**
@@ -49,9 +49,9 @@ public class WorkspaceActivity extends Activity implements
 		//Drawable d = getApplicationContext().getResources().getDrawable(R.drawable.map);
 		//actionBar.setBackgroundDrawable(d);
 		
-		observationMapFragment = new WorkspaceMapFragment();
-		observationListFragment = new WorkspaceListFragment();
-		observationUploadFragment = new WorkspaceUploadFragment();
+		workspaceMapFragment = new WorkspaceMapFragment();
+		workspaceListFragment = new WorkspaceListFragment();
+		workspaceUploadFragment = new WorkspaceUploadFragment();
 
 		
 		pendingTab = (RelativeLayout)getLayoutInflater().inflate(R.layout.tab_pending, null);		
@@ -89,7 +89,7 @@ public class WorkspaceActivity extends Activity implements
 			FragmentManager fragmentManager = getFragmentManager();
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			selectedTab = Tabs.MAP;
-			transaction.replace(R.id.workspace_fragment_container, observationMapFragment);
+			transaction.replace(R.id.workspace_fragment_container, workspaceMapFragment);
 			transaction.commit();
 		}
 	}
@@ -118,21 +118,21 @@ public class WorkspaceActivity extends Activity implements
 		case 0:
 		    transaction = fragmentManager.beginTransaction();
 			selectedTab = Tabs.MAP;
-			transaction.replace(R.id.workspace_fragment_container, observationMapFragment);
+			transaction.replace(R.id.workspace_fragment_container, workspaceMapFragment);
 			transaction.commit();
 			break;
 			
 		case 1:
 			transaction = fragmentManager.beginTransaction();
 			selectedTab = Tabs.LIST;
-			transaction.replace(R.id.workspace_fragment_container, observationListFragment);
+			transaction.replace(R.id.workspace_fragment_container, workspaceListFragment);
 			transaction.commit();
 			break;
 			
 		case 2:
 			transaction = fragmentManager.beginTransaction();
 			selectedTab = Tabs.UPLOAD;
-			transaction.replace(R.id.workspace_fragment_container, observationUploadFragment);
+			transaction.replace(R.id.workspace_fragment_container, workspaceUploadFragment);
 			transaction.commit();
 			break;
 			

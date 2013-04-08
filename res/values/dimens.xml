@@ -9,5 +9,6 @@
     <dimen name="chooser_list_item_padding_left">10dp</dimen>
     <dimen name="max_tab_width">5dp</dimen>
     <dimen name="plant_selector_radio_button_top_padding">10dp</dimen>
+    <dimen name="observation_fragment_layout_margin">100dp</dimen>
 
 </resources>

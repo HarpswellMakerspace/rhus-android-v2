@@ -1,41 +1,32 @@
 package org.calflora.observer;
 
-import java.util.Locale;
-
-import net.smart_json_databsase.JSONEntity;
-
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Plant;
 import org.calflora.observer.model.Project;
 import org.json.JSONException;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
-import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class ObservationActivity extends FragmentActivity implements
+public class ObservationActivity extends Activity implements
 		ActionBar.TabListener {
-
 	
+	private ObservationSummaryFragment observationSummaryFragment;
+	private ObservationAssessmentFragment observationAssessmentFragment;
+
+
 	protected void done(){
 		
 		Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
@@ -48,8 +39,10 @@ public class ObservationActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_observation);
+		setContentView(R.layout.activity_observation);
 		
+		observationSummaryFragment = new ObservationSummaryFragment();
+		observationAssessmentFragment = new ObservationAssessmentFragment();
 	
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -136,7 +129,33 @@ public class ObservationActivity extends FragmentActivity implements
 			FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
-	//	mViewPager.setCurrentItem(tab.getPosition());
+		
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction transaction;
+		
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		switch (tab.getPosition()){
+		case 0:
+		    transaction = fragmentManager.beginTransaction();
+			//selectedTab = Tabs.SUMMARY;
+			transaction.replace(R.id.observation_fragment_container,observationSummaryFragment );
+			transaction.commit();
+			break;
+			
+		case 1:
+			// Assessment, or ODK configured 2nd tab
+		    transaction = fragmentManager.beginTransaction();
+				//selectedTab = Tabs.SUMMARY;
+			//	transaction.replace(R.id.observation_fragment_container,observationAssessmentFragment );
+				transaction.commit();
+			break;
+			
+		case 2:
+			// Treatment
+			break;
+	
+		}
 	}
 
 	@Override
