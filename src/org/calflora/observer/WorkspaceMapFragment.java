@@ -35,9 +35,6 @@ public class WorkspaceMapFragment extends MapFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	
-		
-        
 	}
 
 	

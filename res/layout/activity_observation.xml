@@ -2,29 +2,25 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <ImageView
-        android:id="@+id/observation_plant_thumbnail"
+       <ImageView
+        android:id="@+id/plant_thumbnail"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="370dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="238dp"
-        android:layout_marginTop="32dp"
-        android:minHeight="62dp"
-        android:minWidth="62dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:minHeight="100dp"
+        android:minWidth="100dp"
         android:src="@drawable/test" />
 
     <TextView
         android:id="@+id/common_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/observation_plant_thumbnail"
-        android:layout_alignTop="@+id/observation_plant_thumbnail"
-        android:layout_marginLeft="65dp"
+        android:layout_alignLeft="@+id/plant_thumbnail"
+        android:layout_alignTop="@+id/plant_thumbnail"
+        android:layout_marginLeft="100dp"
         android:text="Plant Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -46,7 +42,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="false"
         android:layout_marginTop="@dimen/observation_fragment_layout_margin"
-        android:background="@color/main_theme_color"
         android:orientation="vertical" >
 
     </LinearLayout>
