@@ -65,7 +65,8 @@ public class ObservationMapFragment extends MapFragment implements LocationListe
 		map.setMapType(1);
 		map.setMyLocationEnabled(true);
 	
-		map.addTileOverlay(new TileOverlayOptions().tileProvider(new MapTileProvider(getResources().getAssets())));
+		// Custom offline layer.
+		// map.addTileOverlay(new TileOverlayOptions().tileProvider(new MapTileProvider(getResources().getAssets())));
 	    
 		LatLng latLng = new LatLng(Observer.project.center_lat, Observer.project.center_lng);
 		map.moveCamera( CameraUpdateFactory.newLatLng(latLng) );

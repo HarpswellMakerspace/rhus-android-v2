@@ -89,7 +89,7 @@ public class ObservationActivity extends FragmentActivity implements
 							//dataPoint.put("latitude", lastLocation.getLatitude());
 	        				//dataPoint.put("longitude", lastLocation.getLongitude());
         					dataPoint.put("latitude", 43);
-	        				dataPoint.put("longitude", 112);
+	        				dataPoint.put("longitude", -112);
 						} catch (JSONException e1) {
 							Observer.toast("JSON Failed", getApplicationContext());
 							e1.printStackTrace();
