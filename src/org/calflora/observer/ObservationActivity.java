@@ -4,6 +4,9 @@ import java.util.Locale;
 
 import net.smart_json_databsase.JSONEntity;
 
+import org.calflora.observer.model.Observation;
+import org.calflora.observer.model.Plant;
+import org.calflora.observer.model.Project;
 import org.json.JSONException;
 
 import android.app.ActionBar;
@@ -11,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -45,7 +49,8 @@ public class ObservationActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_observation);
-
+		
+	
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -83,27 +88,38 @@ public class ObservationActivity extends FragmentActivity implements
 		doneButton.setOnClickListener(
         		new OnClickListener(){
         			public void onClick(View v){
-        				//Map<String,Object> dataPoint = new HashMap<String,Object>();
-        				JSONEntity dataPoint = new JSONEntity();
+
         				try {
-							//dataPoint.put("latitude", lastLocation.getLatitude());
-	        				//dataPoint.put("longitude", lastLocation.getLongitude());
-        					dataPoint.put("latitude", 43);
-	        				dataPoint.put("longitude", -112);
-						} catch (JSONException e1) {
-							Observer.toast("JSON Failed", getApplicationContext());
-							e1.printStackTrace();
-							return;
-						}
-        				
-        				//And insert into JSON Datastore
-        				//In the future this will got into 'Observer' as part of 'newObservation' for staging.
-        				
-        				int id = Observer.database.store(dataPoint);
+        					Observer.currentObservation.storeObservation();
+        				} catch (JSONException e1) {
+        					Observer.toast("JSON Failed", getApplicationContext());
+        					e1.printStackTrace();
+        					return;
+        				}
+
         				done();
         			}
         		}
         		);
+		
+		
+		// TODO: respond to edit intent
+		Intent intent = getIntent();
+		String taxon = intent.getStringExtra(Observer.NEW_PLANT_TAXON);
+		Plant plant = Project.getPlant(taxon);
+		
+		// TODO: combine into constructor..
+		Observer.currentObservation = new Observation();
+		Observer.currentObservation.plant = plant;
+		Location lastLocation = Observer.getInstance().getLastLocation();
+		Observer.currentObservation.location = lastLocation;
+
+		
+		TextView commonName = (TextView)findViewById(R.id.common_name);
+		commonName.setText(plant.getCommon() );
+		TextView taxonName = (TextView)findViewById(R.id.taxon);
+		taxonName.setText(plant.getTaxon() );
+		
 		
 	}
 

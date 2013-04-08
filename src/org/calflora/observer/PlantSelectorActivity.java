@@ -47,6 +47,7 @@ public class PlantSelectorActivity extends Activity {
 		String[] from = new String[] {"taxon"};
 		int[] to = new int[] { R.id.col1 };
 		
+		// TODO put this into a static method
 		c = Observer.plantsListDatabase.query("plist", 
 				  new String[] { "rowid _id", "taxon", "common" }, 
 				  null, null, null, null, null); 
@@ -60,6 +61,8 @@ public class PlantSelectorActivity extends Activity {
 					long arg3) {
 
 				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
+				c.moveToPosition(arg2);
+				intent.putExtra(Observer.NEW_PLANT_TAXON, c.getString(1) );
 				startActivity(intent);
 
 			}

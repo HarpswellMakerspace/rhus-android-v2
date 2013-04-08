@@ -11,6 +11,7 @@
             android:minHeight="@dimen/chooser_list_item_height"
             android:paddingBottom="@dimen/chooser_list_item_padding_bottom"
             android:paddingLeft="@dimen/chooser_list_item_padding_left"
+            android:textColor="@color/black"
             android:textSize="@dimen/chooser_list_item_text_size"
             android:width="100dip" />
 

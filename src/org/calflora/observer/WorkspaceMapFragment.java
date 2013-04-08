@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 
 
-public class ObservationMapFragment extends MapFragment implements LocationListener {
+public class WorkspaceMapFragment extends MapFragment {
 	
 	private GoogleMap map;
 	private LocationManager locationManager;
@@ -71,39 +71,7 @@ public class ObservationMapFragment extends MapFragment implements LocationListe
 		LatLng latLng = new LatLng(Observer.project.center_lat, Observer.project.center_lng);
 		map.moveCamera( CameraUpdateFactory.newLatLng(latLng) );
 		
-		LocationManager service = (LocationManager) getActivity().getApplicationContext().getSystemService(Activity.LOCATION_SERVICE);
-	    boolean enabledGPS = service
-	                .isProviderEnabled(LocationManager.GPS_PROVIDER);
-	    boolean enabledWiFi = service
-	                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-		
-		 // Check if enabled and if not send user to the GSP settings
-        // Better solution would be to display a dialog and suggesting to 
-        // go to the settings
-        if (!enabledGPS) {
-            Toast.makeText(getActivity(), "GPS signal not found", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
-        }
-        
-        locationManager = service;
-
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(provider);
-        
-        // Initialize the location fields
-        if (location != null) {
-            Toast.makeText(getActivity(), "Selected Provider " + provider,
-                    Toast.LENGTH_SHORT).show();
-            onLocationChanged(location);
-        } else {
-
-            //do something
-        }
-		
+				
 		
 		addMarkersFromDatabase();
 	}
@@ -131,26 +99,4 @@ public class ObservationMapFragment extends MapFragment implements LocationListe
 	}
 
 
-	@Override
-	public void onLocationChanged(Location location) {
-		lastLocation = location;
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-		
-	}
 }

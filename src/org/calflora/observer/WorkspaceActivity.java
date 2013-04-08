@@ -19,9 +19,9 @@ public class WorkspaceActivity extends Activity implements
 	private RelativeLayout pendingTab;
 	private TextView pendingNumberLabel;
 	
-	private ObservationMapFragment observationMapFragment;
-	private ObservationListFragment observationListFragment;
-	private ObservationUploadFragment observationUploadFragment;
+	private WorkspaceMapFragment observationMapFragment;
+	private WorkspaceListFragment observationListFragment;
+	private WorkspaceUploadFragment observationUploadFragment;
 	
 	
 	/**
@@ -49,9 +49,9 @@ public class WorkspaceActivity extends Activity implements
 		//Drawable d = getApplicationContext().getResources().getDrawable(R.drawable.map);
 		//actionBar.setBackgroundDrawable(d);
 		
-		observationMapFragment = new ObservationMapFragment();
-		observationListFragment = new ObservationListFragment();
-		observationUploadFragment = new ObservationUploadFragment();
+		observationMapFragment = new WorkspaceMapFragment();
+		observationListFragment = new WorkspaceListFragment();
+		observationUploadFragment = new WorkspaceUploadFragment();
 
 		
 		pendingTab = (RelativeLayout)getLayoutInflater().inflate(R.layout.tab_pending, null);		
@@ -110,33 +110,46 @@ public class WorkspaceActivity extends Activity implements
 		//mViewPager.setCurrentItem(tab.getPosition());
 		
 		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-
+		FragmentTransaction transaction;
+		
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
 		switch (tab.getPosition()){
 		case 0:
+		    transaction = fragmentManager.beginTransaction();
 			selectedTab = Tabs.MAP;
 			transaction.replace(R.id.workspace_fragment_container, observationMapFragment);
+			transaction.commit();
 			break;
+			
 		case 1:
+			transaction = fragmentManager.beginTransaction();
 			selectedTab = Tabs.LIST;
 			transaction.replace(R.id.workspace_fragment_container, observationListFragment);
+			transaction.commit();
 			break;
+			
 		case 2:
+			transaction = fragmentManager.beginTransaction();
 			selectedTab = Tabs.UPLOAD;
 			transaction.replace(R.id.workspace_fragment_container, observationUploadFragment);
+			transaction.commit();
 			break;
+			
 		case 3:
-			 Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
-	    	 startActivity(intent);
+			if(Observer.getInstance().getLastLocation() != null){
+				 Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
+		    	 startActivity(intent);	
+			} else {
+				Observer.toast("Please wait for a geofix", getApplicationContext());
+			}
 			break;
+			
 		}
-
-		// Commit the transaction
-		transaction.commit();
 		
 	}
+	
+	
 
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab,
@@ -146,6 +159,19 @@ public class WorkspaceActivity extends Activity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+
+		switch (tab.getPosition()){
+		case 3:
+			if(Observer.getInstance().getLastLocation() != null){
+				Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
+				startActivity(intent);	
+			} else {
+				Observer.toast("Please wait for a geofix", getApplicationContext());
+			}
+			break;
+
+		}
+		
 	}
 	
 }

@@ -1,5 +1,9 @@
 package org.calflora.observer.model;
 
+import org.calflora.observer.Observer;
+
+import android.database.Cursor;
+
 public class Project {
 
 	public String id;
@@ -8,7 +12,26 @@ public class Project {
 	public String tilepackage;
 	public int tilepackageSize;
 	
+	public static Plant getPlant(String taxon) {
+		
+		Cursor c = Observer.plantsListDatabase.query("plist", 
+				  new String[] { "taxon", "common", "nstatus", "lifeform", "crn", "family", "photoid"  }, 
+				  null, null, null, null, null); 
+		c.moveToFirst();
+		
+		Plant plant = new Plant();
+		plant.setTaxon(c.getString(0));
+		plant.setCommon(c.getString(1));
+		plant.setNstatus(c.getInt(2));
+		plant.setLifeform(c.getString(3));
+		plant.setCrn(c.getInt(4));
+		plant.setFamily(c.getString(5));
+		plant.setPhotoid(c.getString(6));
+		return plant;
+	}
+	
 	public Project() {
 		super();
 	}
+	
 }
