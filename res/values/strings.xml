@@ -17,5 +17,7 @@
     <string name="scientific_plants">Scientific</string>
     <string name="all_plants">All Plants</string>
     <string name="project_plants">Project Plants</string>
+    <string name="plant_image_button_add_photo">Add Photo</string>
+    <string name="title_activity_capture_photo">Capture Photo</string>
 
 </resources>
