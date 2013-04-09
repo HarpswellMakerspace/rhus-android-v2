@@ -19,5 +19,6 @@
     <string name="project_plants">Project Plants</string>
     <string name="plant_image_button_add_photo">Add Photo</string>
     <string name="title_activity_capture_photo">Capture Photo</string>
+    <string name="upload_button_text">Start Upload</string>
 
 </resources>

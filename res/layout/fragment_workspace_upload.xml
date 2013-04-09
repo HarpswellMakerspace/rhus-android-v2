@@ -8,22 +8,22 @@
     android:paddingRight="10dp" >
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/workspace_list_view"
         android:layout_width="match_parent"
         android:layout_height="290dp" >
     </ListView>
 
     <ProgressBar
-        android:id="@+id/progressBar1"
+        android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="303dp"
         android:layout_height="15dp"
         android:layout_weight="0.12" />
 
-    <ImageButton
-        android:id="@+id/imageButton1"
+    <Button
+        android:id="@+id/upload_button"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:src="@drawable/newbutton" />
+        android:text="@string/upload_button_text" />
 
 </LinearLayout>

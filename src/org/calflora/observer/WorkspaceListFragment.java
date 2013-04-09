@@ -34,7 +34,7 @@ public class WorkspaceListFragment extends Fragment {
 		Map<String, String> map = null;
 
 		
-		Collection<JSONEntity> points = Observer.database.fetchAllEntities();
+		Collection<JSONEntity> points = getEntities();
 		int i=1;
 
 		for( JSONEntity p: points){
@@ -72,5 +72,9 @@ public class WorkspaceListFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		return inflater.inflate(R.layout.fragment_workspace_list, container, false);
+	}
+	
+	public Collection<JSONEntity> getEntities(){
+		return Observer.database.fetchAllEntities();
 	}
 }

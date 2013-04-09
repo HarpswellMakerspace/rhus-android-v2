@@ -52,9 +52,11 @@ public class WorkspaceMapFragment extends MapFragment {
 	public void onStart() {
 		super.onStart();
 		
+		// TODO change to adding this map programatically, so we get the zoom level setting
 		map = this.getMap();
-		map.setMapType(1);
+		map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 		map.setMyLocationEnabled(true);
+		
 	
 		// Custom offline layer.
 		// map.addTileOverlay(new TileOverlayOptions().tileProvider(new MapTileProvider(getResources().getAssets())));

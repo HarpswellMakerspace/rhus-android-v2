@@ -3,6 +3,7 @@ package org.calflora.observer;
 import java.util.Collection;
 
 import net.smart_json_databsase.JSONEntity;
+import net.smart_json_databsase.SearchFields;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -58,13 +59,6 @@ public class WorkspaceActivity extends Activity implements
 
 		
 		pendingTab = (RelativeLayout)getLayoutInflater().inflate(R.layout.tab_pending, null);		
-		
-		pendingNumberLabel = (TextView) pendingTab.findViewById(R.id.pending_number_label);
-
-		
-		Collection<JSONEntity> points = Observer.database.fetchAllEntities(); // TODO: call func that only counts pending
-
-		pendingNumberLabel.setText(  String.valueOf(points.size() ) ); //TODO: query the json database for pending
 	
 		actionBar.addTab(actionBar.newTab()
 				.setIcon(R.drawable.light_map)
@@ -98,6 +92,19 @@ public class WorkspaceActivity extends Activity implements
 			transaction.replace(R.id.workspace_fragment_container, workspaceMapFragment);
 			transaction.commit();
 		}
+		
+		
+		updatePendingTotal();
+
+
+	}
+	
+	public void updatePendingTotal(){
+		pendingNumberLabel = (TextView) pendingTab.findViewById(R.id.pending_number_label);
+
+		SearchFields search = SearchFields.Where("uploaded", 0);
+		Collection<JSONEntity> entities = Observer.database.fetchByFields(search);
+		pendingNumberLabel.setText(  String.valueOf(entities.size() ) ); //TODO: query the json database for pending
 	}
 
 

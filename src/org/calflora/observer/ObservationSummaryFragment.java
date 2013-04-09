@@ -76,7 +76,7 @@ public class ObservationSummaryFragment extends Fragment {
 	
 		// TODO Is this the right place for this in the lifecycle?
 		map = mapFragment.getMap();
-		map.setMapType(1);
+		map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 		map.setMyLocationEnabled(true);
 	
 		// Custom offline layer.

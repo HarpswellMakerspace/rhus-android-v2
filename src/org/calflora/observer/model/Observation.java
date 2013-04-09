@@ -89,6 +89,7 @@ public class Observation {
 		dataPoint.put("latitude", location.getLatitude());
 		dataPoint.put("longitude", location.getLongitude());
 		dataPoint.put("taxon", plant.getTaxon());
+		dataPoint.put("uploaded", 0);
 		
 		Collection<JSONEntity> entities = new ArrayList<JSONEntity>();
 		for(Attachment a : attachments){
