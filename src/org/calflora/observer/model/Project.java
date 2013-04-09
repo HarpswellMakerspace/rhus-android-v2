@@ -16,7 +16,7 @@ public class Project {
 		
 		Cursor c = Observer.plantsListDatabase.query("plist", 
 				  new String[] { "taxon", "common", "nstatus", "lifeform", "crn", "family", "photoid"  }, 
-				  null, null, null, null, null); 
+				  "taxon = '"+taxon+"'", null, null, null, null); 
 		c.moveToFirst();
 		
 		Plant plant = new Plant();

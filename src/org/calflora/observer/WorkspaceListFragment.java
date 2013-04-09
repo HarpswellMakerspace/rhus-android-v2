@@ -20,14 +20,15 @@ import android.app.Fragment;
 
 public class WorkspaceListFragment extends Fragment {
 
-
-	
-	
-	
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+
+	
+	@Override
+	public void onStart() {
+		super.onStart();
 		
 		List<Map<String, String>> listData = new ArrayList<Map<String, String>>();
 		Map<String, String> map = null;
@@ -59,8 +60,9 @@ public class WorkspaceListFragment extends Fragment {
 		View myView = getView();
 		ListView lv = (ListView) myView.findViewById(R.id.workspace_list_view);
         lv.setAdapter(adapter);
-        
+		
 	}
+
 
 
 

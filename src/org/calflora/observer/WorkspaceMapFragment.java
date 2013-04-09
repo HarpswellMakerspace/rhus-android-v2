@@ -80,6 +80,8 @@ public class WorkspaceMapFragment extends MapFragment {
 		LatLng latLng;
 		try {
 			latLng = new LatLng(p.getDouble("latitude"), p.getDouble("longitude"));
+			options.title(p.getString("taxon"));
+			options.snippet(p.getString("taxon"));
 		} catch (JSONException e) {
 			Observer.toast("Bad point data", getActivity().getApplicationContext());
 			e.printStackTrace();
