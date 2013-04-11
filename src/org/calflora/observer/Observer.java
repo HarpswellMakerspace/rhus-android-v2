@@ -225,7 +225,7 @@ public class Observer extends Application implements LocationListener {
 	
 		String projectJSON = null;
 		try {
-			projectJSON = Observer.mapper.writeValueAsString(organization);
+			projectJSON = Observer.mapper.writeValueAsString(project);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

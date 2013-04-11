@@ -70,25 +70,16 @@ public class ProjectsActivity extends ApiActivity {
 		SimpleAdapter adapter = new SimpleAdapter( this, listData, R.layout.list_item_single, from, to);
         lv.setAdapter(adapter);
         
-        
-        
         lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				
-				//TODO: download and unzip the project resources
-
-	
-						
-				
-				getProjectDetails(null);
 			
-	//			Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
-	//			startActivity(intent);
-				
-				
+				ProjectStub p = Observer.instance.getOrganization().projects.get(arg2);
+				getProjectDetails(p.id);
+					
 			}
 
 

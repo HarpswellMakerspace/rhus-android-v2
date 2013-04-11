@@ -37,9 +37,9 @@ public class MainActivity extends Activity {
 	    	 //If so, we just take them them to the Dashboard or Map
 	    	 
 	    	 //First load the organization and project!
-	    	 String projectJSON = settings.getString("project", null);
-	    	 String organizationJSON = settings.getString("organization", null);
-	    	 if(projectJSON == null){
+	    	 String projectJSON = settings.getString(Observer.PROJECT_PREFERENCE, null);
+	    	 String organizationJSON = settings.getString(Observer.ORGANIZATION_PREFERENCE, null);
+	    	 if(projectJSON == null || organizationJSON == null){
 	    		 // Reselect organization and project
 	    		 launchOrganizationActivity();
 	    		 return;
