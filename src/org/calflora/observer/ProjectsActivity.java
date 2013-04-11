@@ -131,6 +131,7 @@ public class ProjectsActivity extends ApiActivity {
 	        }
 	    }
 		
+		mStatusMessageView.setText("Getting Project Details");
 		showProgress(true);
 		spiceManager.execute( Observer.observerAPI.getProjectRequest(projectId), JSON_CACHE_KEY, DurationInMillis.NEVER, new ProjectRequestListener() );
 

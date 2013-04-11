@@ -66,6 +66,7 @@ public class OrganizationsActivity extends ApiActivity {
 	}
 
 
+	public boolean organizationsRequestSent = false;
 
 	@Override
 	protected void onStart() {
@@ -76,33 +77,38 @@ public class OrganizationsActivity extends ApiActivity {
 		// load from remote
 		// else 
 		// load from JSON datastore
-		
-		mStatusMessageView.setText("Getting Organizations");
-		
-		class OrganizationsRequestListener implements RequestListener< APIResponseOrganizations > {
-	        @Override
-	        public void onRequestFailure( SpiceException e ) {
-	        	
-				showProgress(false);
-	            Toast.makeText( OrganizationsActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
-				e.printStackTrace();
-	        }
 
-	        @Override
-	        public void onRequestSuccess( APIResponseOrganizations response ) {
+		if ( ! organizationsRequestSent ){
+			
+			organizationsRequestSent = true;
+			
+			mStatusMessageView.setText("Getting Organizations");
 
-				showProgress(false);
-	        	organizations = response.data;
-	        	// TODO And we may want to cache this here
-	        	populateList();
-	        	
-						      
-	        }
-	    }
-		
-		showProgress(true);
-		spiceManager.execute( Observer.observerAPI.getOrganizationsRequest(), JSON_CACHE_KEY, DurationInMillis.NEVER, new OrganizationsRequestListener() );
+			class OrganizationsRequestListener implements RequestListener< APIResponseOrganizations > {
+				@Override
+				public void onRequestFailure( SpiceException e ) {
 
+					showProgress(false);
+					Toast.makeText( OrganizationsActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
+					e.printStackTrace();
+				}
+
+				@Override
+				public void onRequestSuccess( APIResponseOrganizations response ) {
+
+					showProgress(false);
+					organizations = response.data;
+					// TODO And we may want to cache this here
+					populateList();
+
+
+				}
+			}
+
+			showProgress(true);
+			spiceManager.execute( Observer.observerAPI.getOrganizationsRequest(), JSON_CACHE_KEY, DurationInMillis.NEVER, new OrganizationsRequestListener() );
+
+		}
 	}
 	
 	protected void populateList(){
@@ -163,14 +169,13 @@ public class OrganizationsActivity extends ApiActivity {
 	        @Override
 	        public void onRequestSuccess( APIResponseOrganization response ) {
 
-	        	
-				showProgress(false);
-				
 				// TODO This needs to be cached
-				Observer.instance.setOrganization(response.data);
+				Observer.instance.setOrganization(response.data);	
 				
 				Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
 				startActivity(intent);
+				showProgress(false);
+
 	        }
 	    }
 		

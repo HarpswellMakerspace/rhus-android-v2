@@ -156,8 +156,8 @@ public class WorkspaceActivity extends Activity implements
 		case 3:
 			if(Observer.getInstance().getLastLocation() != null){
 				selectedTab = Tabs.ADD;
-				 Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
-		    	 startActivity(intent);	
+				Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
+				startActivity(intent);	
 			} else {
 				Observer.toast("Please wait for a geofix", getApplicationContext());
 			}

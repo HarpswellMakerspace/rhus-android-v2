@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,10 @@ import net.smart_json_databsase.JSONEntity;
 
 import org.calflora.observer.Observer;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import android.content.Context;
 import android.location.Location;
@@ -21,15 +26,34 @@ import android.os.Environment;
 
 public class Observation {
 
-	public Location location;
+	public double latitude;
+	public double longitude;
 
-	// TODO Plant should be refatored..
+	// TODO Plant should be refactored..
+	// This should be a big old String, String map!
 	public Plant plant;
 	
 	public ArrayList<Attachment> attachments;
 	
+	public static Observation loadObservationFromEntity(JSONEntity entity) throws JSONException, JsonParseException, JsonMappingException, IOException{
+		Observation o = new Observation();
+		o.latitude = entity.getDouble("latitude");
+		o.longitude = entity.getDouble("longitude");
+		o.plant.setTaxon(entity.getString("taxon"));
+		
+		Collection<Integer> collection = entity.hasMany("attachments");  // TODO This should really return the objects themselves
+		for(Integer i : collection){
+			JSONEntity attachmentEntity = Observer.database.fetchById(i);
+			Attachment a = Observer.mapper.readValue(attachmentEntity.getData().toString(), Attachment.class);
+			o.attachments.add(a);
+		}
+		
+		return o;
+
+	}
 	
 	public Observation(){
+		plant = new Plant();
 		attachments = new ArrayList<Attachment>();
 	}
 	
@@ -86,21 +110,21 @@ public class Observation {
 		
 		// And insert into JSON Datastore
 		// TODO: JSON Database should be moved to Project
-		dataPoint.put("latitude", location.getLatitude());
-		dataPoint.put("longitude", location.getLongitude());
+		dataPoint.put("type", "observation");
+		dataPoint.put("latitude", latitude);
+		dataPoint.put("longitude", longitude);
 		dataPoint.put("taxon", plant.getTaxon());
 		dataPoint.put("uploaded", 0);
-		
-		Collection<JSONEntity> entities = new ArrayList<JSONEntity>();
+
+		//Store the attachments
 		for(Attachment a : attachments){
-			entities.add(a.getJSON());
+			// TODO thie process could be automated within smart json database
+			JSONEntity attachmentEntity = a.getJSONEntity();
+			int attachmentId = Observer.database.store(attachmentEntity);
+			dataPoint.addIdToHasMany("attachments", attachmentId);
 		}
-		dataPoint.put("attachments", entities);
 		
-		int id = Observer.database.store(dataPoint);
-		
-		//And now store the attachments
-		
+		Observer.database.store(dataPoint);
 		
 	}
 	

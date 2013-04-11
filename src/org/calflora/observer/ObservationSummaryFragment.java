@@ -140,6 +140,8 @@ public class ObservationSummaryFragment extends Fragment {
 					byte[] thumbBytes = stream.toByteArray();
 					
 					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
+					Observer.currentObservation.addAttachment("file", thumbBytes, "image/jpeg", getActivity()); // TODO this is just for testing
+
 					
 					if (photoButton != null)
 						photoButton.setBackgroundDrawable(null);// free mem from last photo
