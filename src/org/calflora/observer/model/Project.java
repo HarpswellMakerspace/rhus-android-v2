@@ -1,5 +1,7 @@
 package org.calflora.observer.model;
 
+import java.util.ArrayList;
+
 import org.calflora.observer.Observer;
 
 import android.database.Cursor;
@@ -10,11 +12,16 @@ public class Project {
 	
 	@Deprecated
 	public String orgId; // @deprecated This var will removed in the near future.
+	@Deprecated
+	private String projectId;
 	
 	public double center_lat;
 	public double center_lng;
 	public String tilepackage;
 	public int tilepackageSize;
+	
+	@Deprecated
+	public ArrayList<Object> plantlist;
 	
 	public static Plant getPlant(String taxon) {
 		
@@ -36,6 +43,16 @@ public class Project {
 	
 	public Project() {
 		super();
+	}
+
+	@Deprecated
+	public String getProjectId() {
+		return projectId;
+	}
+
+	@Deprecated
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 	
 }

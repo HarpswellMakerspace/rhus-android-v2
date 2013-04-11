@@ -114,10 +114,8 @@ public class ProjectsActivity extends ApiActivity {
 		class ProjectRequestListener implements RequestListener< APIResponseProject > {
 	        @Override
 	        public void onRequestFailure( SpiceException e ) {
-	        	
-	        	// TODO remove bypass
-	        	//setProjectDetails();
-				showProgress(false);
+
+	        	showProgress(false);
 	        	
 	            Toast.makeText( ProjectsActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
 				e.printStackTrace();
@@ -125,9 +123,6 @@ public class ProjectsActivity extends ApiActivity {
 
 	        @Override
 	        public void onRequestSuccess( APIResponseProject response ) {
-
-	        	//setProjectDetails();
-				showProgress(false);
 			
 				Observer.instance.setProject(response.data);
 				      
