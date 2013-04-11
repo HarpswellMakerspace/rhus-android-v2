@@ -3,15 +3,15 @@
     android:layout_height="fill_parent" >
 
        <ImageView
-        android:id="@+id/plant_thumbnail"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="15dp"
-        android:minHeight="100dp"
-        android:minWidth="100dp"
-        android:src="@drawable/test" />
+           android:id="@+id/plant_thumbnail"
+           android:layout_width="80dp"
+           android:layout_height="80dp"
+           android:layout_alignParentTop="true"
+           android:layout_marginLeft="15dp"
+           android:layout_marginTop="30dp"
+           android:background="@color/main_theme_color"
+           android:minHeight="100dp"
+           android:minWidth="100dp" />
 
     <TextView
         android:id="@+id/common_name"

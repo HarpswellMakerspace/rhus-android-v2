@@ -1,5 +1,7 @@
 package org.calflora.observer;
 
+import java.io.IOException;
+
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Plant;
 import org.calflora.observer.model.Project;
@@ -12,12 +14,16 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ObservationActivity extends Activity implements
@@ -112,6 +118,19 @@ public class ObservationActivity extends Activity implements
 		commonName.setText(plant.getCommon() );
 		TextView taxonName = (TextView)findViewById(R.id.taxon);
 		taxonName.setText(plant.getTaxon() );
+		
+		ImageView plantThumbnailView = (ImageView) findViewById(R.id.plant_thumbnail);
+		AssetManager assets = getBaseContext().getResources().getAssets();
+		AssetFileDescriptor asset = null;
+		try {
+			String imagePath = "plant_images/" + plant.getPhotoid().replace("'","")+".jpeg";
+			asset = assets.openFd(imagePath);
+			Drawable plantThumbnail = Drawable.createFromStream(asset.createInputStream(), "");
+			plantThumbnailView.setImageDrawable(plantThumbnail);
+		} catch (IOException e) {
+			// TODO Show default image for plant
+		}
+		
 		
 		
 	}
