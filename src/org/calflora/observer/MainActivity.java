@@ -2,6 +2,7 @@ package org.calflora.observer;
 
 import java.io.IOException;
 
+import org.calflora.observer.model.Organization;
 import org.calflora.observer.model.Project;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -12,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.view.Menu;
 
 public class MainActivity extends Activity {
 
@@ -38,28 +38,30 @@ public class MainActivity extends Activity {
 	    	 
 	    	 //First load the organization and project!
 	    	 String projectJSON = settings.getString("project", null);
+	    	 String organizationJSON = settings.getString("organization", null);
 	    	 if(projectJSON == null){
-	    		 launchLoginActivity();
+	    		 // Reselect organization and project
+	    		 launchOrganizationActivity();
 	    		 return;
 	    	 }
 	    	 
-	    	 // TODO: This exception handling should go in parent activity class 
 	    	 try {
-	    		 Observer.project = Observer.mapper.readValue(projectJSON, Project.class);
+	    		 Observer.instance.setProject(Observer.mapper.readValue(projectJSON, Project.class) );
+	    		 Observer.instance.setOrganization(Observer.mapper.readValue(organizationJSON, Organization.class) );
 	    	 } catch (JsonParseException e) {
 	    		 Observer.toast("Error loading...", getApplicationContext());
 	    		 e.printStackTrace();
-	    		 launchLoginActivity();
+	    		 launchOrganizationActivity();
 	    		 return;
 	    	 } catch (JsonMappingException e) {
 	    		 Observer.toast("Error loading...", getApplicationContext());
 	    		 e.printStackTrace();
-	    		 launchLoginActivity();
+	    		 launchOrganizationActivity();
 	    		 return;
 	    	 } catch (IOException e) {
 	    		 Observer.toast("Error loading...", getApplicationContext());
 	    		 e.printStackTrace();
-	    		 launchLoginActivity();
+	    		 launchOrganizationActivity();
 	    		 return;
 	    	 }
 
@@ -79,6 +81,10 @@ public class MainActivity extends Activity {
     	 startActivity(intent);
 	}
 	
+	public void launchOrganizationActivity(){
+		 Intent intent = new Intent("org.calflora.observer.action.ORGANIZATIONS");
+		 startActivity(intent);
+	}
 	
 	
 

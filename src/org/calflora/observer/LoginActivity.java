@@ -1,9 +1,15 @@
 package org.calflora.observer;
 
+import org.calflora.observer.api.APIResponseSignIn;
+import org.calflora.observer.api.ObserverAPI;
+
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -17,12 +23,13 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends ApiActivity  {
 	/**
 	 * A dummy authentication store containing known user names and passwords.
 	 * TODO: remove after connecting to a real authentication system.
@@ -35,13 +42,8 @@ public class LoginActivity extends Activity {
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
-	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
-	 */
-	private UserLoginTask mAuthTask = null;
-
 	// Values for email and password at the time of the login attempt.
-	private String mEmail;
+	private String mEmail = null;
 	private String mPassword;
 
 	// UI references.
@@ -60,8 +62,23 @@ public class LoginActivity extends Activity {
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
-
+		
+		String lastEmail = null;
+		if(mEmail == null){
+			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			lastEmail = settings.getString("UserEmail", "");
+			if(lastEmail == ""){
+				lastEmail = null;
+			}
+		}
+		if(lastEmail != null){
+			mEmail = lastEmail;
+		}
+		
+		if(mEmail != null){
+			mEmailView.setText(mEmail);
+		}
+		
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -102,9 +119,6 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		if (mAuthTask != null) {
-			return;
-		}
 
 		// Reset errors.
 		mEmailView.setError(null);
@@ -148,8 +162,49 @@ public class LoginActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+			
+			// RoboSpice takes over!			
+			
+			class SignInRequestListener implements RequestListener< APIResponseSignIn > {
+		        @Override
+		        public void onRequestFailure( SpiceException e ) {
+		        	
+		            Toast.makeText( LoginActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
+					e.printStackTrace();
+		            showProgress(false);
+		        }
+
+		        @Override
+		        public void onRequestSuccess( APIResponseSignIn response ) {
+		        	
+		        	if ( response == null || !response.status.equals("OK") ) {
+		        		
+		        		mPasswordView.setError(getString(R.string.error_incorrect_password));
+		        		mPasswordView.requestFocus();
+		        		return;
+		            }
+
+					SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putString("APIKey", response.data);
+					editor.putString("UserEmail", mEmailView.getText().toString() );
+					boolean bCommitted = editor.commit();
+					if (!bCommitted) 
+				        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
+
+			
+					finish();
+					Intent intent = new Intent("org.calflora.observer.action.ORGANIZATIONS");
+					startActivity(intent);
+							      
+		        }
+
+				
+		    }
+			
+			spiceManager.execute( Observer.observerAPI.signInRequest(mEmail, mPassword), JSON_CACHE_KEY, DurationInMillis.NEVER, new SignInRequestListener() );
+
+			
 		}
 	}
 
@@ -157,7 +212,7 @@ public class LoginActivity extends Activity {
 	 * Shows the progress UI and hides the login form.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	private void showProgress(final boolean show) {
+	protected void showProgress(final boolean show) {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
@@ -194,73 +249,6 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			
-			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-			SharedPreferences.Editor editor = settings.edit();
-			editor.putString("APIKey", "MYAPIKEY");
-			boolean bCommitted = editor.commit();
-			if (!bCommitted) 
-		        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
 
 	
-			finish();
-			Intent intent = new Intent("org.calflora.observer.action.ORGANIZATIONS");
-			startActivity(intent);
-			
-			/*
-			Results of validation - skip for now
-			if (success) {
-				// Success, launch the map intent
-				
-				finish();
-				Intent intent = new Intent("org.calflora.observer.action.MAPOVERVIEW");
-				startActivity(intent);
-				
-			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-			}
-			*/
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
-		}
-	}
 }

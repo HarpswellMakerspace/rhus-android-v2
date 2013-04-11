@@ -61,7 +61,7 @@ public class WorkspaceMapFragment extends MapFragment {
 		// Custom offline layer.
 		// map.addTileOverlay(new TileOverlayOptions().tileProvider(new MapTileProvider(getResources().getAssets())));
 	    
-		LatLng latLng = new LatLng(Observer.project.center_lat, Observer.project.center_lng);
+		LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
 		map.moveCamera( CameraUpdateFactory.newLatLng(latLng) );
 		
 				

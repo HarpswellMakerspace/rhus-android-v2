@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import net.smart_json_databsase.InitJSONDatabaseExcepiton;
 import net.smart_json_databsase.JSONDatabase;
 
+import org.calflora.observer.api.ObserverAPI;
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Organization;
 import org.calflora.observer.model.Project;
@@ -16,12 +17,14 @@ import org.calflora.observer.model.Project;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -32,9 +35,16 @@ public class Observer extends Application implements LocationListener {
 	
 	private static final String DB_NAME = "px7.sqlite"; //Hard coded for testing
 	
+	public static final String ORGANIZATION_PREFERENCE = "ORGANIZATION_PREFERENCE";
+	public static final String PROJECT_PREFERENCE = "PROJECT_PREFERENCE";
+
+	
+	public static ObserverAPI observerAPI;
+	public static SharedPreferences settings;
+	
 	public static Observer instance;
-	public static Organization organization;
-	public static Project project;
+	private static Organization organization;
+	private static Project project;
 	public static ObjectMapper mapper = new ObjectMapper();
 	public static JSONDatabase database;
 	public static SQLiteDatabase plantsListDatabase; // TODO: move to Project ?
@@ -72,6 +82,9 @@ public class Observer extends Application implements LocationListener {
 
 		
 		instance = this;
+		observerAPI = new ObserverAPI();
+		settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
 		
 		try {
 			Observer.database = JSONDatabase.GetDatabase(getApplicationContext());
@@ -101,6 +114,7 @@ public class Observer extends Application implements LocationListener {
         if (!enabledGPS) {
             Toast.makeText(this, "GPS signal not found", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
         
@@ -178,5 +192,58 @@ public class Observer extends Application implements LocationListener {
 	 public Location getLastLocation(){
 		 return lastLocation;
 	 }
+
+	 public void setOrganization(Organization organizationObject) {
+		organization = organizationObject;
+		
+		String organizationJSON = null;
+		try {
+			organizationJSON = Observer.mapper.writeValueAsString(organization);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//And set it in the preferences
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString(Observer.ORGANIZATION_PREFERENCE, organizationJSON );
+		boolean bCommitted = editor.commit();
+		if (!bCommitted) 
+	        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
+
+	}
+	
+	public Organization getOrganization(){
+		return organization;
+	}
+
+	
+
+	 public void setProject(Project projectObject) {
+		project = projectObject;
+	
+		String projectJSON = null;
+		try {
+			projectJSON = Observer.mapper.writeValueAsString(organization);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		//And set it in the preferences
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString(Observer.PROJECT_PREFERENCE, projectJSON);
+		boolean bCommitted = editor.commit();
+		if (!bCommitted) 
+	        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
+
+	}
+	
+	public Project getProject(){
+		return project;
+	}
 
 }

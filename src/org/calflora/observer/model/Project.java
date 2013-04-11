@@ -7,6 +7,10 @@ import android.database.Cursor;
 public class Project {
 
 	public String id;
+	
+	@Deprecated
+	public String orgId; // @deprecated This var will removed in the near future.
+	
 	public double center_lat;
 	public double center_lng;
 	public String tilepackage;

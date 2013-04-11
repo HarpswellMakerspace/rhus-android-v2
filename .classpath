@@ -8,5 +8,12 @@
 	<classpathentry kind="lib" path="libs/jackson-databind-2.1.4.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-annotations-2.1.4.jar"/>
 	<classpathentry kind="lib" path="libs/smart_json_databsase-BETA_1_4_0.jar"/>
+	<classpathentry kind="lib" path="libs/robospice-spring-android-1.4.0.jar"/>
+	<classpathentry kind="lib" path="libs/spring-android-core-1.0.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="libs/spring-android-rest-template-1.0.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="libs/commons-io-1.3.2.jar"/>
+	<classpathentry kind="lib" path="libs/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="libs/robospice-1.4.0.jar"/>
+	<classpathentry kind="lib" path="libs/robospice-cache-1.4.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

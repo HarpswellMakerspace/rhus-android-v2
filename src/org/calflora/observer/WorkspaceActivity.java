@@ -17,7 +17,7 @@ import android.widget.TextView;
 public class WorkspaceActivity extends Activity implements
 		ActionBar.TabListener {
 
-	private enum Tabs { MAP, LIST, UPLOAD };
+	private enum Tabs { MAP, LIST, UPLOAD, ADD };
 	private Tabs selectedTab;
 	
 	private RelativeLayout pendingTab;
@@ -84,7 +84,11 @@ public class WorkspaceActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		
+		if(selectedTab == Tabs.ADD){
+			selectedTab = Tabs.MAP; 
+		}
+		
 		if(selectedTab != Tabs.MAP){
 			FragmentManager fragmentManager = getFragmentManager();
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -151,6 +155,7 @@ public class WorkspaceActivity extends Activity implements
 			
 		case 3:
 			if(Observer.getInstance().getLastLocation() != null){
+				selectedTab = Tabs.ADD;
 				 Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
 		    	 startActivity(intent);	
 			} else {

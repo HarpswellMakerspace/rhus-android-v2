@@ -8,12 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.calflora.observer.api.APIResponseOrganizations;
+import org.calflora.observer.api.APIResponseProject;
 import org.calflora.observer.model.Project;
 import org.calflora.observer.model.ProjectStub;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,21 +31,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-public class ProjectsActivity extends Activity {
+public class ProjectsActivity extends ApiActivity {
 	
-	static final String mockJSON ="{\"id\":\"projectID1\", \"center_lat\":37.52483,\"center_lng\":-122.409,\"tilepackage\":\"https://www.calflora.org/tilep/YosemiteBaseCache.tpk\",\"tilepackageSize\":1367509}";
 	List<Map<String,Object>> projectsData; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_projects);
 		
 		TextView tv = (TextView)findViewById(R.id.projectsOrganizationLabel);
-		tv.setText(Observer.organization.name);
+		tv.setText(Observer.instance.getOrganization().name);
 		
 		ListView lv = (ListView)findViewById(R.id.projectsListView);
 		
@@ -48,7 +54,7 @@ public class ProjectsActivity extends Activity {
 		Map<String, String> map = null;
 		
 		int i=1;
-		for(ProjectStub p: Observer.organization.projects){
+		for(ProjectStub p: Observer.instance.getOrganization().projects){
 			if(p.name != null){
 				map = new HashMap<String, String>();
 				map.put("rowid", String.valueOf(i));
@@ -72,46 +78,15 @@ public class ProjectsActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				
-				
-				  //TODO: Exceptions should result in no advance
-				Project project = null;
-		    	InputStream is = new ByteArrayInputStream(mockJSON.getBytes());
-		    	
-		    	try {
-		    		project = Observer.mapper.readValue(is, Project.class);
-				} catch (JsonParseException e) {
-					Observer.toast("Error loading...", getApplicationContext());
-					e.printStackTrace();
-					return;
-				} catch (JsonMappingException e) {
-					Observer.toast("Error loading...", getApplicationContext());
-					e.printStackTrace();
-					return;
-				} catch (IOException e) {
-					Observer.toast("Error loading...", getApplicationContext());
-					e.printStackTrace();
-					return;
-				}
-				
-				Observer.project = project;
 				//TODO: download and unzip the project resources
+
+	
+						
 				
-				
-				SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-				SharedPreferences.Editor editor = settings.edit();
-				
-				try{
-					editor.putString("project", Observer.mapper.writeValueAsString(project));
-					editor.commit();
-				} catch (JsonProcessingException e) {
-					Observer.toast("Error Writing JSON", getApplicationContext());
-					e.printStackTrace();
-					return;
-				}
-										
+				getProjectDetails(null);
 			
-				Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
-				startActivity(intent);
+	//			Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
+	//			startActivity(intent);
 				
 				
 			}
@@ -126,6 +101,45 @@ public class ProjectsActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.projects, menu);
 		return true;
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+	
+	
+	protected void getProjectDetails(String projectId){
+		
+		class ProjectRequestListener implements RequestListener< APIResponseProject > {
+	        @Override
+	        public void onRequestFailure( SpiceException e ) {
+	        	
+	        	// TODO remove bypass
+	        	//setProjectDetails();
+				showProgress(false);
+	        	
+	            Toast.makeText( ProjectsActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
+				e.printStackTrace();
+	        }
+
+	        @Override
+	        public void onRequestSuccess( APIResponseProject response ) {
+
+	        	//setProjectDetails();
+				showProgress(false);
+			
+				Observer.instance.setProject(response.data);
+				      
+				Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
+				startActivity(intent);
+	        }
+	    }
+		
+		showProgress(true);
+		spiceManager.execute( Observer.observerAPI.getProjectRequest(projectId), JSON_CACHE_KEY, DurationInMillis.NEVER, new ProjectRequestListener() );
+
+		
 	}
 
 }
