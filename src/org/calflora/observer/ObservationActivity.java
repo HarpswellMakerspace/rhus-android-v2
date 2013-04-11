@@ -105,8 +105,8 @@ public class ObservationActivity extends Activity implements
 		Observer.currentObservation = new Observation();
 		Observer.currentObservation.plant = plant;
 		Location lastLocation = Observer.getInstance().getLastLocation();
-		Observer.currentObservation.location = lastLocation;
-
+		Observer.currentObservation.latitude = lastLocation.getLatitude();
+		Observer.currentObservation.longitude = lastLocation.getLongitude();
 		
 		TextView commonName = (TextView)findViewById(R.id.common_name);
 		commonName.setText(plant.getCommon() );

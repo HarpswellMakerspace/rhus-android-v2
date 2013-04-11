@@ -1,5 +1,7 @@
 package org.calflora.observer.api;
 
+import org.calflora.observer.model.Observation;
+
 import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
 
 public interface ObserverAPICore {
@@ -19,6 +21,7 @@ public interface ObserverAPICore {
 	public SpringAndroidSpiceRequest<APIResponseOrganizations> getOrganizationsRequest();
 	public SpringAndroidSpiceRequest<APIResponseOrganization> getOrganizationRequest(String organizationId);
 	public SpringAndroidSpiceRequest<APIResponseProject> getProjectRequest(String projectId);
+	public SpringAndroidSpiceRequest<APIResponseUpload> getUploadRequest(Observation o);
 
 	
 

@@ -1,6 +1,11 @@
 package org.calflora.observer.api;
 
 import org.calflora.observer.Observer;
+import org.calflora.observer.model.Observation;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
 
 import android.net.Uri;
 
@@ -111,8 +116,83 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 		return new ProjectJsonRequest();
 	}
 	
+
+
+	@Override
+	public SpringAndroidSpiceRequest<APIResponseUpload> getUploadRequest(
+			final Observation o) {
+		
 	
+		
+		 Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
+	     //uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
+	     final String URI = Uri.decode(uriBuilder.build().toString());
+	     //final HashMap<String, String> record = o.getFields();
+	     //Only handle the base fields for now..
+	     //We need to change the way the API is structured to make this easier
+	     
+	     class BaseFields {
+	    	 public String taxon;
+	    	 public double lat;
+	    	 public double lng;
+	    	 public String date;
+	     }
+	     final BaseFields base = new BaseFields();
+	     base.taxon = o.plant.getTaxon();
+	     base.lat = o.latitude;
+	     base.lng = o.longitude;
+	    
+		
+	     class UploadJsonRequest extends SpringAndroidSpiceRequest<APIResponseUpload> {
+	    	 
+	    	  public UploadJsonRequest() {
+			        super( APIResponseUpload.class );
+			    }
+
+			    @Override
+			    public APIResponseUpload loadDataFromNetwork() throws Exception {
+			    	
+					MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+					for(org.calflora.observer.model.Attachment a : o.attachments){
+
+						parts.add(a.name, new FileSystemResource(a.localPath));
+
+					}
+					//parts.add("record", base);
+					return getRestTemplate().postForObject(URI, parts, APIResponseUpload.class);
+			    } 
+	     }
+	 	return new UploadJsonRequest();
 
 
+	}
+     /*
+	public class UploadFileRequest extends SpringAndroidSpiceRequest<String>{
+		private static final String TAG = "UploadFileRequest";
+		private UploadRequestModel requestModel;
+		private String link;
+		public UploadFileRequest(UploadRequestModel model, String link) {
+		    super(String.class);
+		    requestModel = model;
+		    this.link = link;
+		}
+
+		@Override
+		public String loadDataFromNetwork() throws Exception {    
+
+		    MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+		    parts.add("file1", new FileSystemResource(requestModel.getFile1()));
+		    parts.add("file2", new FileSystemResource(requestModel.getFile1()));
+
+		    HttpHeaders headers = new HttpHeaders();
+		    HttpEntity<MultiValueMap<String, Object>> request = 
+		            new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
+
+		    return getRestTemplate().postForObject(link, request, String.class);
+
+		}
+
+		}
+*/
 
 }
