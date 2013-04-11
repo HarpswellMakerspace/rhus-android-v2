@@ -26,6 +26,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -69,6 +70,7 @@ public class Observer extends Application implements LocationListener {
 		int duration = Toast.LENGTH_SHORT;
 
 		Toast toast = Toast.makeText(context, message, duration);
+		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.show();
 		
 	}
@@ -245,5 +247,6 @@ public class Observer extends Application implements LocationListener {
 	public Project getProject(){
 		return project;
 	}
+	
 
 }

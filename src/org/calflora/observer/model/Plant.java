@@ -6,7 +6,6 @@ public class Plant {
 	private String common;
 	private int nstatus;
 	private String lifeform;
-	private int crn; 
 	private String family;
 	private String photoid;
 	
@@ -33,12 +32,6 @@ public class Plant {
 	}
 	public void setLifeform(String lifeform) {
 		this.lifeform = lifeform;
-	}
-	public int getCrn() {
-		return crn;
-	}
-	public void setCrn(int crn) {
-		this.crn = crn;
 	}
 	public String getFamily() {
 		return family;

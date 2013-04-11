@@ -2,6 +2,11 @@ package org.calflora.observer.model;
 
 import java.util.List;
 
+import org.calflora.observer.Observer;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Organization {
 
 	public String id;
@@ -29,5 +34,14 @@ public class Organization {
 		return orgId;
 	}
 	
+	
+	public String getLogoGraphicPath(){
+		return "organization_logo_" + id;
+	}
+
+	public String getSplashGraphicPath(){
+		return "organization_splash_" + id;
+	}
+
 	
 }

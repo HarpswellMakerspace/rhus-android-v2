@@ -3,18 +3,23 @@ package org.calflora.observer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.View;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.calflora.observer.api.APIResponseOrganization;
 import org.calflora.observer.api.APIResponseOrganizations;
@@ -29,10 +34,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.octo.android.robospice.request.simple.SmallBinaryRequest;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -170,12 +177,13 @@ public class OrganizationsActivity extends ApiActivity {
 	        public void onRequestSuccess( APIResponseOrganization response ) {
 
 				// TODO This needs to be cached
-				Observer.instance.setOrganization(response.data);	
+				Observer.instance.setOrganization(response.data);
 				
-				Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
-				startActivity(intent);
-				showProgress(false);
-
+				//And get the graphics..
+				
+				downloadLogo();
+				
+				
 	        }
 	    }
 		
@@ -184,6 +192,128 @@ public class OrganizationsActivity extends ApiActivity {
 		spiceManager.execute( Observer.observerAPI.getOrganizationRequest(id), JSON_CACHE_KEY, DurationInMillis.NEVER, new OrganizationRequestListener() );
 
 		
+	}
+	
+	public void downloadLogo(){
+		
+		class LogoDownloadListener implements RequestListener< InputStream > {
+			 @Override
+		        public void onRequestFailure( SpiceException e ) {
+		        	
+		        	// TODO remove bypass
+					showProgress(false);
+		        	
+		            Toast.makeText( OrganizationsActivity.this, "Error during image download: " + e.getMessage(), Toast.LENGTH_LONG ).show();
+					e.printStackTrace();
+		        }
+
+				@Override
+				public void onRequestSuccess(InputStream inputStream) {
+					// TODO Auto-generated method stub
+					
+					String logoFileName = Observer.instance.getOrganization().getLogoGraphicPath();
+												
+					// TODO where does the file get stored?
+					FileOutputStream outputStream = null;
+					try {
+						outputStream = getBaseContext().openFileOutput(logoFileName, Context.MODE_PRIVATE);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					int bytes = -1;
+					byte[] buffer = new byte[1024];
+					try {
+						while((bytes = inputStream.read(buffer)) != -1) {
+							outputStream.write(buffer);
+						}
+
+						outputStream.close();
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+						Observer.toast("Logo failed to download", getBaseContext());
+					}
+					
+					// OK, now download the splash screen
+					downloadSplash();
+					
+				}
+		}
+		
+		SmallBinaryRequest request = new SmallBinaryRequest(Observer.instance.getOrganization().logoGraphic);
+		
+		mStatusMessageView.setText("Getting Organization Graphics");
+		showProgress(true);
+		spiceManager.execute(request, JSON_CACHE_KEY, DurationInMillis.NEVER, new LogoDownloadListener());
+		
+
+	}
+	
+	public void downloadSplash(){
+		
+		class SplashDownloadListener implements RequestListener< InputStream > {
+			 @Override
+		        public void onRequestFailure( SpiceException e ) {
+		        	
+		        	// TODO remove bypass
+					showProgress(false);
+		        	
+		            Toast.makeText( OrganizationsActivity.this, "Error during image download: " + e.getMessage(), Toast.LENGTH_LONG ).show();
+					e.printStackTrace();
+		        }
+
+				@Override
+				public void onRequestSuccess(InputStream inputStream) {
+					// TODO Auto-generated method stub
+					
+					String splashFileName =  Observer.instance.getOrganization().getSplashGraphicPath();
+					
+					// TODO where does the file get stored?
+					// This logic should go into the model
+					FileOutputStream outputStream = null;
+					try {
+						outputStream = getBaseContext().openFileOutput(splashFileName, Context.MODE_PRIVATE);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					int bytes = -1;
+					byte[] buffer = new byte[1024];
+					try {
+						while((bytes = inputStream.read(buffer)) != -1) {
+							outputStream.write(buffer);
+						}
+
+						outputStream.close();
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+						Observer.toast("Splash failed to download", getBaseContext());
+					}
+					
+					// OK, now we can move onto projects
+					ImageView home = (ImageView)findViewById(android.R.id.home);
+					Drawable logoImage = Drawable.createFromPath(Observer.instance.getOrganization().getLogoGraphicPath()); 
+					if(logoImage != null){
+						home.setImageDrawable(logoImage);
+					}
+					
+					
+					Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
+					startActivity(intent);
+					showProgress(false);					
+				}
+		}
+		
+		SmallBinaryRequest request = new SmallBinaryRequest(Observer.instance.getOrganization().splashGraphic);
+		
+		mStatusMessageView.setText("Getting Organization Graphics");
+		showProgress(true);
+		spiceManager.execute(request, JSON_CACHE_KEY, DurationInMillis.NEVER, new SplashDownloadListener());
+		
+
+
 	}
 		
 }

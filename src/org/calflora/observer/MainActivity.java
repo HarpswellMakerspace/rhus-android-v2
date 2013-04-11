@@ -10,15 +10,19 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.ImageView;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 
 public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		
 	}
 
 	
@@ -48,6 +52,18 @@ public class MainActivity extends Activity {
 	    	 try {
 	    		 Observer.instance.setProject(Observer.mapper.readValue(projectJSON, Project.class) );
 	    		 Observer.instance.setOrganization(Observer.mapper.readValue(organizationJSON, Organization.class) );
+	    		 
+	    		 
+	    		String splashImagePath = Observer.instance.getOrganization().getSplashGraphicPath();
+	    		if(splashImagePath != null){
+	    			ImageView splashImageView = (ImageView) findViewById(R.id.splashImage);
+	    			
+	    			Drawable splashImage = Drawable.createFromPath(Observer.instance.getOrganization().getSplashGraphicPath()); 
+					if(splashImage != null){
+						splashImageView.setImageDrawable(splashImage);
+					}
+	    		}
+	    		 
 	    	 } catch (JsonParseException e) {
 	    		 Observer.toast("Error loading...", getApplicationContext());
 	    		 e.printStackTrace();

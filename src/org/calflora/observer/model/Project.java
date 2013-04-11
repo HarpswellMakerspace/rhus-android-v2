@@ -35,7 +35,6 @@ public class Project {
 		plant.setCommon(c.getString(1));
 		plant.setNstatus(c.getInt(2));
 		plant.setLifeform(c.getString(3));
-		plant.setCrn(c.getInt(4));
 		plant.setFamily(c.getString(5));
 		plant.setPhotoid(c.getString(6));
 		return plant;
