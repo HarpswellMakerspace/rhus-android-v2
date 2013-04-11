@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Observer extends Application implements LocationListener {
 	
-	private static final String DB_NAME = "px7.sqlite"; //Hard coded for testing
+	private static final String DB_NAME = "px137.sqlite"; //Hard coded for testing, this is Yosemite
 	
 	public static final String ORGANIZATION_PREFERENCE = "ORGANIZATION_PREFERENCE";
 	public static final String PROJECT_PREFERENCE = "PROJECT_PREFERENCE";

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.calflora.observer.Observer;
 
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 
 public class Project {
 
@@ -26,8 +27,8 @@ public class Project {
 	public static Plant getPlant(String taxon) {
 		
 		Cursor c = Observer.plantsListDatabase.query("plist", 
-				  new String[] { "taxon", "common", "nstatus", "lifeform", "crn", "family", "photoid"  }, 
-				  "taxon = '"+taxon+"'", null, null, null, null); 
+				  new String[] { "taxon", "common", "nstatus", "lifeform", "family", "photoid"  }, 
+				  "taxon = ?", new String[]{ taxon } , null, null, null); 
 		c.moveToFirst();
 		
 		Plant plant = new Plant();
@@ -35,8 +36,8 @@ public class Project {
 		plant.setCommon(c.getString(1));
 		plant.setNstatus(c.getInt(2));
 		plant.setLifeform(c.getString(3));
-		plant.setFamily(c.getString(5));
-		plant.setPhotoid(c.getString(6));
+		plant.setFamily(c.getString(4));
+		plant.setPhotoid(c.getString(5));
 		return plant;
 	}
 	
