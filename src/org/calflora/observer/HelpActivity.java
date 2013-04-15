@@ -17,7 +17,7 @@ public class HelpActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		WebView webview = (WebView) findViewById(R.id.help_webview);
-		webview.loadUrl("http://www.calflora.org/about-cf.html");
+		webview.loadUrl("http://www.calflora.org/phone");
 	}
 	
 	

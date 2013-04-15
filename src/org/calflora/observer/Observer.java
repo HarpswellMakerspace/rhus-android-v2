@@ -89,7 +89,6 @@ public class Observer extends Application implements LocationListener {
 	public void onCreate() {
 
 		super.onCreate();
-
 		
 		instance = this;
 		observerAPI = new ObserverAPI();
