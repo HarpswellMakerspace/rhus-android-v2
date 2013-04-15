@@ -68,6 +68,7 @@ public class OrganizationsActivity extends ApiActivity {
 	}
 	
 	
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -370,7 +371,7 @@ public class OrganizationsActivity extends ApiActivity {
 					}
 					
 					
-					Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
+					Intent intent = new Intent("org.calflora.observer.action.SPLASH");
 					startActivity(intent);
 					showProgress(false);	
 					finish(); // TODO We should handle organization and project as fragments in a flow

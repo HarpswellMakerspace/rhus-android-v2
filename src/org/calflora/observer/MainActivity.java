@@ -28,8 +28,8 @@ public class MainActivity extends Activity {
 	
 
 	@Override
-	protected void onStart() {
-		super.onStart();
+	protected void onResume() {
+		super.onResume();
 		
 	     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 	     String APIKey = settings.getString(Observer.API_KEY_PREF, null);
