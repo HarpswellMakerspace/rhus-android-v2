@@ -32,8 +32,10 @@ public class MainActivity extends Activity {
 		super.onStart();
 		
 	     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-	     String APIKey = settings.getString("APIKey", null);
-	     if(APIKey != null){
+	     String APIKey = settings.getString(Observer.API_KEY_PREF, null);
+	     String email = settings.getString(Observer.USER_EMAIL_PREF, null);
+
+	     if(APIKey != null && email != null ){
 	    	 //TODO: Revalidate API key ??
 	    	 //Remember that they may be offline
 	    	

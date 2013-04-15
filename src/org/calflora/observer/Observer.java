@@ -36,9 +36,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Observer extends Application implements LocationListener {
 	
-	private static final String API_KEY_PREF = "APIKey";
+	public static final String API_KEY_PREF = "APIKey";
 
-	private static final String USER_EMAIL_PREF = "UserEmail";
+	public static final String USER_EMAIL_PREF = "UserEmail";
 
 	private static final String DB_NAME = "px137.sqlite"; //Hard coded for testing, this is Yosemite
 	
@@ -94,8 +94,8 @@ public class Observer extends Application implements LocationListener {
 		observerAPI = new ObserverAPI();
 		settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-		username = settings.getString(USER_EMAIL_PREF, "");
-		APIKey = settings.getString(API_KEY_PREF, "");
+		username = settings.getString(USER_EMAIL_PREF, null);
+		APIKey = settings.getString(API_KEY_PREF, null);
 		/*
 		String projectJSON = settings.getString(Observer.PROJECT_PREFERENCE, null);
 		String organizationJSON = settings.getString(Observer.ORGANIZATION_PREFERENCE, null);
@@ -268,8 +268,8 @@ public class Observer extends Application implements LocationListener {
 	public void forgetUser(){
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString(API_KEY_PREF, "");
-		editor.putString(USER_EMAIL_PREF,  "");
+		editor.remove(API_KEY_PREF);
+		editor.remove(USER_EMAIL_PREF);
 		boolean bCommitted = editor.commit();
 		if (!bCommitted) 
 	        throw new RuntimeException("(AndroidApplication) Unable to save new string.");

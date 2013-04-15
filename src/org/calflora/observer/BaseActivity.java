@@ -19,6 +19,20 @@ public class BaseActivity extends Activity {
 		}
 	}
 
+	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		if(Observer.instance.getOrganization() != null){
+			ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
+			homeIcon.setImageResource(R.drawable.logo);
+		}
+	}
+
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection

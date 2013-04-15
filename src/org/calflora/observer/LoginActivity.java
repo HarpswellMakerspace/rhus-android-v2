@@ -185,7 +185,7 @@ public class LoginActivity extends ApiActivity  {
 		        	Observer.instance.setUser(mEmailView.getText().toString(), response.data);
 		        	
 		
-					finish();
+					//finish(); //We don't finish, so that we can bring this back to 
 					Intent intent = new Intent("org.calflora.observer.action.ORGANIZATIONS");
 					startActivity(intent);
 							      

@@ -83,7 +83,7 @@ public class SettingsActivity extends Activity {
 					break;
 				case 5:
 					Observer.instance.forgetUser();
-					intent = new Intent("org.calflora.observer.action.LOGIN");
+					intent = new Intent("org.calflora.observer.action.LOGIN");  // TODO Might want to call MainActivity with CLEAR_TOP 
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 					finish();
