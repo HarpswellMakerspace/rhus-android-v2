@@ -178,6 +178,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="org.calflora.observer.DownloadProjectAssetsActivity"
+            android:label="@string/title_activity_download_project_assets" >
+                      <intent-filter>
+                <action android:name="org.calflora.observer.action.DOWNLOAD_PROJECT_ASSETS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

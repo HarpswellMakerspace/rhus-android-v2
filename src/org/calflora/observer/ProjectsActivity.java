@@ -97,6 +97,8 @@ public class ProjectsActivity extends ApiActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		
+		
 	}
 	
 	
@@ -117,8 +119,12 @@ public class ProjectsActivity extends ApiActivity {
 			
 				Observer.instance.setProject(response.data);
 				      
+				/*
 				Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				*/
+				Intent intent = new Intent("org.calflora.observer.action.DOWNLOAD_PROJECT_ASSETS");
 				startActivity(intent);
 				finish();
 	        }

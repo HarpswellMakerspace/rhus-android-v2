@@ -10,7 +10,7 @@ import android.widget.ImageView;
 public class SplashActivity extends BaseActivity {
 
 	private Handler mHandler = new Handler(); 
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,25 +27,27 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		if(Observer.instance.getOrganization() != null){
 			ImageView imageView = (ImageView) findViewById(R.id.splashImage);
 			imageView.setImageResource(R.drawable.logo);
-			
-		}
-		
-		mHandler.postDelayed(new Runnable() { 
-	        public void run() { 
-	        	if(getIntent().filterEquals(new Intent("org.calflora.observer.action.SPLASH_THEN_PROJECTS"))){
-	        		Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
-	        		startActivity(intent);
-	        	}
-	        	finish();
-	        } 
-	    },2000);
-	}
-	
-	
 
-	
+		}
+
+		mHandler.postDelayed(new Runnable() { 
+			public void run() { 
+				//if(getIntent().filterEquals(new Intent("org.calflora.observer.action.SPLASH_THEN_PROJECTS"))){
+				Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
+				startActivity(intent);
+				/*	} else {
+
+	        	}*/
+				finish();
+			} 
+		},2000);
+	}
+
+
+
+
 }

@@ -27,5 +27,6 @@
     <string name="create_account">Create Account</string>
     <string name="sign_in">Sign In</string>
     <string name="title_activity_splash">Lauching...</string>
+    <string name="title_activity_download_project_assets">Downloading Assets...</string>
 
 </resources>

@@ -270,6 +270,8 @@ public class Observer extends Application implements LocationListener {
 		SharedPreferences.Editor editor = settings.edit();
 		editor.remove(API_KEY_PREF);
 		editor.remove(USER_EMAIL_PREF);
+		editor.remove(PROJECT_PREFERENCE);
+		editor.remove(ORGANIZATION_PREFERENCE);
 		boolean bCommitted = editor.commit();
 		if (!bCommitted) 
 	        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
