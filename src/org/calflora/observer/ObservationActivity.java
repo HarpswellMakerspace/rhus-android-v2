@@ -131,8 +131,6 @@ public class ObservationActivity extends Activity implements
 			// TODO Show default image for plant
 		}
 		
-		
-		
 	}
 
 

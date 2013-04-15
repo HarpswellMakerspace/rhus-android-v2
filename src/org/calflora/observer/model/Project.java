@@ -21,8 +21,8 @@ public class Project {
 	public String tilepackage;
 	public int tilepackageSize;
 	
-	@Deprecated
-	public ArrayList<Object> plantlist;
+	public String plantlist;
+	public String imgbundle;
 	
 	public static Plant getPlant(String taxon) {
 		

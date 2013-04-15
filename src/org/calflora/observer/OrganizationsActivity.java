@@ -302,7 +302,8 @@ public class OrganizationsActivity extends ApiActivity {
 					
 					Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
 					startActivity(intent);
-					showProgress(false);					
+					showProgress(false);	
+					finish(); // TODO We should handle organization and project as fragments in a flow
 				}
 		}
 		

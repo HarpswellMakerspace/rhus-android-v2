@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import net.smart_json_databsase.JSONEntity;
 
+import org.calflora.map.OfflineMapTileProvider;
 import org.json.JSONException;
 
 
@@ -17,9 +18,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlayOptions;
-import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.widget.Toast;
 
 
@@ -54,18 +53,18 @@ public class WorkspaceMapFragment extends MapFragment {
 		
 		// TODO change to adding this map programatically, so we get the zoom level setting
 		map = this.getMap();
-		map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		//map.setMapType(GoogleMap.MAP_TYPE_NONE);
+
 		map.setMyLocationEnabled(true);
 		
 	
 		// Custom offline layer.
-		// map.addTileOverlay(new TileOverlayOptions().tileProvider(new MapTileProvider(getResources().getAssets())));
+		map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemite_valley")));
 	    
 		LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
 		map.moveCamera( CameraUpdateFactory.newLatLng(latLng) );
-		
-				
-		
+
 		addMarkersFromDatabase();
 	}
 

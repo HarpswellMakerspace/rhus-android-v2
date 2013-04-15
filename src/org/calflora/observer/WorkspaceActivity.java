@@ -118,6 +118,21 @@ public class WorkspaceActivity extends Activity implements
 		getMenuInflater().inflate(R.menu.workspace, menu);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.settings:
+	            
+	            return true;
+	        case R.id.help:
+	            //showHelp();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,

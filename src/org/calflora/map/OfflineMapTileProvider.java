@@ -1,23 +1,26 @@
-package org.calflora.observer;
+package org.calflora.map;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import android.content.res.AssetManager;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.Tile;
 import com.google.android.gms.maps.model.TileProvider;
 
-public class MapTileProvider implements TileProvider {
+public class OfflineMapTileProvider implements TileProvider {
     private static final int TILE_WIDTH = 256;
     private static final int TILE_HEIGHT = 256;
     private static final int BUFFER_SIZE = 16 * 1024;
 
     private AssetManager mAssets;
+    private String cacheDirectory;
 
-    public MapTileProvider(AssetManager assets) {
+    public OfflineMapTileProvider(AssetManager assets, String setCacheDirectory) {
         mAssets = assets;
+        cacheDirectory = setCacheDirectory;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class MapTileProvider implements TileProvider {
                 buffer.write(data, 0, nRead);
             }
             buffer.flush();
-
+            Log.d("FOUND", "I FOUND ONE!");
             return buffer.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,6 +59,6 @@ public class MapTileProvider implements TileProvider {
     }
 
     private String getTileFilename(int x, int y, int zoom) {
-        return "map/" + zoom + '/' + x + '/' + y + ".png";
+        return cacheDirectory+"/" + zoom + '/' + x + '/' + y + ".png";
     }
 }
