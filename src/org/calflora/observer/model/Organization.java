@@ -2,8 +2,6 @@ package org.calflora.observer.model;
 
 import java.util.List;
 
-import org.calflora.observer.Observer;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

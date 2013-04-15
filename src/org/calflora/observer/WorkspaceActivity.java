@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class WorkspaceActivity extends Activity implements
+public class WorkspaceActivity extends BaseActivity implements
 		ActionBar.TabListener {
 
 	private enum Tabs { MAP, LIST, UPLOAD, ADD };
@@ -126,9 +126,6 @@ public class WorkspaceActivity extends Activity implements
 	    switch (item.getItemId()) {
 	        case R.id.menu_settings:
 	            showSettings();
-	            return true;
-	        case R.id.menu_help:
-	            //showHelp();
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

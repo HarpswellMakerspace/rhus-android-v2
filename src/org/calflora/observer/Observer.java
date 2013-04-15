@@ -36,6 +36,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Observer extends Application implements LocationListener {
 	
+	private static final String API_KEY_PREF = "APIKey";
+
+	private static final String USER_EMAIL_PREF = "UserEmail";
+
 	private static final String DB_NAME = "px137.sqlite"; //Hard coded for testing, this is Yosemite
 	
 	public static final String ORGANIZATION_PREFERENCE = "ORGANIZATION_PREFERENCE";
@@ -91,8 +95,8 @@ public class Observer extends Application implements LocationListener {
 		observerAPI = new ObserverAPI();
 		settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-		username = settings.getString("username", "");
-		APIKey = settings.getString("APIKey", "");
+		username = settings.getString(USER_EMAIL_PREF, "");
+		APIKey = settings.getString(API_KEY_PREF, "");
 		/*
 		String projectJSON = settings.getString(Observer.PROJECT_PREFERENCE, null);
 		String organizationJSON = settings.getString(Observer.ORGANIZATION_PREFERENCE, null);
@@ -251,8 +255,8 @@ public class Observer extends Application implements LocationListener {
 	public void setUser(String email, String newAPIKey){
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("APIKey", newAPIKey);
-		editor.putString("UserEmail",  email);
+		editor.putString(API_KEY_PREF, newAPIKey);
+		editor.putString(USER_EMAIL_PREF,  email);
 		username = email;
 		APIKey = newAPIKey;
 		boolean bCommitted = editor.commit();
@@ -265,8 +269,8 @@ public class Observer extends Application implements LocationListener {
 	public void forgetUser(){
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("APIKey", "");
-		editor.putString("UserEmail",  "");
+		editor.putString(API_KEY_PREF, "");
+		editor.putString(USER_EMAIL_PREF,  "");
 		boolean bCommitted = editor.commit();
 		if (!bCommitted) 
 	        throw new RuntimeException("(AndroidApplication) Unable to save new string.");

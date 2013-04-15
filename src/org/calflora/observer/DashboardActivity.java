@@ -1,10 +1,9 @@
 package org.calflora.observer;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 
-public class DashboardActivity extends Activity {
+public class DashboardActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

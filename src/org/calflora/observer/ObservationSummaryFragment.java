@@ -2,13 +2,8 @@ package org.calflora.observer;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Map;
 
 import net.winterroot.rhus.util.RHImage;
-
-import org.json.JSONException;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,19 +20,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 
 public class ObservationSummaryFragment extends Fragment {
 
 	private View layout = null;
 	private GoogleMap map;
 	private MapFragment mapFragment;
+	@SuppressWarnings("unused")
 	private String TAG = "ObservationSummaryFragment";
 	
 	private int CAPTURE_PHOTO = 1;

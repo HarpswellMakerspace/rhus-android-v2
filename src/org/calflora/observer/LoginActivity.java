@@ -1,7 +1,6 @@
 package org.calflora.observer;
 
 import org.calflora.observer.api.APIResponseSignIn;
-import org.calflora.observer.api.ObserverAPI;
 
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -12,7 +11,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;

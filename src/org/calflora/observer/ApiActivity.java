@@ -6,14 +6,13 @@ import com.octo.android.robospice.SpiceManager;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-abstract public class ApiActivity extends Activity {
+abstract public class ApiActivity extends BaseActivity {
 
 	protected static final String JSON_CACHE_KEY = "CACHE_KEY";
 	protected SpiceManager spiceManager = new SpiceManager( JacksonSpringAndroidSpiceService.class );

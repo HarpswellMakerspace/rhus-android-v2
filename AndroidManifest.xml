@@ -144,8 +144,17 @@
         <activity
             android:name="org.calflora.observer.SettingsActivity"
             android:label="@string/title_activity_settings" >
-             <intent-filter>
+            <intent-filter>
                 <action android:name="org.calflora.observer.action.SETTINGS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.calflora.observer.HelpActivity"
+            android:label="@string/title_activity_help" >
+                        <intent-filter>
+                <action android:name="org.calflora.observer.action.HELP" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

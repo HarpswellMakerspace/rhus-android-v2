@@ -1,27 +1,22 @@
 package org.calflora.observer.model;
 
-import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import net.smart_json_databsase.JSONEntity;
 
 import org.calflora.observer.Observer;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import android.content.Context;
-import android.location.Location;
 import android.os.Environment;
 
 public class Observation {

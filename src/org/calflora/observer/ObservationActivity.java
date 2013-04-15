@@ -192,6 +192,7 @@ public class ObservationActivity extends Activity implements
 	}
 	
 	protected void onCancel(){
+		@SuppressWarnings("unused")
 		AlertDialog ad = new AlertDialog.Builder(this).setMessage(
 				"Clicking OK will discard all your data for this entry.").setTitle(
 						"Are you sure?").setCancelable(false)
