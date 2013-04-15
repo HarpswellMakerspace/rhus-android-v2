@@ -184,15 +184,9 @@ public class LoginActivity extends ApiActivity  {
 		        		return;
 		            }
 
-					SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-					SharedPreferences.Editor editor = settings.edit();
-					editor.putString("APIKey", response.data);
-					editor.putString("UserEmail", mEmailView.getText().toString() );
-					boolean bCommitted = editor.commit();
-					if (!bCommitted) 
-				        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
-
-			
+		        	Observer.instance.setUser(mEmailView.getText().toString(), response.data);
+		        	
+		
 					finish();
 					Intent intent = new Intent("org.calflora.observer.action.ORGANIZATIONS");
 					startActivity(intent);

@@ -11,6 +11,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -123,15 +124,20 @@ public class WorkspaceActivity extends Activity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
-	        case R.id.settings:
-	            
+	        case R.id.menu_settings:
+	            showSettings();
 	            return true;
-	        case R.id.help:
+	        case R.id.menu_help:
 	            //showHelp();
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	protected void showSettings(){
+		Intent intent = new Intent("org.calflora.observer.action.SETTINGS");
+		startActivity(intent);	
 	}
 
 	@Override

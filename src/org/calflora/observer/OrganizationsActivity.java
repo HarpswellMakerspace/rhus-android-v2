@@ -38,7 +38,6 @@ import com.octo.android.robospice.request.simple.SmallBinaryRequest;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;

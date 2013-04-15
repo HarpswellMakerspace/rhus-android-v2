@@ -29,7 +29,9 @@ import android.provider.Settings;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Observer extends Application implements LocationListener {
@@ -46,6 +48,8 @@ public class Observer extends Application implements LocationListener {
 	public static Observer instance;
 	private static Organization organization;
 	private static Project project;
+	private String username;
+	private String APIKey;
 	public static ObjectMapper mapper = new ObjectMapper();
 	public static JSONDatabase database;
 	public static SQLiteDatabase plantsListDatabase; // TODO: move to Project ?
@@ -87,6 +91,30 @@ public class Observer extends Application implements LocationListener {
 		observerAPI = new ObserverAPI();
 		settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
+		username = settings.getString("username", "");
+		APIKey = settings.getString("APIKey", "");
+		/*
+		String projectJSON = settings.getString(Observer.PROJECT_PREFERENCE, null);
+		String organizationJSON = settings.getString(Observer.ORGANIZATION_PREFERENCE, null);
+
+		if(username != null && APIKey != null){
+			if(organizationJSON != null){
+				try {
+					Organization o = Observer.mapper.readValue(organizationJSON, Organization.class);
+					organization = o;
+				} catch (Exception e) {
+					organization = null;
+				}
+			}
+			if(projectJSON != null){
+				try {
+					Project p = Observer.mapper.readValue(projectJSON, Project.class);
+					project = p;
+				} catch (Exception e) {
+					project = null;
+				}
+			}
+		}*/
 		
 		try {
 			Observer.database = JSONDatabase.GetDatabase(getApplicationContext());
@@ -220,6 +248,30 @@ public class Observer extends Application implements LocationListener {
 		return organization;
 	}
 
+	public void setUser(String email, String newAPIKey){
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("APIKey", newAPIKey);
+		editor.putString("UserEmail",  email);
+		username = email;
+		APIKey = newAPIKey;
+		boolean bCommitted = editor.commit();
+		if (!bCommitted) 
+	        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
+		return;
+
+	}
+	
+	public void forgetUser(){
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("APIKey", "");
+		editor.putString("UserEmail",  "");
+		boolean bCommitted = editor.commit();
+		if (!bCommitted) 
+	        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
+		return;
+	}
 	
 
 	 public void setProject(Project projectObject) {
@@ -246,6 +298,10 @@ public class Observer extends Application implements LocationListener {
 	
 	public Project getProject(){
 		return project;
+	}
+	
+	public String getCurrentUsername(){
+		return username;
 	}
 	
 

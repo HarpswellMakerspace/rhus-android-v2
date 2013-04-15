@@ -1,12 +1,13 @@
 package org.calflora.observer.model;
 
-import java.util.ArrayList;
 
 import org.calflora.observer.Observer;
 
-import android.database.Cursor;
-import android.database.DatabaseUtils;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import android.database.Cursor;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Project {
 
 	public String id;
@@ -15,6 +16,8 @@ public class Project {
 	public String orgId; // @deprecated This var will removed in the near future.
 	@Deprecated
 	private String projectId;
+	
+	public String name;
 	
 	public double center_lat;
 	public double center_lng;
