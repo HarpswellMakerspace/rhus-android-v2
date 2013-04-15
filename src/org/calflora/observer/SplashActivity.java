@@ -36,8 +36,10 @@ public class SplashActivity extends BaseActivity {
 		
 		mHandler.postDelayed(new Runnable() { 
 	        public void run() { 
-	        	Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
-				startActivity(intent);
+	        	if(getIntent().filterEquals(new Intent("org.calflora.observer.action.SPLASH_THEN_PROJECTS"))){
+	        		Intent intent = new Intent("org.calflora.observer.action.PROJECTS");
+	        		startActivity(intent);
+	        	}
 	        	finish();
 	        } 
 	    },2000);

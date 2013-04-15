@@ -30,6 +30,21 @@ public class BaseActivity extends Activity {
 			homeIcon.setImageResource(R.drawable.logo);
 		}
 	}
+	
+	/*
+	 * This doesn't work, because onRestart is being called every time the activity is launched.
+	 * It's unclear how to know if it's been destoryed, and whether this has anything to do with use wanting
+	 * to display the splash screen.
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		
+		if(Observer.instance.getOrganization() != null){
+			Intent intent = new Intent("org.calflora.observer.action.SPLASH");
+			startActivity(intent);
+		}
+	}
+	*/
 
 
 

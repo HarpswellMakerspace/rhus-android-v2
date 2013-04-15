@@ -167,7 +167,12 @@
         <activity
             android:name="org.calflora.observer.SplashActivity"
             android:label="@string/title_activity_splash" >
-                 <intent-filter>
+            <intent-filter>
+                <action android:name="org.calflora.observer.action.SPLASH_THEN_PROJECTS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="org.calflora.observer.action.SPLASH" />
 
                 <category android:name="android.intent.category.DEFAULT" />
