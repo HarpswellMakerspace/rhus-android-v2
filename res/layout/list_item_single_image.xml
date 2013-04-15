@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+   
+        
+                   <ImageView
+           android:layout_width="80dp"
+           android:layout_height="80dp"
+           android:id="@+id/list_item_image_view"
+           android:src="@drawable/cancel" />
+    
+       <TextView
+            android:id="@+id/col1"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:minHeight="@dimen/chooser_list_item_height"
+            android:paddingBottom="@dimen/chooser_list_item_padding_bottom"
+            android:paddingLeft="@dimen/chooser_list_item_padding_left"
+            android:textColor="@color/black"
+            android:textSize="@dimen/chooser_list_item_text_size"
+            android:width="100dip"
+            android:layout_toRightOf="@+id/list_item_image_view"
+             />
+        
+
+</LinearLayout>

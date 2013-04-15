@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -38,9 +41,11 @@ import com.octo.android.robospice.request.simple.SmallBinaryRequest;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -124,23 +129,89 @@ public class OrganizationsActivity extends ApiActivity {
 		//TODO: Any of the above exceptions should be handled gracefully
 		//Though the more salient error would be upon loading JSON remotely into the 
 		
-		List<Map<String, String>> listData = new ArrayList<Map<String, String>>();
-		Map<String, String> map = null;
+
+		class ListDataItem {
+			String name;
+			int image;
+		}
+		
+		ArrayList<ListDataItem> listData = new ArrayList<ListDataItem>();
+		ListDataItem listDataItem = null;
+		
 		
 		int i=1;
 		for(IdNameItem o: organizations){
-			map = new HashMap<String, String>();
-			map.put("rowid", String.valueOf(i));
-			map.put("col_1", (String) o.name);
-			listData.add(map);
-			i++;
+			if(o.name.contains("Yosemite") || o.name.contains("Independent")){
+				listDataItem = new ListDataItem();
+				listDataItem.name = o.name;
+				if(o.name.contains("Yosemite")){
+					listDataItem.image = R.drawable.logo;
+				}
+				listData.add(listDataItem);
+			}
 
 		}
 		
-		String[] from = new String[] {"col_1"};
-	    int[] to = new int[] { R.id.col1 };
+		//String[] from = new String[] {"col_1"};
+	    //int[] to = new int[] { R.id.col1 };
 
-		SimpleAdapter adapter = new SimpleAdapter( this, listData, R.layout.list_item_single, from, to);
+		//SimpleAdapter adapter = new SimpleAdapter( this, listData, R.layout.list_item_single_image, from, to);
+		
+		class MyCustomAdaptor extends ArrayAdapter<ListDataItem>
+		{
+		    Context context;
+		    int layoutResourceId;   
+		    
+		    ListDataItem currentItem;
+		    ArrayList<ListDataItem> data;
+		    /** Called when the activity is first created. */
+		    // TODO Auto-generated constructor stub
+		    public MyCustomAdaptor(Context context, int layoutResourceId, ArrayList<ListDataItem> data) 
+		    {
+		        super(context,layoutResourceId,data);
+		        this.layoutResourceId = layoutResourceId;
+		        this.context=context;
+		        this.data = data;
+		    }
+		    @Override
+		    public View getView(int position, View convertView, ViewGroup parent)
+		    {
+		        View row = convertView;
+		        MyStringReaderHolder holder;
+		        
+		        if(row==null)
+		        {
+		            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+		            row = inflater.inflate(layoutResourceId, parent,false);
+		            
+		            holder= new MyStringReaderHolder();
+		            
+		            holder.nameView =(TextView)row.findViewById(R.id.col1);
+		            holder.imageView=(ImageView) row.findViewById(R.id.list_item_image_view);
+		            
+		            row.setTag(holder);
+		        }
+		        else
+		        {
+		            holder=(MyStringReaderHolder) row.getTag();
+		        }
+		        
+		        currentItem = (ListDataItem) data.get(position);
+		        System.out.println("Position="+position);
+		      
+		        holder.nameView.setText(currentItem.name);
+		        holder.imageView.setImageResource(currentItem.image);
+		        return row;
+		    }
+		    
+		    class MyStringReaderHolder
+		    {
+		        TextView nameView;
+		        ImageView imageView;
+		    }
+		}
+		
+		MyCustomAdaptor adapter = new MyCustomAdaptor(this, R.layout.list_item_single_image, listData);
         lv.setAdapter(adapter);
         
         lv.setOnItemClickListener(new OnItemClickListener() {

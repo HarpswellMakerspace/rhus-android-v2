@@ -24,5 +24,7 @@
     <string name="empty">empty</string>
     <string name="title_activity_help">Help</string>
     <string name="network_access">Please make sure you have network access.</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_in">Sign In</string>
 
 </resources>

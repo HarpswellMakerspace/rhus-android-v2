@@ -118,7 +118,7 @@ public class ProjectsActivity extends ApiActivity {
 				Observer.instance.setProject(response.data);
 				      
 				Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				finish();
 	        }
