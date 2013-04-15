@@ -1,5 +1,12 @@
 package org.calflora.observer.model;
 
+import java.io.IOException;
+
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
+
 public class Plant {
 	
 	private String taxon;
@@ -8,6 +15,20 @@ public class Plant {
 	private String lifeform;
 	private String family;
 	private String photoid;
+	
+	public Drawable getThumbnail(Context context) {
+		AssetManager assets = context.getResources().getAssets();
+		AssetFileDescriptor asset = null;
+		Drawable plantThumbnail = null;
+		try {
+			String imagePath = "plant_images/" + getPhotoid().replace("'","")+".jpeg";
+			asset = assets.openFd(imagePath);
+			plantThumbnail = Drawable.createFromStream(asset.createInputStream(), "");
+		} catch (IOException e) {
+			// TODO Show default image for plant
+		}
+		return plantThumbnail;
+	}
 	
 	public String getTaxon() {
 		return taxon;

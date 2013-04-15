@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.calflora.observer.api.IdNameItem;
+import org.calflora.observer.model.Project;
 import org.calflora.observer.model.ProjectStub;
 import org.json.JSONException;
 
@@ -14,9 +16,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 
 public class WorkspaceListFragment extends Fragment {
 
@@ -30,37 +38,89 @@ public class WorkspaceListFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 		
-		List<Map<String, String>> listData = new ArrayList<Map<String, String>>();
-		Map<String, String> map = null;
-
+		ListView lv = (ListView) getView().findViewById(R.id.workspace_list_view);
 		
 		Collection<JSONEntity> points = getEntities();
-		int i=1;
-
+		ArrayList<JSONEntity> listData = new ArrayList<JSONEntity>();
 		for( JSONEntity p: points){
-			try {
-				if(p.getString("taxon") != null){
-					map = new HashMap<String, String>();
-					map.put("rowid", String.valueOf(i));
-					map.put("col_1", (String) p.getString("taxon"));
-					listData.add(map);
-					i++;
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			listData.add(p);
 		}
 		
+		class MyCustomAdaptor extends ArrayAdapter<JSONEntity>
+		{
+		    Context context;
+		    int layoutResourceId;   
+		    
+		    JSONEntity currentItem;
+		    ArrayList<JSONEntity> data;
+		    /** Called when the activity is first created. */
+		    // TODO Auto-generated constructor stub
+		    public MyCustomAdaptor(Context context, int layoutResourceId, ArrayList<JSONEntity> data) 
+		    {
+		        super(context,layoutResourceId,data);
+		        this.layoutResourceId = layoutResourceId;
+		        this.context=context;
+		        this.data = data;
+		    }
+		    @Override
+		    public View getView(int position, View convertView, ViewGroup parent)
+		    {
+		        View row = convertView;
+		        MyStringReaderHolder holder;
+		        
+		        if(row==null)
+		        {
+		            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+		            row = inflater.inflate(layoutResourceId, parent,false);
+		            
+		            holder= new MyStringReaderHolder();
+		            
+		            holder.plantNameView =(TextView)row.findViewById(R.id.plant_name);
+		            holder.plantImageView=(ImageView)row.findViewById(R.id.thumb_image_view);
+		            holder.dateAddedView = (TextView)row.findViewById(R.id.date_added);
+		            
+		            row.setTag(holder);
+		        }
+		        else
+		        {
+		            holder=(MyStringReaderHolder) row.getTag();
+		        }
+		        
+		        currentItem = (JSONEntity) data.get(position);
+		        //System.out.println("Position="+position);
+		      
+		        String taxon = "";
+				try {
+					taxon = currentItem.getString("taxon");
+				} catch (JSONException e) {
+					holder.plantNameView.setText("Taxon not recorded");
 
-		String[] from = new String[] {"col_1"};
-		int[] to = new int[] { R.id.col1 };
+				}
+		       
+		        holder.plantNameView.setText(taxon);
+		        try {
+					holder.plantNameView.setText(currentItem.getString("date_added"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					holder.dateAddedView.setText("Date not recorded");
+				}
+		        
+		        Drawable thumbnail = Project.getPlant(taxon).getThumbnail(getActivity());
+		        holder.plantImageView.setImageDrawable(thumbnail);
+		        return row;
+		    }
+		    
+		    class MyStringReaderHolder
+		    {
+		        TextView plantNameView;
+		        ImageView plantImageView;
+		        TextView dateAddedView;
+		    }
+		}
 		
-		SimpleAdapter adapter = new SimpleAdapter( getActivity(), listData, R.layout.list_item_single, from, to);
-		View myView = getView();
-		ListView lv = (ListView) myView.findViewById(R.id.workspace_list_view);
+		MyCustomAdaptor adapter = new MyCustomAdaptor(getActivity(), R.layout.list_item_plant_observation, listData);
         lv.setAdapter(adapter);
-		
+        
 	}
 
 

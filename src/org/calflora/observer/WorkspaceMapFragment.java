@@ -15,6 +15,7 @@ import android.os.Bundle;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlayOptions;
@@ -81,12 +82,20 @@ public class WorkspaceMapFragment extends MapFragment {
 		LatLng latLng;
 		try {
 			latLng = new LatLng(p.getDouble("latitude"), p.getDouble("longitude"));
-			options.title(p.getString("taxon"));
-			options.snippet(p.getString("taxon"));
 		} catch (JSONException e) {
 			Observer.toast("Bad point data", getActivity().getApplicationContext());
 			e.printStackTrace();
 			return;
+		}
+		try {
+			options.title(p.getString("taxon"));
+			options.snippet(p.getString("taxon"));
+			int uploaded = p.getInt("uploaded");
+			if(uploaded==1){
+				options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 		options.position(latLng);
 		map.addMarker(options);

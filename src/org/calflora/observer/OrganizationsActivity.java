@@ -153,11 +153,6 @@ public class OrganizationsActivity extends ApiActivity {
 
 		}
 		
-		//String[] from = new String[] {"col_1"};
-	    //int[] to = new int[] { R.id.col1 };
-
-		//SimpleAdapter adapter = new SimpleAdapter( this, listData, R.layout.list_item_single_image, from, to);
-		
 		class MyCustomAdaptor extends ArrayAdapter<ListDataItem>
 		{
 		    Context context;

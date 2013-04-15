@@ -52,6 +52,7 @@ public class SettingsActivity extends Activity {
 		listData.add(rowSetup("4", "About"));
 		listData.add(rowSetup("5", "Send Comments"));
 		listData.add(rowSetup("6", "Log Out"));
+		listData.add(rowSetup("7", "Prerelease version 2.A.01"));
 
 		String[] from = new String[] {"col_1"};
 		int[] to = new int[] { R.id.col1 };

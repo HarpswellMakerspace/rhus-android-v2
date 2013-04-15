@@ -32,7 +32,9 @@ public class Project {
 		Cursor c = Observer.plantsListDatabase.query("plist", 
 				  new String[] { "taxon", "common", "nstatus", "lifeform", "family", "photoid"  }, 
 				  "taxon = ?", new String[]{ taxon } , null, null, null); 
-		c.moveToFirst();
+		if(!c.moveToFirst()){
+			return null;
+		}
 		
 		Plant plant = new Plant();
 		plant.setTaxon(c.getString(0));

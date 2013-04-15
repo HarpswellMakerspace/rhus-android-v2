@@ -4,8 +4,10 @@ package org.calflora.observer.model;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.UUID;
 
 import net.smart_json_databsase.JSONEntity;
@@ -23,6 +25,7 @@ public class Observation {
 
 	public double latitude;
 	public double longitude;
+	public boolean uploaded;
 
 	// TODO Plant should be refactored..
 	// This should be a big old String, String map!
@@ -109,6 +112,11 @@ public class Observation {
 		dataPoint.put("latitude", latitude);
 		dataPoint.put("longitude", longitude);
 		dataPoint.put("taxon", plant.getTaxon());
+		SimpleDateFormat s = new SimpleDateFormat("dd MM yyyy hh:mm:ss");
+		String format = s.format(new Date());
+		Long tsLong = System.currentTimeMillis()/1000;
+		String ts = tsLong.toString();
+		dataPoint.put("date_added", format);
 		dataPoint.put("uploaded", 0);
 
 		//Store the attachments
