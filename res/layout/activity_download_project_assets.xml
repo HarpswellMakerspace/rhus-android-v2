@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/org_image_view"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="1dp"
         android:text="Downloading Plants List"
         android:textAppearance="?android:attr/textAppearanceMedium" 
         android:layout_marginTop="@dimen/progress_margin_top"
@@ -38,17 +38,29 @@
         android:layout_height="40dp"
         android:layout_below="@+id/plants_list_download_title"
          />
+    
+      <TextView
+        android:id="@+id/plants_list_download_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/plants_list_download"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:text="Total Size: 10MB"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
      <TextView
         android:id="@+id/tile_cache_download_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/plants_list_download"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="1dp"
         android:layout_marginTop="@dimen/progress_margin_top"
         android:text="Downloading Offline Maps"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
+  
+        
     <ProgressBar
         android:id="@+id/tile_cache_download"
         style="?android:attr/progressBarStyleHorizontal"
@@ -57,7 +69,15 @@
         android:layout_below="@+id/tile_cache_download_title"
          />
 
-
+      <TextView
+        android:id="@+id/tile_cache_download_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tile_cache_download"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:text="Total Size: 500MB"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
 
