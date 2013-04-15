@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.calflora.observer.api.IdNameItem;
+import org.calflora.observer.model.Plant;
 import org.calflora.observer.model.Project;
 import org.calflora.observer.model.ProjectStub;
 import org.json.JSONException;
@@ -105,8 +106,11 @@ public class WorkspaceListFragment extends Fragment {
 					holder.dateAddedView.setText("Date not recorded");
 				}
 		        
-		        Drawable thumbnail = Project.getPlant(taxon).getThumbnail(getActivity());
-		        holder.plantImageView.setImageDrawable(thumbnail);
+		        Plant plant = Project.getPlant(taxon);
+		        if(plant != null){
+		        	Drawable thumbnail = plant.getThumbnail(getActivity());
+		        	holder.plantImageView.setImageDrawable(thumbnail);
+		        }
 		        return row;
 		    }
 		    
