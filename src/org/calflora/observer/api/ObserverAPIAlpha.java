@@ -146,37 +146,15 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 			public double lat;
 			public double lng;
 			public String date;
-			public String getTaxon() {
-				return taxon;
-			}
-			public void setTaxon(String taxon) {
-				this.taxon = taxon;
-			}
-			public double getLat() {
-				return lat;
-			}
-			public void setLat(double lat) {
-				this.lat = lat;
-			}
-			public double getLng() {
-				return lng;
-			}
-			public void setLng(double lng) {
-				this.lng = lng;
-			}
-			public String getDate() {
-				return date;
-			}
-			public void setDate(String date) {
-				this.date = date;
-			}
-			
+			public int timestamp;
 			
 		}
 		final BaseFields base = new BaseFields();
 		base.taxon = o.plant.getTaxon();
 		base.lat = o.latitude;
 		base.lng = o.longitude;
+		base.date = o.date_added;
+		base.timestamp = o.timestamp_added;
 
 
 		class UploadJsonRequest extends SpringAndroidSpiceRequest<APIResponseUpload> {

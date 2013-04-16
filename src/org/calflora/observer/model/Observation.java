@@ -26,6 +26,8 @@ public class Observation {
 	public double latitude;
 	public double longitude;
 	public boolean uploaded;
+	public String date_added;
+	public int timestamp_added;
 
 	// TODO Plant should be refactored..
 	// This should be a big old String, String map!
@@ -35,9 +37,17 @@ public class Observation {
 	
 	public static Observation loadObservationFromEntity(JSONEntity entity) throws JSONException, JsonParseException, JsonMappingException, IOException{
 		Observation o = new Observation();
+		
+		
+		//Observation o = Observer.mapper.readValue(entity.getData().toString(), Observation.class);
+		// TODO The object maping for the Observation class need to be refactored so we can use Jackson here
+		// and then the jackson line above should go into smart_json, as an additional method.
+		
 		o.latitude = entity.getDouble("latitude");
 		o.longitude = entity.getDouble("longitude");
 		o.plant.setTaxon(entity.getString("taxon"));
+		o.date_added = entity.getString("date_added");
+		o.timestamp_added = entity.getInt("timestamp_added");
 		
 		Collection<Integer> collection = entity.hasMany("attachments");  // TODO This should really return the objects themselves
 		for(Integer i : collection){
@@ -112,11 +122,12 @@ public class Observation {
 		dataPoint.put("latitude", latitude);
 		dataPoint.put("longitude", longitude);
 		dataPoint.put("taxon", plant.getTaxon());
-		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		String format = s.format(new Date());
 		Long tsLong = System.currentTimeMillis()/1000;
-		String ts = tsLong.toString();
+		//String ts = tsLong.toString();
 		dataPoint.put("date_added", format);
+		dataPoint.put("timestamp_added", tsLong);
 		dataPoint.put("uploaded", 0);
 
 		//Store the attachments

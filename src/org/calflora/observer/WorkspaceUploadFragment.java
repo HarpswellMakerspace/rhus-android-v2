@@ -69,6 +69,10 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 
 	}
 	
+	public void onResume(){
+		progressBar.setProgress( 0 );
+	}
+	
 	@Override
 	public void onStop() {
 	      super.onStop();
