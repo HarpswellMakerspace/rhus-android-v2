@@ -158,7 +158,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	            int progress = (currentPosition * 100 / totalObservations );
 	            progressBar.setProgress( progress );
 				//Do it again!
-	        	postEntityToServer();
+	        	//postEntityToServer();
 						      
 	        }
 	    }

@@ -2,9 +2,18 @@ package org.calflora.observer.api;
 
 import org.calflora.observer.Observer;
 import org.calflora.observer.model.Observation;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 
 import android.net.Uri;
@@ -14,7 +23,7 @@ import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceReques
 public class ObserverAPIAlpha implements ObserverAPICore {
 
 	public static String API_URI = "https://www.calflora.org/mgrapi";
-		
+
 	@Override
 	public SpringAndroidSpiceRequest<APIResponseSignIn> signInRequest(
 			String username, String password) {
@@ -43,24 +52,24 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 	@Override
 	public SpringAndroidSpiceRequest<APIResponseOrganizations> getOrganizationsRequest() {
-		 Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
-	        uriBuilder.appendQueryParameter( "what", "orgs" );
-	        uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
-	     final String URI = Uri.decode(uriBuilder.build().toString());
-	    
-		
-	     class OrganizationsJsonRequest extends SpringAndroidSpiceRequest< APIResponseOrganizations > {
-	    	 
-	    	  public OrganizationsJsonRequest() {
-			        super( APIResponseOrganizations.class );
-			    }
+		Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
+		uriBuilder.appendQueryParameter( "what", "orgs" );
+		uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
+		final String URI = Uri.decode(uriBuilder.build().toString());
 
-			    @Override
-			    public APIResponseOrganizations loadDataFromNetwork() throws Exception {
-			        return getRestTemplate().getForObject( URI, APIResponseOrganizations.class  );
-			    } 
-	     }
-	     
+
+		class OrganizationsJsonRequest extends SpringAndroidSpiceRequest< APIResponseOrganizations > {
+
+			public OrganizationsJsonRequest() {
+				super( APIResponseOrganizations.class );
+			}
+
+			@Override
+			public APIResponseOrganizations loadDataFromNetwork() throws Exception {
+				return getRestTemplate().getForObject( URI, APIResponseOrganizations.class  );
+			} 
+		}
+
 		return new OrganizationsJsonRequest();
 	}
 
@@ -68,25 +77,25 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 	@Override
 	public SpringAndroidSpiceRequest<APIResponseOrganization> getOrganizationRequest(
 			String organizationId) {
-		
-		 Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
-	        uriBuilder.appendQueryParameter( "what", "orgdata" );
-	        uriBuilder.appendQueryParameter( "orgid", organizationId);
-	        uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
-	     final String URI = uriBuilder.build().toString();
-		
-	     class OrganizationJsonRequest extends SpringAndroidSpiceRequest< APIResponseOrganization > {
-	    	 
-	    	  public OrganizationJsonRequest() {
-			        super( APIResponseOrganization.class );
-			    }
 
-			    @Override
-			    public APIResponseOrganization loadDataFromNetwork() throws Exception {
-			        return getRestTemplate().getForObject( URI, APIResponseOrganization.class  );
-			    } 
-	     }
-	     
+		Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
+		uriBuilder.appendQueryParameter( "what", "orgdata" );
+		uriBuilder.appendQueryParameter( "orgid", organizationId);
+		uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
+		final String URI = uriBuilder.build().toString();
+
+		class OrganizationJsonRequest extends SpringAndroidSpiceRequest< APIResponseOrganization > {
+
+			public OrganizationJsonRequest() {
+				super( APIResponseOrganization.class );
+			}
+
+			@Override
+			public APIResponseOrganization loadDataFromNetwork() throws Exception {
+				return getRestTemplate().getForObject( URI, APIResponseOrganization.class  );
+			} 
+		}
+
 		return new OrganizationJsonRequest();
 	}
 
@@ -95,78 +104,124 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 	public SpringAndroidSpiceRequest<APIResponseProject> getProjectRequest(
 			String projectId) {
 
-		 Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
-	        uriBuilder.appendQueryParameter( "what", "projdata" );
-	        uriBuilder.appendQueryParameter( "orgid", projectId);
-	        uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
-	     final String URI = uriBuilder.build().toString();
-		
-	     class ProjectJsonRequest extends SpringAndroidSpiceRequest< APIResponseProject > {
-	    	 
-	    	  public ProjectJsonRequest() {
-			        super( APIResponseProject.class );
-			    }
+		Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
+		uriBuilder.appendQueryParameter( "what", "projdata" );
+		uriBuilder.appendQueryParameter( "orgid", projectId);
+		uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
+		final String URI = uriBuilder.build().toString();
 
-			    @Override
-			    public APIResponseProject loadDataFromNetwork() throws Exception {
-			        return getRestTemplate().getForObject( URI, APIResponseProject.class  );
-			    } 
-	     }
-	     
+		class ProjectJsonRequest extends SpringAndroidSpiceRequest< APIResponseProject > {
+
+			public ProjectJsonRequest() {
+				super( APIResponseProject.class );
+			}
+
+			@Override
+			public APIResponseProject loadDataFromNetwork() throws Exception {
+				return getRestTemplate().getForObject( URI, APIResponseProject.class  );
+			} 
+		}
+
 		return new ProjectJsonRequest();
 	}
-	
+
 
 
 	@Override
 	public SpringAndroidSpiceRequest<APIResponseUpload> getUploadRequest(
 			final Observation o) {
-		
-	
-		
-		 Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
-	     //uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
-	     final String URI = Uri.decode(uriBuilder.build().toString());
-	     //final HashMap<String, String> record = o.getFields();
-	     //Only handle the base fields for now..
-	     //We need to change the way the API is structured to make this easier
-	     
-	     class BaseFields {
-	    	 public String taxon;
-	    	 public double lat;
-	    	 public double lng;
-	    	 public String date;
-	     }
-	     final BaseFields base = new BaseFields();
-	     base.taxon = o.plant.getTaxon();
-	     base.lat = o.latitude;
-	     base.lng = o.longitude;
-	    
-		
-	     class UploadJsonRequest extends SpringAndroidSpiceRequest<APIResponseUpload> {
-	    	 
-	    	  public UploadJsonRequest() {
-			        super( APIResponseUpload.class );
-			    }
 
-			    @Override
-			    public APIResponseUpload loadDataFromNetwork() throws Exception {
-			    	
-					MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-					for(org.calflora.observer.model.Attachment a : o.attachments){
 
-						parts.add(a.name, new FileSystemResource(a.localPath));
 
-					}
-					//parts.add("record", base);
-					return getRestTemplate().postForObject(URI, parts, APIResponseUpload.class);
-			    } 
-	     }
-	 	return new UploadJsonRequest();
+		Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
+		//uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
+		final String URI = Uri.decode(uriBuilder.build().toString());
+		//final HashMap<String, String> record = o.getFields();
+		//Only handle the base fields for now..
+		//We need to change the way the API is structured to make this easier
+
+		class BaseFields {
+			public String taxon;
+			public double lat;
+			public double lng;
+			public String date;
+		}
+		final BaseFields base = new BaseFields();
+		base.taxon = o.plant.getTaxon();
+		base.lat = o.latitude;
+		base.lng = o.longitude;
+
+
+		class UploadJsonRequest extends SpringAndroidSpiceRequest<APIResponseUpload> {
+
+			public UploadJsonRequest(Class<APIResponseUpload> clazz) {
+				super(clazz);
+				// TODO Auto-generated constructor stub
+			}
+
+			private LinkedMultiValueMap<String, Object> formData;
+
+			@Override
+			public APIResponseUpload loadDataFromNetwork() throws Exception {
+
+				HttpHeaders requestHeaders = new HttpHeaders();
+
+				// Sending multipart/form-data
+				requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+				/*
+				MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+				for(org.calflora.observer.model.Attachment a : o.attachments){
+
+					parts.add(a.name, new FileSystemResource(a.localPath));
+
+				}
+				parts.add("record", "Something");
+				*/
+/*
+				Resource resource = new ClassPathResource("res/drawable/logo.png");
+
+				// populate the data to post
+				formData = new LinkedMultiValueMap<String, Object>();
+				formData.add("description", "Spring logo");
+				formData.add("file", resource);
+
+				// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
+				HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(
+						formData, requestHeaders);
+*/
+				//ResponseEntity<APIResponseUpload> response = getRestTemplate().exchange(URI, HttpMethod.POST, requestEntity, APIResponseUpload.class);
+				//return response.getBody();
+
+				
+				MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
+				parts.add("name 1", "value 1");
+				parts.add("name 2", "value 2+1");
+				parts.add("name 2", "value 2+2");
+				for(org.calflora.observer.model.Attachment a : o.attachments){
+
+					parts.add(a.name, new FileSystemResource(a.localPath));
+
+				}
+				//Source xml = new StreamSource(new StringReader("<root><child/></root>"));
+				//parts.add("xml", xml);
+				
+				//FormHttpMessageConverter
+
+				RestTemplate restTemplate = getRestTemplate();
+				restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
+				
+				return restTemplate.postForObject("http://example.com/multipart", parts, APIResponseUpload.class);
+				
+				// This gives the same error actually, so using .exchange() doesn't seem to be the issue
+				//return getRestTemplate().postForObject(URI, requestEntity, APIResponseUpload.class);
+			} 
+		}
+		return new UploadJsonRequest(null);
 
 
 	}
-     /*
+	/*
 	public class UploadFileRequest extends SpringAndroidSpiceRequest<String>{
 		private static final String TAG = "UploadFileRequest";
 		private UploadRequestModel requestModel;
@@ -193,6 +248,6 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 		}
 
 		}
-*/
+	 */
 
 }
