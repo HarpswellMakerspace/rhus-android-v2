@@ -24,4 +24,54 @@
 	    android:layout_toRightOf="@+id/plant_photo_image_button" >
 	</LinearLayout>
 
+	<TextView
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/plant_photo_image_button"
+	    android:layout_below="@+id/plant_photo_image_button"
+	    android:layout_marginTop="10dp"
+	    android:text="Location Description"
+	    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+	<EditText
+	    android:id="@+id/editText1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/textView1"
+	    android:layout_below="@+id/textView1"
+	    android:ems="10" >
+
+	    <requestFocus />
+	</EditText>
+
+	<EditText
+	    android:id="@+id/editText3"
+	    android:layout_width="wrap_content"
+	    android:layout_height="100dp"
+	    android:layout_alignLeft="@+id/editText2"
+	    android:layout_below="@+id/editText2"
+	    android:layout_marginTop="10dp"
+	    android:ems="10"
+	    android:hint="Notes"
+	    android:inputType="textMultiLine" />
+
+	<EditText
+	    android:id="@+id/editText2"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/textView2"
+	    android:layout_below="@+id/textView2"
+	    android:ems="10" />
+
+	<TextView
+	    android:id="@+id/textView2"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/editText1"
+	    android:layout_below="@+id/editText1"
+	    android:layout_marginTop="10dp"
+	    android:text="Habitat"
+	    android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>

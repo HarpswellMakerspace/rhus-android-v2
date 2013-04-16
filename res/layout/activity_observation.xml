@@ -2,13 +2,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
+<Button
+    android:id="@+id/plant_change_button"
+    android:layout_width="fill_parent"
+    android:layout_height="100dp" >
+
+</Button>
+    
        <ImageView
            android:id="@+id/plant_thumbnail"
            android:layout_width="80dp"
            android:layout_height="80dp"
            android:layout_alignParentTop="true"
            android:layout_marginLeft="15dp"
-           android:layout_marginTop="30dp"
+           android:layout_marginTop="10dp"
            android:background="@color/main_theme_color"
            android:minHeight="100dp"
            android:minWidth="100dp"
@@ -21,7 +28,7 @@
         android:layout_alignLeft="@+id/plant_thumbnail"
         android:layout_alignTop="@+id/plant_thumbnail"
         android:layout_marginLeft="100dp"
-        android:text="Plant Name"
+        android:text="Click to Select Plant"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -30,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/common_name"
         android:layout_below="@+id/common_name"
-        android:text="Scientific Name"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <LinearLayout

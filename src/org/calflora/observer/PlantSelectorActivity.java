@@ -1,6 +1,8 @@
 package org.calflora.observer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Bundle;
 
@@ -27,6 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class PlantSelectorActivity extends BaseActivity {
 
 	Cursor c;
+	List<Drawable> plantImages = new ArrayList<Drawable>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,52 +43,95 @@ public class PlantSelectorActivity extends BaseActivity {
 				  new String[] { "rowid _id", "taxon", "common", "photoid" }, 
 				  null, null, null, null, null); 
 		
+		c.moveToFirst();
+	    AssetManager assets = getBaseContext().getResources().getAssets();
+
+		while(c.moveToNext()){
+			 AssetFileDescriptor asset = null;
+			 String imagePath = "plant_images/" + c.getString(3).replace("'","")+".jpeg";
+			 try {
+				 asset = assets.openFd(imagePath);
+				 Drawable plantThumbnail = Drawable.createFromStream(asset.createInputStream(), "");
+				 plantImages.add(plantThumbnail);
+			 } catch (IOException e) {
+				 plantImages.add(null);
+			}
+			 
+		}
+		
+		
 		class MyCustomAdapter extends CursorAdapter {
 
 			Context context;
 		    Cursor c;
 		    private final LayoutInflater mInflater;
-		    AssetManager assets;
 			
 			public MyCustomAdapter(Context context, Cursor c) {
 				super(context, c);
 				
-				assets = getBaseContext().getResources().getAssets();
 
 				this.context = context;
 				this.c = c;
 				mInflater=LayoutInflater.from(context);
 			}
 
+			
+			
 			@Override
-			public void bindView(View view, Context context, Cursor cursor) {
-				
-				if(cursor.getPosition()==0){
+			public View getView(int position, View convertView, ViewGroup parent) {
+				View view;
+				if(position==0){
+					view =mInflater.inflate(R.layout.list_item_search,parent,false); 
+				} else {
+					view=mInflater.inflate(R.layout.list_item_single_image,parent,false); 
+				}	
+		
+				if(position == 0){
 					//This is the search cell
-					return;
+					return view;
 				}
+				
+				c.moveToPosition(position);
+				
 				
 				// TODO Auto-generated method stub
 				 TextView plantName =(TextView)view.findViewById(R.id.col1);
-				 plantName.setText(cursor.getString(1));
+				 String nameValue = c.getString(1);
+				 plantName.setText(nameValue);
 				 // mobileNo.setText(cursor.getString(cursor.getColumnIndex(TextMeDBAdapter.KEY_MOBILENO)));
 
 				 ImageView thumbnail = (ImageView)view.findViewById(R.id.list_item_image_view);
 				 AssetFileDescriptor asset = null;
-				 String imagePath = "plant_images/" + cursor.getString(3).replace("'","")+".jpeg";
-				 try {
-					 asset = assets.openFd(imagePath);
-					 Drawable plantThumbnail = Drawable.createFromStream(asset.createInputStream(), "");
-					 thumbnail.setImageDrawable(plantThumbnail);
-				 } catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	
+				 String imagePath = "plant_images/" + c.getString(3).replace("'","")+".jpeg";
+				 if(plantImages.get(position-1) != null){
+					 thumbnail.setImageDrawable(plantImages.get(position-1) );
+				 }
+				
+				 
+				 return view;
 
 			}
 
+
+
 			@Override
+			public void bindView(View view, Context context, Cursor cursor) {
+				// TODO Auto-generated method stub
+				// getView is overriding this..
+				
+			}
+
+
+
+			@Override
+			public View newView(Context context, Cursor cursor, ViewGroup parent) {
+				// TODO Auto-generated method stub
+				// getView is overriding this.
+				return null;
+			}
+
+			//@Override
+			/*
 			public View newView(Context context, Cursor cursor, ViewGroup parent) {
 				if(cursor.getPosition()==0){
 					 final View view=mInflater.inflate(R.layout.list_item_search,parent,false); 
@@ -95,6 +141,7 @@ public class PlantSelectorActivity extends BaseActivity {
 				 final View view=mInflater.inflate(R.layout.list_item_single_image,parent,false); 
 			     return view;				
 			}
+			*/
 			
 		}
 		String[] columnNames = {"id"};
@@ -121,7 +168,8 @@ public class PlantSelectorActivity extends BaseActivity {
 				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
 				c.moveToPosition(arg2);
 				intent.putExtra(Observer.NEW_PLANT_TAXON, c.getString(1) );
-				startActivity(intent);
+				setResult(RESULT_OK, intent);
+				finish();
 
 			}
 		});

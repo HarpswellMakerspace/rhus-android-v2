@@ -1,6 +1,9 @@
 package org.calflora.observer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import net.winterroot.rhus.util.RHImage;
 
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Plant;
@@ -16,12 +19,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +35,7 @@ import android.widget.TextView;
 public class ObservationActivity extends Activity implements
 		ActionBar.TabListener {
 	
+	private static final int SELECT_PLANT = 1001;
 	private ObservationSummaryFragment observationSummaryFragment;
 	private ObservationAssessmentFragment observationAssessmentFragment;
 	private ObservationTreatmentFragment observationTreatmentFragment;
@@ -109,18 +116,39 @@ public class ObservationActivity extends Activity implements
         		);
 		
 		
-		// TODO: respond to edit intent
-		Intent intent = getIntent();
-		String taxon = intent.getStringExtra(Observer.NEW_PLANT_TAXON);
-		Plant plant = Project.getPlant(taxon);
+
 		
 		// TODO: combine into constructor..
 		Observer.currentObservation = new Observation();
-		Observer.currentObservation.plant = plant;
 		Location lastLocation = Observer.getInstance().getLastLocation();
 		Observer.currentObservation.latitude = lastLocation.getLatitude();
 		Observer.currentObservation.longitude = lastLocation.getLongitude();
 		
+		// TODO: respond intent
+	
+
+		//loadPlant();
+		
+		
+		Button changePlantButton = (Button) findViewById(R.id.plant_change_button);
+		changePlantButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
+				startActivityForResult(intent, SELECT_PLANT);				
+			}
+			
+		
+		});
+	}
+
+
+
+	private void loadPlant(String taxon) {
+		Plant plant = Project.getPlant(taxon);
+		Observer.currentObservation.plant = plant;
+
 		TextView commonName = (TextView)findViewById(R.id.common_name);
 		commonName.setText(plant.getCommon() );
 		TextView taxonName = (TextView)findViewById(R.id.taxon);
@@ -137,7 +165,6 @@ public class ObservationActivity extends Activity implements
 		} catch (IOException e) {
 			// TODO Show default image for plant
 		}
-		
 	}
 
 
@@ -197,6 +224,40 @@ public class ObservationActivity extends Activity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
+	public void onActivityResult(int requestCode, int resultCode, Intent intent)
+	{
+		if(!(resultCode == Activity.RESULT_OK)){
+			Observer.toast("Error getting plant: result code is not OK", this);
+			return;
+		}
+		
+		
+		try
+		{
+			switch (requestCode) {
+			case SELECT_PLANT: //SELECT_PLANT
+				if (resultCode == Activity.RESULT_OK)
+				{
+					Bundle data =  intent.getExtras();
+					if(data == null){
+						Observer.toast("Error getting plant:", this);
+						return;
+					}
+					
+					String taxon = data.getString(Observer.NEW_PLANT_TAXON);		
+					loadPlant(taxon);
+					
+				}
+				break;
+			}
+		}
+		catch (Throwable ex)
+		{
+			ex.printStackTrace();
+			Observer.toast("trouble saving file" + ex, this);
+		}
+	}
+	
 	@Override
 	public void onBackPressed() {
 		onCancel();

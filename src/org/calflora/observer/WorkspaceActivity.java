@@ -191,13 +191,13 @@ public class WorkspaceActivity extends BaseActivity implements
 			break;
 			
 		case 3:
-			if(Observer.getInstance().getLastLocation() != null){
+			//if(Observer.getInstance().getLastLocation() != null){
 				selectedTab = Tabs.ADD;
-				Intent intent = new Intent("org.calflora.observer.action.PLANTSELECTOR");
+				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
 				startActivity(intent);	
-			} else {
+			//} else {
 				Observer.toast("Please wait for a geofix", getApplicationContext());
-			}
+			//}
 			break;
 			
 		}
