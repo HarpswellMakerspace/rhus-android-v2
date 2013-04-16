@@ -112,7 +112,7 @@ public class Observation {
 		dataPoint.put("latitude", latitude);
 		dataPoint.put("longitude", longitude);
 		dataPoint.put("taxon", plant.getTaxon());
-		SimpleDateFormat s = new SimpleDateFormat("dd MM yyyy hh:mm:ss");
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
 		String format = s.format(new Date());
 		Long tsLong = System.currentTimeMillis()/1000;
 		String ts = tsLong.toString();

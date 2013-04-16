@@ -35,6 +35,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
+import com.octo.android.robospice.SpiceManager;
 
 public class Observer extends Application implements LocationListener {
 	
@@ -69,7 +71,6 @@ public class Observer extends Application implements LocationListener {
 
 	
 	public static final String NEW_PLANT_TAXON = "org.calflora.observer.new_plant_taxon";
-	
 	
 	public static Observer getInstance() {
 		return instance;

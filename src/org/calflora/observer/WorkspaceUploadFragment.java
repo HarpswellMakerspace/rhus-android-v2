@@ -1,5 +1,6 @@
 package org.calflora.observer;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -7,6 +8,8 @@ import org.calflora.observer.api.APIResponseUpload;
 import org.calflora.observer.model.Observation;
 import org.json.JSONException;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.DurationInMillis;
@@ -28,8 +31,7 @@ import android.widget.Toast;
 public class WorkspaceUploadFragment extends WorkspaceListFragment {
 
 	ProgressBar progressBar;
-	protected static final String JSON_CACHE_KEY = "CACHE_KEY";
-	protected SpiceManager spiceManager = new SpiceManager( JacksonSpringAndroidSpiceService.class );
+
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +51,6 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	
 	public void onStart() {
 		super.onStart();
-		spiceManager.start( getActivity() );
 
 		progressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
 		Button uploadButton = (Button) getView().findViewById(R.id.upload_button);
@@ -70,7 +71,6 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	
 	@Override
 	public void onStop() {
-	      spiceManager.shouldStop();
 	      super.onStop();
 	}
 
@@ -90,89 +90,75 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
         uploadButton.setText("Uploading " + String.valueOf(totalObservations) + " Observations" );
         uploadButton.setEnabled(false);
         
-        postEntityToServer();
+        postEntitiesToServer();
 	}
 	
-	private void updatePendingTotal(){
-		 WorkspaceActivity activity = (WorkspaceActivity) getActivity();
-	     activity.updatePendingTotal();
-	}
-	
-	private void postEntityToServer(){
-		
-		if(!iterator.hasNext()){
-			
-			return;
-		}
-		
-		JSONEntity entity = iterator.next();
 
+	private void postEntitiesToServer(){
 		
-		Observation o = null;
+		JSONEntity entity = null;
 		
-		while (o == null ) {
+		// TODO late on we may want to do this in batches
+		while( iterator.hasNext() ){
+			entity = iterator.next();
+
+			Observation o = null;
 			try {
 				o = Observation.loadObservationFromEntity(entity);
-				
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-				currentPosition++;
-				entity = null;
-				if(iterator.hasNext()){
-					entity = iterator.next();
-				} else {
-					updatePendingTotal();
-					return;
+				continue;
+			} 
+
+			SpringAndroidSpiceRequest<APIResponseUpload> request = Observer.observerAPI.getUploadRequest(o);
+			
+			final WorkspaceActivity activity = (WorkspaceActivity) getActivity();	
+			
+			final Toast toast = Toast.makeText( activity, "Uploaded record" , Toast.LENGTH_LONG );
+
+			class UploadRequestListener implements RequestListener< APIResponseUpload > {
+
+				private JSONEntity observationEntity; // TODO Ultimately this should be class Observation,
+				// but to make this convienient, we need to integrate Jackson into
+				// smart json.
+
+				public UploadRequestListener(JSONEntity observationEntity){
+					this.observationEntity = observationEntity;
 				}
-			}
-		}
-			
-		SpringAndroidSpiceRequest<APIResponseUpload> request = Observer.observerAPI.getUploadRequest(o);
-		
-		class UploadRequestListener implements RequestListener< APIResponseUpload > {
-			
-			private JSONEntity observationEntity; // TODO Ultimately this should be class Observation,
-										  // but to make this convienient, we need to integrate Jackson into
-										  // smart json.
-			
-			public UploadRequestListener(JSONEntity observationEntity){
-				this.observationEntity = observationEntity;
-			}
-			
-	        @Override
-	        public void onRequestFailure( SpiceException e ) {
-	        	
-				//showProgress(false);
-	            Toast.makeText( getActivity(), "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
-				e.printStackTrace();
-	        }
 
-	        @Override
-	        public void onRequestSuccess( APIResponseUpload response ) {
+				@Override
+				public void onRequestFailure( SpiceException e ) {
 
-	            Toast.makeText( getActivity(), "Uploaded record", Toast.LENGTH_LONG ).show();
-
-	            try {
-					observationEntity.put("uploaded", 1);
-					Observer.database.store(observationEntity);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					//showProgress(false);
+					Toast.makeText( activity, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
 					e.printStackTrace();
 				}
-	            
-	        	currentPosition++;
-	            int progress = (currentPosition * 100 / totalObservations );
-	            progressBar.setProgress( progress );
-	            updatePendingTotal();
-				//Do it again!
-	        	//postEntityToServer();
-						      
-	        }
-	    }
-		
-		spiceManager.execute( request, JSON_CACHE_KEY, DurationInMillis.NEVER, new UploadRequestListener(entity) );
 
-				
+				@Override
+				public void onRequestSuccess( APIResponseUpload response ) {
+
+					try {
+						observationEntity.put("uploaded", 1);
+						Observer.database.store(observationEntity);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					toast.show();
+				    activity.updatePendingTotal();
+
+					currentPosition++;
+					int progress = (currentPosition * 100 / totalObservations );
+					progressBar.setProgress( progress );
+					
+
+				}
+			}
+			 
+			 activity.getSpiceManager().execute( request, null, DurationInMillis.NEVER, new UploadRequestListener(entity) );
+
+		}
 	}
 
 }

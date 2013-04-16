@@ -11,7 +11,8 @@
            android:layout_marginTop="30dp"
            android:background="@color/main_theme_color"
            android:minHeight="100dp"
-           android:minWidth="100dp" />
+           android:minWidth="100dp"
+           android:scaleType="center" />
 
     <TextView
         android:id="@+id/common_name"

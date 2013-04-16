@@ -2,6 +2,9 @@ package org.calflora.observer;
 
 import java.util.Collection;
 
+import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
+import com.octo.android.robospice.SpiceManager;
+
 import net.smart_json_databsase.JSONEntity;
 import net.smart_json_databsase.SearchFields;
 import android.app.ActionBar;
@@ -28,6 +31,8 @@ public class WorkspaceActivity extends BaseActivity implements
 	private WorkspaceListFragment workspaceListFragment;
 	private WorkspaceUploadFragment workspaceUploadFragment;
 	
+	protected static final String JSON_CACHE_KEY = "CACHE_KEY";
+	protected SpiceManager spiceManager = new SpiceManager( JacksonSpringAndroidSpiceService.class );
 	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -80,6 +85,20 @@ public class WorkspaceActivity extends BaseActivity implements
 
 	}
 
+
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		spiceManager.start( this );
+	}
+
+
+	@Override
+	protected void onStop() {
+		spiceManager.shouldStop();
+		super.onStop();
+	}
 
 
 	@Override
@@ -210,4 +229,7 @@ public class WorkspaceActivity extends BaseActivity implements
 		
 	}
 	
+	public SpiceManager getSpiceManager(){
+		return this.spiceManager;
+	}
 }

@@ -47,6 +47,9 @@
         <service
             android:name="com.octo.android.robospice.JacksonSpringAndroidSpiceService"
             android:exported="false" />
+        <service
+            android:name="org.calflora.observer.service.UploaderService"
+            android:exported="false" />
 
         <activity
             android:name="org.calflora.observer.MainActivity"
