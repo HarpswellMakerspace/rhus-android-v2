@@ -19,7 +19,7 @@
     <RadioGroup
         android:id="@+id/RadioGroup01"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_weight="0.10"
         android:orientation="horizontal"
         android:paddingTop="@dimen/plant_selector_radio_button_top_padding" >
@@ -41,7 +41,7 @@
     <RadioGroup
         android:id="@+id/radioGroup3"
         android:layout_width="286dp"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_weight="0.08"
         android:orientation="horizontal"
         android:paddingTop="@dimen/plant_selector_radio_button_top_padding" >

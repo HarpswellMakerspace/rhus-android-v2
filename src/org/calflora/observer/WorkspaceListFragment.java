@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -80,6 +81,7 @@ public class WorkspaceListFragment extends Fragment {
 		            holder.plantNameView =(TextView)row.findViewById(R.id.plant_name);
 		            holder.plantImageView=(ImageView)row.findViewById(R.id.thumb_image_view);
 		            holder.dateAddedView = (TextView)row.findViewById(R.id.date_added);
+		            holder.backgroundView = (LinearLayout)row.findViewById(R.id.item_background);
 		            
 		            row.setTag(holder);
 		        }
@@ -108,6 +110,18 @@ public class WorkspaceListFragment extends Fragment {
 					holder.dateAddedView.setText("Date not recorded");
 				}
 		        
+		        try {
+					if(currentItem.getInt("uploaded") != 1){
+						holder.backgroundView.setBackgroundColor( getResources().getColor(R.color.pending_observation_color));
+					} else {
+						holder.backgroundView.setBackgroundColor( getResources().getColor(R.color.white));
+
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
 		        Plant plant = Project.getPlant(taxon);
 		        if(plant != null){
 		        	Drawable thumbnail = plant.getThumbnail(getActivity());
@@ -121,6 +135,7 @@ public class WorkspaceListFragment extends Fragment {
 		        TextView plantNameView;
 		        ImageView plantImageView;
 		        TextView dateAddedView;
+		        LinearLayout backgroundView;
 		    }
 		}
 		

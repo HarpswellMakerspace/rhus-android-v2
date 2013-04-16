@@ -31,6 +31,8 @@ public class ObservationActivity extends Activity implements
 	
 	private ObservationSummaryFragment observationSummaryFragment;
 	private ObservationAssessmentFragment observationAssessmentFragment;
+	private ObservationTreatmentFragment observationTreatmentFragment;
+
 
 
 	protected void done(){
@@ -49,6 +51,7 @@ public class ObservationActivity extends Activity implements
 		
 		observationSummaryFragment = new ObservationSummaryFragment();
 		observationAssessmentFragment = new ObservationAssessmentFragment();
+		observationTreatmentFragment = new ObservationTreatmentFragment();
 	
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -63,6 +66,10 @@ public class ObservationActivity extends Activity implements
 				);
 		actionBar.addTab(actionBar.newTab()
 				.setText("Assessment")
+				.setTabListener(this)
+				);
+		actionBar.addTab(actionBar.newTab()
+				.setText("Treatment")
 				.setTabListener(this)
 				);
 		
@@ -169,8 +176,13 @@ public class ObservationActivity extends Activity implements
 			break;
 			
 		case 2:
-			// Treatment
+			// Treatment, or ODK configured 3rd tab
+		    transaction = fragmentManager.beginTransaction();
+				//selectedTab = Tabs.SUMMARY;
+				transaction.replace(R.id.observation_fragment_container,observationTreatmentFragment );
+				transaction.commit();
 			break;
+			
 	
 		}
 	}

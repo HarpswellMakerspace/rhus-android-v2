@@ -70,6 +70,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	}
 	
 	public void onResume(){
+		super.onResume();
 		progressBar.setProgress( 0 );
 	}
 	
@@ -111,6 +112,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				o = Observation.loadObservationFromEntity(entity);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 				continue;
 			} 

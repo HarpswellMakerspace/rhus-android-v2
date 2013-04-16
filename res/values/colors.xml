@@ -4,4 +4,5 @@
    <color name="white">#FFF</color>
    <color name="main_theme_color">#79be80</color>
    <color name="black">#000</color>
+   <color name="pending_observation_color">#FBEC5D</color>
 </resources>
