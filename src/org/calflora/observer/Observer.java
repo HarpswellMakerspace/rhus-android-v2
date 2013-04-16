@@ -83,6 +83,10 @@ public class Observer extends Application implements LocationListener {
 		
 	}
 	
+	public String getAPIKey(){
+		return APIKey;
+	}
+	
 
 	// Application overrides
 	@Override

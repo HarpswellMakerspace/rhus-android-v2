@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -145,6 +146,32 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 			public double lat;
 			public double lng;
 			public String date;
+			public String getTaxon() {
+				return taxon;
+			}
+			public void setTaxon(String taxon) {
+				this.taxon = taxon;
+			}
+			public double getLat() {
+				return lat;
+			}
+			public void setLat(double lat) {
+				this.lat = lat;
+			}
+			public double getLng() {
+				return lng;
+			}
+			public void setLng(double lng) {
+				this.lng = lng;
+			}
+			public String getDate() {
+				return date;
+			}
+			public void setDate(String date) {
+				this.date = date;
+			}
+			
+			
 		}
 		final BaseFields base = new BaseFields();
 		base.taxon = o.plant.getTaxon();
@@ -159,7 +186,7 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				// TODO Auto-generated constructor stub
 			}
 
-			private LinkedMultiValueMap<String, Object> formData;
+			//private LinkedMultiValueMap<String, Object> formData;
 
 			@Override
 			public APIResponseUpload loadDataFromNetwork() throws Exception {
@@ -186,18 +213,19 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				formData.add("description", "Spring logo");
 				formData.add("file", resource);
 
-				// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
-				HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(
-						formData, requestHeaders);
+		
 */
 				//ResponseEntity<APIResponseUpload> response = getRestTemplate().exchange(URI, HttpMethod.POST, requestEntity, APIResponseUpload.class);
 				//return response.getBody();
 
 				
 				MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-				parts.add("name 1", "value 1");
-				parts.add("name 2", "value 2+1");
-				parts.add("name 2", "value 2+2");
+				parts.add("token", Observer.instance.getAPIKey());
+				parts.add("record", Observer.instance.mapper.writeValueAsString(base));
+				/*
+				parts.add("taxon", base.taxon);
+				parts.add("lat", base.lat);
+				parts.add("name 2", base.lng);*/
 				for(org.calflora.observer.model.Attachment a : o.attachments){
 
 					parts.add(a.name, new FileSystemResource(a.localPath));
@@ -208,10 +236,17 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				
 				//FormHttpMessageConverter
 
+				
+
+				// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
+				HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(
+						parts, requestHeaders);
+				
 				RestTemplate restTemplate = getRestTemplate();
 				restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
-				
-				return restTemplate.postForObject("http://example.com/multipart", parts, APIResponseUpload.class);
+				restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+				return restTemplate.postForObject(URI, requestEntity, APIResponseUpload.class);
 				
 				// This gives the same error actually, so using .exchange() doesn't seem to be the issue
 				//return getRestTemplate().postForObject(URI, requestEntity, APIResponseUpload.class);
