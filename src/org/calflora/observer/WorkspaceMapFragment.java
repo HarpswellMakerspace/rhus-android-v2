@@ -3,6 +3,7 @@ package org.calflora.observer;
 import java.util.Collection;
 
 import net.smart_json_databsase.JSONEntity;
+import net.smart_json_databsase.SearchFields;
 
 import org.calflora.map.OfflineMapTileProvider;
 import org.json.JSONException;
@@ -37,8 +38,6 @@ public class WorkspaceMapFragment extends MapFragment {
 		super.onCreate(savedInstanceState);
 	}
 
-	
-	
 	/*
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +69,9 @@ public class WorkspaceMapFragment extends MapFragment {
 	}
 
 	public void addMarkersFromDatabase(){
-		Collection<JSONEntity> points = Observer.database.fetchAllEntities();
+		
+		SearchFields search = SearchFields.Where("type", "observation");
+		Collection<JSONEntity> points = Observer.database.fetchByFields(search);
 		for( JSONEntity p: points){
 			addMarker(p);
 		}

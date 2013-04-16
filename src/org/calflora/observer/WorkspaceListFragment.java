@@ -13,6 +13,7 @@ import org.calflora.observer.model.ProjectStub;
 import org.json.JSONException;
 
 import net.smart_json_databsase.JSONEntity;
+import net.smart_json_databsase.SearchFields;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,6 +141,8 @@ public class WorkspaceListFragment extends Fragment {
 	}
 	
 	public Collection<JSONEntity> getEntities(){
-		return Observer.database.fetchAllEntities();
+		SearchFields search = SearchFields.Where("type", "observation");
+		Collection<JSONEntity> entities = Observer.database.fetchByFields(search);
+		return entities;
 	}
 }

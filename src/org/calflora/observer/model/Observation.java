@@ -121,7 +121,7 @@ public class Observation {
 
 		//Store the attachments
 		for(Attachment a : attachments){
-			// TODO thie process could be automated within smart json database
+			// TODO this process could be automated within smart json database
 			JSONEntity attachmentEntity = a.getJSONEntity();
 			int attachmentId = Observer.database.store(attachmentEntity);
 			dataPoint.addIdToHasMany("attachments", attachmentId);
