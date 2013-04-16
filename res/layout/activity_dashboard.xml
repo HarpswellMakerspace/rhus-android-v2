@@ -43,8 +43,8 @@
         android:layout_alignLeft="@+id/imageButton1"
         android:layout_below="@+id/imageButton1"
         android:layout_marginTop="70dp"
-        android:background="@drawable/treatment"
-        android:src="@drawable/treatment" />
+        android:background="@drawable/treatment_button"
+        android:src="@drawable/treatment_button" />
 
     <ImageButton
         android:id="@+id/imageButton5"

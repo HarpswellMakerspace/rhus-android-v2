@@ -121,7 +121,9 @@ public class Observation {
 		dataPoint.put("type", "observation");
 		dataPoint.put("latitude", latitude);
 		dataPoint.put("longitude", longitude);
-		dataPoint.put("taxon", plant.getTaxon());
+		if(plant != null && plant.getTaxon() != null){
+			dataPoint.put("taxon", plant.getTaxon());
+		}
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		String format = s.format(new Date());
 		Long tsLong = System.currentTimeMillis()/1000;
