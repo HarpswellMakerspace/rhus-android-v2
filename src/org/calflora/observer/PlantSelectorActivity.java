@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,6 +59,12 @@ public class PlantSelectorActivity extends BaseActivity {
 
 			@Override
 			public void bindView(View view, Context context, Cursor cursor) {
+				
+				if(cursor.getPosition()==0){
+					//This is the search cell
+					return;
+				}
+				
 				// TODO Auto-generated method stub
 				 TextView plantName =(TextView)view.findViewById(R.id.col1);
 				 plantName.setText(cursor.getString(1));
@@ -79,11 +87,25 @@ public class PlantSelectorActivity extends BaseActivity {
 
 			@Override
 			public View newView(Context context, Cursor cursor, ViewGroup parent) {
+				if(cursor.getPosition()==0){
+					 final View view=mInflater.inflate(R.layout.list_item_search,parent,false); 
+				     return view;	
+				}
+				
 				 final View view=mInflater.inflate(R.layout.list_item_single_image,parent,false); 
-			        return view;				
+			     return view;				
 			}
 			
 		}
+		String[] columnNames = {"id"};
+		MatrixCursor matrix = new MatrixCursor(columnNames);
+		String[] value = {"search"};
+		matrix.addRow(value);
+		
+		
+		Cursor [] cursors = {c, matrix};
+		MergeCursor mergedCursor = new MergeCursor( cursors );
+		
 		
 		MyCustomAdapter adapter = new MyCustomAdapter(this, c);
         lv.setAdapter(adapter);

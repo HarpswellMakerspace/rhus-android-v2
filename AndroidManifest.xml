@@ -70,7 +70,7 @@
         <activity
             android:name="org.calflora.observer.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.LOGIN" />
 
@@ -132,7 +132,9 @@
         <activity
             android:name="org.calflora.observer.PlantSelectorActivity"
             android:label="@string/title_activity_plant_selector"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:windowSoftInputMode="stateHidden"
+             >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.PLANTSELECTOR" />
 
