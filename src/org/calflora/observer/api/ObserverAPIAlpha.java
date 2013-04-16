@@ -191,52 +191,21 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 			@Override
 			public APIResponseUpload loadDataFromNetwork() throws Exception {
 
-				HttpHeaders requestHeaders = new HttpHeaders();
-
-				// Sending multipart/form-data
-				requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-				/*
-				MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-				for(org.calflora.observer.model.Attachment a : o.attachments){
-
-					parts.add(a.name, new FileSystemResource(a.localPath));
-
-				}
-				parts.add("record", "Something");
-				*/
-/*
-				Resource resource = new ClassPathResource("res/drawable/logo.png");
-
-				// populate the data to post
-				formData = new LinkedMultiValueMap<String, Object>();
-				formData.add("description", "Spring logo");
-				formData.add("file", resource);
-
-		
-*/
-				//ResponseEntity<APIResponseUpload> response = getRestTemplate().exchange(URI, HttpMethod.POST, requestEntity, APIResponseUpload.class);
-				//return response.getBody();
-
+	
 				
 				MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
 				parts.add("token", Observer.instance.getAPIKey());
-				parts.add("record", Observer.instance.mapper.writeValueAsString(base));
-				/*
-				parts.add("taxon", base.taxon);
-				parts.add("lat", base.lat);
-				parts.add("name 2", base.lng);*/
+				parts.add("record", Observer.mapper.writeValueAsString(base));
+
 				for(org.calflora.observer.model.Attachment a : o.attachments){
 
 					parts.add(a.name, new FileSystemResource(a.localPath));
 
 				}
-				//Source xml = new StreamSource(new StringReader("<root><child/></root>"));
-				//parts.add("xml", xml);
-				
-				//FormHttpMessageConverter
 
-				
+				HttpHeaders requestHeaders = new HttpHeaders();
+				// Sending multipart/form-data
+				requestHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 
 				// Populate the MultiValueMap being serialized and headers in an HttpEntity object to use for the request
 				HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<MultiValueMap<String, Object>>(

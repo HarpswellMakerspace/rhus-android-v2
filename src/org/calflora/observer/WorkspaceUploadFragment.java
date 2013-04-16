@@ -154,6 +154,8 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	        @Override
 	        public void onRequestSuccess( APIResponseUpload response ) {
 
+	            Toast.makeText( getActivity(), "Uploaded record", Toast.LENGTH_LONG ).show();
+
 	        	currentPosition++;
 	            int progress = (currentPosition * 100 / totalObservations );
 	            progressBar.setProgress( progress );

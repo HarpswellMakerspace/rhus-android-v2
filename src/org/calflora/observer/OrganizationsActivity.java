@@ -226,7 +226,7 @@ public class OrganizationsActivity extends ApiActivity {
         });
 	}
 
-	public void requestOrganizationDetail(String id){
+	public void requestOrganizationDetail(final String id){
 	
 		class OrganizationRequestListener implements RequestListener< APIResponseOrganization > {
 	        @Override
@@ -234,9 +234,17 @@ public class OrganizationsActivity extends ApiActivity {
 	        	
 	        	// TODO remove bypass
 				showProgress(false);
+				
+				Organization cachedOrganization = Observer.instance.getCachedOrganizationData(id);
+				if(cachedOrganization != null){
+					Toast.makeText( OrganizationsActivity.this, "Error during request: using cached organization data", Toast.LENGTH_LONG ).show();
+					Observer.instance.setOrganization(cachedOrganization);	
+					downloadLogo();
+					
+				} else {
+					Toast.makeText( OrganizationsActivity.this, "Error during request and no cache available.  Please find an internet connection to select an organization", Toast.LENGTH_LONG ).show();
+				}
 	        	
-	            Toast.makeText( OrganizationsActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
-				e.printStackTrace();
 	        }
 
 	        @Override

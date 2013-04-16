@@ -18,6 +18,9 @@ public class Project {
 	private String projectId;
 	
 	public String name;
+	@Deprecated
+	public String projectName;
+	
 	
 	public double center_lat;
 	public double center_lng;
@@ -60,4 +63,14 @@ public class Project {
 		this.projectId = projectId;
 	}
 	
+	@Deprecated
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String name) {
+		this.name = name;
+		this.projectName = name;
+	}
+
 }

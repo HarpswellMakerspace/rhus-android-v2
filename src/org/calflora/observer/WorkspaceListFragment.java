@@ -93,14 +93,15 @@ public class WorkspaceListFragment extends Fragment {
 		        String taxon = "";
 				try {
 					taxon = currentItem.getString("taxon");
+			        holder.plantNameView.setText(taxon);
+
 				} catch (JSONException e) {
 					holder.plantNameView.setText("Taxon not recorded");
 
 				}
 		       
-		        holder.plantNameView.setText(taxon);
 		        try {
-					holder.plantNameView.setText(currentItem.getString("date_added"));
+					holder.dateAddedView.setText(currentItem.getString("date_added"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					holder.dateAddedView.setText("Date not recorded");

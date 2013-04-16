@@ -5,10 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import net.smart_json_databsase.InitJSONDatabaseExcepiton;
 import net.smart_json_databsase.JSONDatabase;
 
+import org.calflora.observer.api.IdNameItem;
 import org.calflora.observer.api.ObserverAPI;
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Organization;
@@ -249,6 +251,17 @@ public class Observer extends Application implements LocationListener {
 		if (!bCommitted) 
 	        throw new RuntimeException("(AndroidApplication) Unable to save new string.");
 
+	}
+	 
+	public Organization getCachedOrganizationData(String id){
+		String orgJSON = "{\"status\":\"OK\", \"data\":{ \"orgId\":42, \"splashGraphic\":\"http://www.nps.gov/yose/naturescience/images/torch-web_1.jpg\", \"logoGraphic\":\"http://www.yosemiteconservancy.org/sites/all/themes/yosemite/images/logo.gif\", \"orgUrl\":\"http://www.yosemiteconservancy.org/\", \"projects\": [ {\"id\":\"pr1\", \"name\":\"Weed Inventory 2012\"}, {\"id\":\"pr2\", \"name\":\"Weed Inventory 2013\"} ]}}";
+		
+		try {
+			return Observer.mapper.readValue(orgJSON, Organization.class);
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public Organization getOrganization(){

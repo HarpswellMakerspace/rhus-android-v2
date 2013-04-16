@@ -13,6 +13,9 @@ public class Organization {
 	private String orgId; // TODO workaround until API change
 	
 	public String name;
+	@Deprecated	
+	public String orgName; // TODO workaround until API change
+
 	public String splashGraphic;
 	public String logoGraphic;
 	public String orgUrl;
@@ -40,6 +43,16 @@ public class Organization {
 	public String getSplashGraphicPath(){
 		return "organization_splash_" + id;
 	}
+
+	public String getName() {
+		return orgName;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+		this.orgName = name;
+	}
+
 
 	
 }
