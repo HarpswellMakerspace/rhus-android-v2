@@ -70,7 +70,7 @@ public class WorkspaceMapFragment extends MapFragment {
 		
 		// TODO change to adding this map programatically, so we get the zoom level setting
 		map = this.getMap();
-		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 		//map.setMapType(GoogleMap.MAP_TYPE_NONE);
 
 		map.setMyLocationEnabled(true);
