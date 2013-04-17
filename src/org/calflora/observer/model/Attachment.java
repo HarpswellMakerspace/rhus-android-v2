@@ -6,6 +6,7 @@ import org.json.JSONException;
 
 public class Attachment extends java.lang.Object {
 
+	public String type;
 	public String name;
 	public String localPath;
 	public String MIMEType;

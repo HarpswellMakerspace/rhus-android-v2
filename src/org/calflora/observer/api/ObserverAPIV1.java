@@ -2,6 +2,8 @@ package org.calflora.observer.api;
 
 import org.calflora.observer.model.Observation;
 
+import android.content.Context;
+
 import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
 
 public class ObserverAPIV1 implements ObserverAPICore {
@@ -33,9 +35,11 @@ public class ObserverAPIV1 implements ObserverAPICore {
 		return null;
 	}
 
+	
+
 	@Override
 	public SpringAndroidSpiceRequest<APIResponseUpload> getUploadRequest(
-			Observation o) {
+			Observation o, Context context) {
 		// TODO Auto-generated method stub
 		return null;
 	}

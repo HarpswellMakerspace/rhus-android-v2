@@ -117,7 +117,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				continue;
 			} 
 
-			SpringAndroidSpiceRequest<APIResponseUpload> request = Observer.observerAPI.getUploadRequest(o);
+			SpringAndroidSpiceRequest<APIResponseUpload> request = Observer.observerAPI.getUploadRequest(o, getActivity());
 			
 			final WorkspaceActivity activity = (WorkspaceActivity) getActivity();	
 			
@@ -158,9 +158,11 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 					int progress = (currentPosition * 100 / totalObservations );
 					progressBar.setProgress( progress );
 					
-					uploadButton = (Button) getView().findViewById(R.id.upload_button);
-			        uploadButton.setText("Done Uploading!" );
-			        uploadButton.setEnabled(false);
+					if(currentPosition == totalObservations){
+						uploadButton = (Button) getView().findViewById(R.id.upload_button);
+						uploadButton.setText("Done Uploading!" );
+						uploadButton.setEnabled(false);
+					}
 
 				}
 			}

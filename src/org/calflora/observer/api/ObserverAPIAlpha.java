@@ -1,5 +1,7 @@
 package org.calflora.observer.api;
 
+import java.io.File;
+
 import org.calflora.observer.Observer;
 import org.calflora.observer.model.Observation;
 import org.springframework.core.io.ClassPathResource;
@@ -17,6 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
@@ -130,7 +133,7 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 	@Override
 	public SpringAndroidSpiceRequest<APIResponseUpload> getUploadRequest(
-			final Observation o) {
+			final Observation o, final Context context) {
 
 
 
@@ -151,6 +154,9 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 		}
 		final BaseFields base = new BaseFields();
 		base.taxon = o.plant.getTaxon();
+		if(base.taxon == null){
+			base.taxon = "unknown";
+		}
 		base.lat = o.latitude;
 		base.lng = o.longitude;
 		base.date = o.date_added;
@@ -176,9 +182,15 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				parts.add("record", Observer.mapper.writeValueAsString(base));
 
 				for(org.calflora.observer.model.Attachment a : o.attachments){
-
-					parts.add(a.name, new FileSystemResource(a.localPath));
-
+					//File attachmentFile = new File(a.localPath);
+					//parts.add(a.name, new FileBody(a.localPath, "image/jpeg") );
+					
+					HttpHeaders imageHeaders = new HttpHeaders();
+					imageHeaders.setContentType(MediaType.IMAGE_JPEG);
+					HttpEntity<FileSystemResource> entity = new HttpEntity<FileSystemResource>(new FileSystemResource(context.getFilesDir() + "/" + a.localPath), imageHeaders);
+					parts.add(a.name, entity);
+							
+					//parts.add(a.name, new FileSystemResource(a.localPath));
 				}
 
 				HttpHeaders requestHeaders = new HttpHeaders();

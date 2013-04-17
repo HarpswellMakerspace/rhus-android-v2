@@ -191,6 +191,7 @@ public class LoginActivity extends ApiActivity  {
 		        	
 		        	if ( response == null || !response.status.equals("OK") ) {
 		        		
+		        		showProgress(false);
 		        		mPasswordView.setError(getString(R.string.error_incorrect_password));
 		        		mPasswordView.requestFocus();
 		        		return;

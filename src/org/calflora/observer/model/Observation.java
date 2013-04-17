@@ -52,7 +52,8 @@ public class Observation {
 		Collection<Integer> collection = entity.hasMany("attachments");  // TODO This should really return the objects themselves
 		for(Integer i : collection){
 			JSONEntity attachmentEntity = Observer.database.fetchById(i);
-			Attachment a = Observer.mapper.readValue(attachmentEntity.getData().toString(), Attachment.class);
+			String attachmentString = attachmentEntity.getData().toString();
+			Attachment a = Observer.mapper.readValue( attachmentString, Attachment.class);
 			o.attachments.add(a);
 		}
 		
@@ -131,7 +132,9 @@ public class Observation {
 		dataPoint.put("date_added", format);
 		dataPoint.put("timestamp_added", tsLong);
 		dataPoint.put("uploaded", 0);
-
+		int id = Observer.database.store(dataPoint);
+		dataPoint = Observer.database.fetchById(id);
+		
 		//Store the attachments
 		for(Attachment a : attachments){
 			// TODO this process could be automated within smart json database

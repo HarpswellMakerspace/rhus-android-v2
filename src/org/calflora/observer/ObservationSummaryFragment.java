@@ -3,6 +3,8 @@ package org.calflora.observer;
 
 import java.io.ByteArrayOutputStream;
 
+import org.calflora.map.OfflineMapTileProvider;
+
 import net.winterroot.rhus.util.RHImage;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,6 +13,7 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -74,7 +77,7 @@ public class ObservationSummaryFragment extends Fragment {
 		map.setMyLocationEnabled(true);
 	
 		// Custom offline layer.
-		// map.addTileOverlay(new TileOverlayOptions().tileProvider(new MapTileProvider(getResources().getAssets())));
+		map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
 	    
 		LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
 		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
@@ -134,7 +137,7 @@ public class ObservationSummaryFragment extends Fragment {
 					byte[] thumbBytes = stream.toByteArray();
 					
 					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
-					Observer.currentObservation.addAttachment("file", thumbBytes, "image/jpeg", getActivity()); // TODO this is just for testing
+					Observer.currentObservation.addAttachment("photo1", thumbBytes, "image/jpeg", getActivity()); // TODO this is just for testing
 
 					
 					if (photoButton != null)
