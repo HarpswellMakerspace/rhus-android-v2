@@ -2,6 +2,7 @@ package org.calflora.observer;
 
 import java.util.Collection;
 
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 
@@ -55,15 +56,18 @@ public class WorkspaceActivity extends BaseActivity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		//actionBar.setBackgroundDrawable(R.drawable.map);
-		//Drawable d = getApplicationContext().getResources().getDrawable(R.drawable.map);
-		//actionBar.setBackgroundDrawable(d);
-		
+
+		//		GoogleMapOptions options =  new GoogleMapOptions();
+		//		options.zoomControlsEnabled(false);
+		//		options.zoomGesturesEnabled(false);
+		//	mapFragment = MapFragment.newInstance(options);
+		//  Need to override this factory class if we want to access the controls settings
+		//		workspaceMapFragment = (WorkspaceMapFragment) WorkspaceMapFragment.newInstance(options);
+
 		workspaceMapFragment = new WorkspaceMapFragment();
 		workspaceListFragment = new WorkspaceListFragment();
 		workspaceUploadFragment = new WorkspaceUploadFragment();
 
-		
 		pendingTab = (RelativeLayout)getLayoutInflater().inflate(R.layout.tab_pending, null);		
 	
 		actionBar.addTab(actionBar.newTab()

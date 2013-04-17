@@ -9,12 +9,15 @@ import org.calflora.map.OfflineMapTileProvider;
 import org.json.JSONException;
 
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -47,9 +50,23 @@ public class WorkspaceMapFragment extends MapFragment {
 	}
 	*/
 	
+	
 	@Override
 	public void onStart() {
 		super.onStart();
+		
+		// http://developer.android.com/reference/com/google/android/gms/maps/GoogleMapOptions.html
+		/*
+		GoogleMapOptions options =  new GoogleMapOptions();
+		options.zoomControlsEnabled(false);
+		options.zoomGesturesEnabled(false);
+		mapFragment = MapFragment.newInstance(options);
+
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.add(R.id.observation_map_layout, mapFragment);
+		transaction.commit();
+*/
 		
 		// TODO change to adding this map programatically, so we get the zoom level setting
 		map = this.getMap();
@@ -60,10 +77,12 @@ public class WorkspaceMapFragment extends MapFragment {
 		
 	
 		// Custom offline layer.
-		map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemite_valley")));
+		map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
 	    
 		LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
-		map.moveCamera( CameraUpdateFactory.newLatLng(latLng) );
+		// -119.784,37.6747 Yosemite
+		latLng = new LatLng(37.6747, -119.784);
+		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
 
 		addMarkersFromDatabase();
 	}
