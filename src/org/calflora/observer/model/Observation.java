@@ -15,12 +15,14 @@ import net.smart_json_databsase.JSONEntity;
 import org.calflora.observer.Observer;
 import org.json.JSONException;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import android.content.Context;
 import android.os.Environment;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Observation {
 
 	public double latitude;
@@ -45,7 +47,12 @@ public class Observation {
 		
 		o.latitude = entity.getDouble("latitude");
 		o.longitude = entity.getDouble("longitude");
-		o.plant.setTaxon(entity.getString("taxon"));
+		
+		try {
+			o.plant.setTaxon(entity.getString("taxon"));
+		} catch (Exception e){
+			o.plant.setTaxon("unknown"); // TODO this really isn't the right idea.. taxon should be Observation level parameter, primary key
+		}
 		o.date_added = entity.getString("date_added");
 		o.timestamp_added = entity.getInt("timestamp_added");
 		
