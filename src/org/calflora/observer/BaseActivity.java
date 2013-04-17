@@ -26,8 +26,11 @@ public class BaseActivity extends Activity {
 		super.onResume();
 		
 		if(Observer.instance.getOrganization() != null){
-			ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
-			homeIcon.setImageResource(R.drawable.logo);
+
+			if( ! Observer.instance.getOrganization().getName().contentEquals("Independent") ){
+				ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
+				homeIcon.setImageResource(R.drawable.logo);
+			}
 		}
 	}
 	

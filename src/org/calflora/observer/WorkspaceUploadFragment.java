@@ -158,6 +158,9 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 					int progress = (currentPosition * 100 / totalObservations );
 					progressBar.setProgress( progress );
 					
+					uploadButton = (Button) getView().findViewById(R.id.upload_button);
+			        uploadButton.setText("Done Uploading!" );
+			        uploadButton.setEnabled(false);
 
 				}
 			}

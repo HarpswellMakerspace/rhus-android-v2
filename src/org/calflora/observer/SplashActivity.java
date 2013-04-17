@@ -1,8 +1,9 @@
 package org.calflora.observer;
 
+import org.calflora.observer.model.Organization;
+
 import android.os.Bundle;
 import android.os.Handler;
-import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.widget.ImageView;
@@ -28,11 +29,17 @@ public class SplashActivity extends BaseActivity {
 	protected void onStart() {
 		super.onStart();
 
-		if(Observer.instance.getOrganization() != null){
-			ImageView imageView = (ImageView) findViewById(R.id.splashImage);
-			imageView.setImageResource(R.drawable.logo);
+		ImageView imageView = (ImageView) findViewById(R.id.splashImage);
+		imageView.setImageResource(R.drawable.calflora_observer_icon);
 
-		}
+		Organization o = Observer.instance.getOrganization();
+		if(o != null){
+			
+			if (! o.getName().contentEquals("Independent") ){
+				imageView.setImageResource(R.drawable.logo);
+			}
+
+		} 
 
 		mHandler.postDelayed(new Runnable() { 
 			public void run() { 

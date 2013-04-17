@@ -11,6 +11,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -51,6 +52,7 @@ public class LoginActivity extends ApiActivity  {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,6 +104,18 @@ public class LoginActivity extends ApiActivity  {
 						attemptLogin();
 					}
 				});
+		
+
+		
+		findViewById(R.id.forgot_button).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.calflora.org/cgi-bin/forgotPassword.cgi"));
+						startActivity(browserIntent);
+					}
+				});
+		
 	}
 
 	@Override
@@ -198,6 +212,13 @@ public class LoginActivity extends ApiActivity  {
 
 			
 		}
+	}
+	
+	public void onResume(){
+		super.onResume();
+		// TODO : Log them out
+		
+		showProgress(false);
 	}
 
 	/**
