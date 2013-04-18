@@ -1,6 +1,6 @@
 package org.calflora.observer.model;
 
-import net.smart_json_databsase.JSONEntity;
+import net.smart_json_database.JSONEntity;
 
 import org.json.JSONException;
 

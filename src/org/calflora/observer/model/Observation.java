@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
-import net.smart_json_databsase.JSONEntity;
+import net.smart_json_database.JSONEntity;
 
 import org.calflora.observer.Observer;
 import org.json.JSONException;

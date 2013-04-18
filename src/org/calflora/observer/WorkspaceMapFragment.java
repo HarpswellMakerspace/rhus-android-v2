@@ -2,12 +2,11 @@ package org.calflora.observer;
 
 import java.util.Collection;
 
-import net.smart_json_databsase.JSONEntity;
-import net.smart_json_databsase.SearchFields;
+import net.smart_json_database.JSONEntity;
+import net.smart_json_database.SearchFields;
 
 import org.calflora.map.OfflineMapTileProvider;
 import org.json.JSONException;
-
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -110,9 +109,16 @@ public class WorkspaceMapFragment extends MapFragment {
 		try {
 			options.title(p.getString("taxon"));
 			options.snippet(p.getString("taxon"));
+		} catch (JSONException e) {
+			options.title("No Taxon Recorded");
+		}
+		
+		try {
 			int uploaded = p.getInt("uploaded");
 			if(uploaded==1){
 				options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+			} else {
+				options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

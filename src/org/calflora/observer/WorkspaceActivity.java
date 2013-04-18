@@ -6,8 +6,8 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 
-import net.smart_json_databsase.JSONEntity;
-import net.smart_json_databsase.SearchFields;
+import net.smart_json_database.JSONEntity;
+import net.smart_json_database.SearchFields;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -72,10 +72,6 @@ public class WorkspaceActivity extends BaseActivity implements
 	
 		actionBar.addTab(actionBar.newTab()
 				.setIcon(R.drawable.light_map)
-				.setTabListener(this)
-				);
-		actionBar.addTab(actionBar.newTab()
-				.setIcon(R.drawable.light_list)
 				.setTabListener(this)
 				);
 		actionBar.addTab(actionBar.newTab()
@@ -182,19 +178,12 @@ public class WorkspaceActivity extends BaseActivity implements
 			
 		case 1:
 			transaction = fragmentManager.beginTransaction();
-			selectedTab = Tabs.LIST;
-			transaction.replace(R.id.workspace_fragment_container, workspaceListFragment);
-			transaction.commit();
-			break;
-			
-		case 2:
-			transaction = fragmentManager.beginTransaction();
 			selectedTab = Tabs.UPLOAD;
 			transaction.replace(R.id.workspace_fragment_container, workspaceUploadFragment);
 			transaction.commit();
 			break;
 			
-		case 3:
+		case 2:
 			//if(Observer.getInstance().getLastLocation() != null){
 				selectedTab = Tabs.ADD;
 				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");

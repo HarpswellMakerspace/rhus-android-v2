@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="src" path="smart-json-database/src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="lib" path="libs/jackson-core-2.1.4.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-databind-2.1.4.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-annotations-2.1.4.jar"/>
-	<classpathentry kind="lib" path="libs/smart_json_databsase-BETA_1_4_0.jar"/>
 	<classpathentry kind="lib" path="libs/robospice-spring-android-1.4.0.jar"/>
 	<classpathentry kind="lib" path="libs/spring-android-core-1.0.1.RELEASE.jar"/>
 	<classpathentry kind="lib" path="libs/spring-android-rest-template-1.0.1.RELEASE.jar"/>

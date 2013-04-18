@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlayOptions;
@@ -84,6 +85,7 @@ public class ObservationSummaryFragment extends Fragment {
 					
 		MarkerOptions markerOptions = new MarkerOptions();
 		markerOptions.position(latLng);
+		markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 		map.addMarker(markerOptions);
 		
 		Button captureImageButton = (Button) getView().findViewById(R.id.plant_photo_image_button);

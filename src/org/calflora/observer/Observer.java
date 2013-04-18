@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import net.smart_json_databsase.InitJSONDatabaseExcepiton;
-import net.smart_json_databsase.JSONDatabase;
+import net.smart_json_database.InitJSONDatabaseExcepiton;
+import net.smart_json_database.JSONDatabase;
 
 import org.calflora.observer.api.IdNameItem;
 import org.calflora.observer.api.ObserverAPI;
@@ -49,21 +49,21 @@ public class Observer extends Application implements LocationListener {
 	public static final String ORGANIZATION_PREFERENCE = "ORGANIZATION_PREFERENCE";
 	public static final String PROJECT_PREFERENCE = "PROJECT_PREFERENCE";
 
-	
 	public static ObserverAPI observerAPI;
-	public static SharedPreferences settings;
-	
+	public static SharedPreferences settings;	
 	public static Observer instance;
 	private static Organization organization;
 	private static Project project;
-	private String username;
-	private String APIKey;
+
 	public static ObjectMapper mapper = new ObjectMapper();
 	public static JSONDatabase database;
 	public static SQLiteDatabase plantsListDatabase; // TODO: move to Project ?
 	
 	public static Observation currentObservation; // The observation being worked on
 													// TODO: this needs to be saved and restored if app is interrupted.
+	
+	private String username;
+	private String APIKey;
 	
 	private LocationManager locationManager;
 	private String provider;

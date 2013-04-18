@@ -17,8 +17,9 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
 
-import net.smart_json_databsase.JSONEntity;
-import net.smart_json_databsase.SearchFields;
+import net.smart_json_database.JSONEntity;
+import net.smart_json_database.Order;
+import net.smart_json_database.SearchFields;
 import net.winterroot.rhus.util.DWHostUnreachableException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -73,16 +74,18 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	}
 
 	
-	private Iterator<JSONEntity> iterator;
+	private Iterator<JSONEntity> uploadIterator;
 	private int currentPosition;
 	private int totalObservations;
 	private Button uploadButton;
 	
 	private void doUpload() {
 		currentPosition= 0;
-		Collection<JSONEntity> entities = getEntities();
+		
+		SearchFields search = SearchFields.Where("uploaded", 0);
+		Collection<JSONEntity> entities =  Observer.database.fetchByFields(search, new Order());
+		uploadIterator = entities.iterator();
         totalObservations = entities.size();
-        iterator = entities.iterator();
         
         uploadButton = (Button) getView().findViewById(R.id.upload_button);
         uploadButton.setText("Uploading " + String.valueOf(totalObservations) + " Observations" );
@@ -95,10 +98,12 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	private void postEntitiesToServer(){
 		
 		JSONEntity entity = null;
+
 		
 		// TODO late on we may want to do this in batches
-		while( iterator.hasNext() ){
-			entity = iterator.next();
+		int position = 0;
+		while( uploadIterator.hasNext() ){
+			entity = uploadIterator.next();
 
 			Observation o = null;
 			try {
@@ -122,9 +127,12 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				private JSONEntity observationEntity; // TODO Ultimately this should be class Observation,
 				// but to make this convienient, we need to integrate Jackson into
 				// smart json.
+				
+				private int index;
 
-				public UploadRequestListener(JSONEntity observationEntity){
+				public UploadRequestListener(JSONEntity observationEntity, int index){
 					this.observationEntity = observationEntity;
+					this.index = index;
 				}
 
 				@Override
@@ -157,12 +165,15 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 						uploadButton.setText("Done Uploading!" );
 						uploadButton.setEnabled(false);
 					}
+					
+					adapter.setRowUploaded(index);
+					adapter.notifyDataSetChanged();
 
 				}
 			}
 			 
-			 activity.getSpiceManager().execute( request, null, DurationInMillis.NEVER, new UploadRequestListener(entity) );
-
+			 activity.getSpiceManager().execute( request, null, DurationInMillis.NEVER, new UploadRequestListener(entity, position) );
+			 position++;
 		}
 	}
 
