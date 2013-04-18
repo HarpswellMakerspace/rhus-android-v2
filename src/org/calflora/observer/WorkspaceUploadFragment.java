@@ -41,14 +41,6 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 		return inflater.inflate(R.layout.fragment_workspace_upload, container, false);
 	}
 	
-	@Override
-	public Collection<JSONEntity> getEntities(){
-		SearchFields search = SearchFields.Where("uploaded", 0);
-		Collection<JSONEntity> entities = Observer.database.fetchByFields(search);
-		return entities;
-	}
-	
-	
 	
 	public void onStart() {
 		super.onStart();

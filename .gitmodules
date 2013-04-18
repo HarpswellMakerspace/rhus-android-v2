@@ -1,0 +1,3 @@
+[submodule "smart-json-database"]
+	path = smart-json-database
+	url = git@github.com:deepwinter/smart-json-database.git
