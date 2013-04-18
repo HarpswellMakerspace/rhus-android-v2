@@ -13,17 +13,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:gravity="center"
         android:text="@string/empty"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
           
     <TextView
         android:id="@+id/current_organization"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/current_user"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/current_user"
+        android:gravity="center"
         android:text="@string/empty"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -32,7 +35,9 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_alignLeft="@+id/current_user"
+         android:layout_alignParentRight="true"
          android:layout_below="@+id/current_organization"
+         android:gravity="center"
          android:text="@string/empty"
          android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -41,7 +46,8 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_alignLeft="@+id/current_project"
-         android:layout_below="@+id/current_project" >
+         android:layout_below="@+id/current_project"
+         android:background="@color/pending_observation_color" >
 
      </ListView>
      

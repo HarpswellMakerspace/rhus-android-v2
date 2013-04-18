@@ -19,6 +19,7 @@ import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceReques
 
 import net.smart_json_databsase.JSONEntity;
 import net.smart_json_databsase.SearchFields;
+import net.winterroot.rhus.util.DWHostUnreachableException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,7 +118,8 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				continue;
 			} 
 
-			SpringAndroidSpiceRequest<APIResponseUpload> request = Observer.observerAPI.getUploadRequest(o, getActivity());
+			SpringAndroidSpiceRequest<APIResponseUpload> request = null;
+			request = Observer.observerAPI.getUploadRequest(o, getActivity());
 			
 			final WorkspaceActivity activity = (WorkspaceActivity) getActivity();	
 			

@@ -1,5 +1,7 @@
 package org.calflora.observer;
 
+import net.winterroot.rhus.util.DWHostUnreachableException;
+
 import org.calflora.observer.api.APIResponseSignIn;
 
 import com.octo.android.robospice.persistence.DurationInMillis;
@@ -9,6 +11,7 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -20,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -197,6 +201,10 @@ public class LoginActivity extends ApiActivity  {
 		        		return;
 		            }
 
+		        	InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		        	imm.hideSoftInputFromWindow( mPasswordView.getWindowToken(), 0);
+		        	imm.hideSoftInputFromWindow( mEmailView.getWindowToken(), 0);
+		        	
 		        	Observer.instance.setUser(mEmailView.getText().toString(), response.data);
 		        	
 		
@@ -209,7 +217,9 @@ public class LoginActivity extends ApiActivity  {
 				
 		    }
 			
+
 			spiceManager.execute( Observer.observerAPI.signInRequest(mEmail, mPassword), JSON_CACHE_KEY, DurationInMillis.NEVER, new SignInRequestListener() );
+			
 
 			
 		}

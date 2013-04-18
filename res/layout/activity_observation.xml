@@ -28,7 +28,7 @@
         android:layout_alignLeft="@+id/plant_thumbnail"
         android:layout_alignTop="@+id/plant_thumbnail"
         android:layout_marginLeft="100dp"
-        android:text="Click to Select Plant"
+        android:text="Select Plant"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView

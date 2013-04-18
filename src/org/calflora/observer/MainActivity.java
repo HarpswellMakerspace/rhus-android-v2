@@ -67,17 +67,17 @@ public class MainActivity extends Activity {
 	    		}
 	    		 
 	    	 } catch (JsonParseException e) {
-	    		 Observer.toast("Error loading...", getApplicationContext());
+	    		 Observer.toast("Error loading cached organization/project", getApplicationContext());
 	    		 e.printStackTrace();
 	    		 launchOrganizationActivity();
 	    		 return;
 	    	 } catch (JsonMappingException e) {
-	    		 Observer.toast("Error loading...", getApplicationContext());
+	    		 Observer.toast("Error loading cached organization/project", getApplicationContext());
 	    		 e.printStackTrace();
 	    		 launchOrganizationActivity();
 	    		 return;
 	    	 } catch (IOException e) {
-	    		 Observer.toast("Error loading...", getApplicationContext());
+	    		 Observer.toast("Error loading cached organization/project", getApplicationContext());
 	    		 e.printStackTrace();
 	    		 launchOrganizationActivity();
 	    		 return;

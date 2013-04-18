@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.winterroot.rhus.util.DWHostUnreachableException;
+
 import org.calflora.observer.api.APIResponseOrganizations;
 import org.calflora.observer.api.APIResponseProject;
 import org.calflora.observer.model.Project;
@@ -129,7 +131,9 @@ public class ProjectsActivity extends ApiActivity {
 		
 		mStatusMessageView.setText("Getting Project Details");
 		showProgress(true);
+		
 		spiceManager.execute( Observer.observerAPI.getProjectRequest(projectId), JSON_CACHE_KEY, DurationInMillis.NEVER, new ProjectRequestListener() );
+		
 
 		
 	}

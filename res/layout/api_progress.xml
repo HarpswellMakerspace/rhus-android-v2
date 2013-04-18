@@ -6,7 +6,8 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone"
+         >
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -20,6 +21,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/retry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retry"
+            android:visibility="gone" />
+
     </LinearLayout>
     
 

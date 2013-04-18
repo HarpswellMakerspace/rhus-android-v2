@@ -24,9 +24,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import net.winterroot.rhus.util.DWHostUnreachableException;
+
 import org.calflora.observer.api.APIResponseOrganization;
 import org.calflora.observer.api.APIResponseOrganizations;
 import org.calflora.observer.api.APIResponseSignIn;
+import org.calflora.observer.api.APIResponseUpload;
 import org.calflora.observer.api.IdNameItem;
 import org.calflora.observer.model.Organization;
 import org.calflora.observer.model.Project;
@@ -38,6 +41,7 @@ import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.request.simple.SmallBinaryRequest;
+import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -61,13 +65,8 @@ public class OrganizationsActivity extends ApiActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_organizations);
-		
-        
-        
+		setContentView(R.layout.activity_organizations);    
 	}
-	
-	
 	
 
 	@Override
@@ -84,11 +83,6 @@ public class OrganizationsActivity extends ApiActivity {
 	protected void onStart() {
 		super.onStart();
 		
-		// Load Organizations into List
-		// if online
-		// load from remote
-		// else 
-		// load from JSON datastore
 
 		if ( ! organizationsRequestSent ){
 			
@@ -117,12 +111,29 @@ public class OrganizationsActivity extends ApiActivity {
 				}
 			}
 
+			
+
+			SpringAndroidSpiceRequest<APIResponseOrganizations> request;
 			showProgress(true);
-			spiceManager.execute( Observer.observerAPI.getOrganizationsRequest(), JSON_CACHE_KEY, DurationInMillis.NEVER, new OrganizationsRequestListener() );
+			request = Observer.observerAPI.getOrganizationsRequest();
+			spiceManager.execute(request, JSON_CACHE_KEY, DurationInMillis.NEVER, new OrganizationsRequestListener() );
+			
 
 		}
 	}
 	
+	
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		showProgress(false);
+
+	}
+
+
+
+
 	protected void populateList(){
 		
 		ListView lv = (ListView)findViewById(R.id.organizationsListView);
@@ -263,8 +274,9 @@ public class OrganizationsActivity extends ApiActivity {
 		
 		mStatusMessageView.setText("Getting Organization Details");
 		showProgress(true);
+	
 		spiceManager.execute( Observer.observerAPI.getOrganizationRequest(id), JSON_CACHE_KEY, DurationInMillis.NEVER, new OrganizationRequestListener() );
-
+	
 		
 	}
 	
