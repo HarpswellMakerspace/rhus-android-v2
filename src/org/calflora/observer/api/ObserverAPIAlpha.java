@@ -182,15 +182,12 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				parts.add("record", Observer.mapper.writeValueAsString(base));
 
 				for(org.calflora.observer.model.Attachment a : o.attachments){
-					//File attachmentFile = new File(a.localPath);
-					//parts.add(a.name, new FileBody(a.localPath, "image/jpeg") );
 					
 					HttpHeaders imageHeaders = new HttpHeaders();
 					imageHeaders.setContentType(MediaType.IMAGE_JPEG);
 					HttpEntity<FileSystemResource> entity = new HttpEntity<FileSystemResource>(new FileSystemResource(context.getFilesDir() + "/" + a.localPath), imageHeaders);
 					parts.add(a.name, entity);
-							
-					//parts.add(a.name, new FileSystemResource(a.localPath));
+				
 				}
 
 				HttpHeaders requestHeaders = new HttpHeaders();
@@ -206,42 +203,11 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
 				return restTemplate.postForObject(URI, requestEntity, APIResponseUpload.class);
-				
-				// This gives the same error actually, so using .exchange() doesn't seem to be the issue
-				//return getRestTemplate().postForObject(URI, requestEntity, APIResponseUpload.class);
+	
 			} 
 		}
 		return new UploadJsonRequest(null);
 
 
 	}
-	/*
-	public class UploadFileRequest extends SpringAndroidSpiceRequest<String>{
-		private static final String TAG = "UploadFileRequest";
-		private UploadRequestModel requestModel;
-		private String link;
-		public UploadFileRequest(UploadRequestModel model, String link) {
-		    super(String.class);
-		    requestModel = model;
-		    this.link = link;
-		}
-
-		@Override
-		public String loadDataFromNetwork() throws Exception {    
-
-		    MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-		    parts.add("file1", new FileSystemResource(requestModel.getFile1()));
-		    parts.add("file2", new FileSystemResource(requestModel.getFile1()));
-
-		    HttpHeaders headers = new HttpHeaders();
-		    HttpEntity<MultiValueMap<String, Object>> request = 
-		            new HttpEntity<MultiValueMap<String, Object>>(parts, headers);
-
-		    return getRestTemplate().postForObject(link, request, String.class);
-
-		}
-
-		}
-	 */
-
 }

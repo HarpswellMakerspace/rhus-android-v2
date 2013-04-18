@@ -19,7 +19,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -112,16 +114,12 @@ public class PlantSelectorActivity extends BaseActivity {
 
 			}
 
-
-
 			@Override
 			public void bindView(View view, Context context, Cursor cursor) {
 				// TODO Auto-generated method stub
 				// getView is overriding this..
 				
 			}
-
-
 
 			@Override
 			public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -130,19 +128,6 @@ public class PlantSelectorActivity extends BaseActivity {
 				return null;
 			}
 
-			//@Override
-			/*
-			public View newView(Context context, Cursor cursor, ViewGroup parent) {
-				if(cursor.getPosition()==0){
-					 final View view=mInflater.inflate(R.layout.list_item_search,parent,false); 
-				     return view;	
-				}
-				
-				 final View view=mInflater.inflate(R.layout.list_item_single_image,parent,false); 
-			     return view;				
-			}
-			*/
-			
 		}
 		String[] columnNames = {"id"};
 		MatrixCursor matrix = new MatrixCursor(columnNames);
@@ -172,6 +157,20 @@ public class PlantSelectorActivity extends BaseActivity {
 				finish();
 
 			}
+		});
+		
+		
+		Button unknownButton = (Button) findViewById(R.id.unknown_button);
+		unknownButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
+				intent.putExtra(Observer.NEW_PLANT_TAXON, "unknown" );
+				setResult(RESULT_OK, intent);
+				finish();				
+			}
+			
 		});
 	}
 

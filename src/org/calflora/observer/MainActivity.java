@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 	    		 launchOrganizationActivity();
 	    		 return;
 	    	 } catch (JsonMappingException e) {
-	    		 Observer.toast("Error loading cached organization/project", getApplicationContext());
+	    		 Observer.toast("Error loading cached organization/project - json mapping exception", getApplicationContext());
 	    		 e.printStackTrace();
 	    		 launchOrganizationActivity();
 	    		 return;

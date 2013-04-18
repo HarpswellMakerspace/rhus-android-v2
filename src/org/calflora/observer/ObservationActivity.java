@@ -40,6 +40,7 @@ public class ObservationActivity extends Activity implements
 	private ObservationAssessmentFragment observationAssessmentFragment;
 	private ObservationTreatmentFragment observationTreatmentFragment;
 
+	private ImageView plantThumbnailView;
 
 
 	protected void done(){
@@ -59,6 +60,8 @@ public class ObservationActivity extends Activity implements
 		observationSummaryFragment = new ObservationSummaryFragment();
 		observationAssessmentFragment = new ObservationAssessmentFragment();
 		observationTreatmentFragment = new ObservationTreatmentFragment();
+		
+		plantThumbnailView = (ImageView) findViewById(R.id.plant_thumbnail);
 	
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -114,21 +117,13 @@ public class ObservationActivity extends Activity implements
         			}
         		}
         		);
-		
-		
 
 		
 		// TODO: combine into constructor..
 		Observer.currentObservation = new Observation();
 		Location lastLocation = Observer.getInstance().getLastLocation();
 		Observer.currentObservation.latitude = lastLocation.getLatitude();
-		Observer.currentObservation.longitude = lastLocation.getLongitude();
-		
-		// TODO: respond intent
-	
-
-		//loadPlant();
-		
+		Observer.currentObservation.longitude = lastLocation.getLongitude();	
 		
 		Button changePlantButton = (Button) findViewById(R.id.plant_change_button);
 		changePlantButton.setOnClickListener(new OnClickListener(){
@@ -150,21 +145,30 @@ public class ObservationActivity extends Activity implements
 		Observer.currentObservation.plant = plant;
 
 		TextView commonName = (TextView)findViewById(R.id.common_name);
-		commonName.setText(plant.getCommon() );
 		TextView taxonName = (TextView)findViewById(R.id.taxon);
-		taxonName.setText(plant.getTaxon() );
 		
-		ImageView plantThumbnailView = (ImageView) findViewById(R.id.plant_thumbnail);
-		AssetManager assets = getBaseContext().getResources().getAssets();
-		AssetFileDescriptor asset = null;
-		try {
-			String imagePath = "plant_images/" + plant.getPhotoid().replace("'","")+".jpeg";
-			asset = assets.openFd(imagePath);
-			Drawable plantThumbnail = Drawable.createFromStream(asset.createInputStream(), "");
-			plantThumbnailView.setImageDrawable(plantThumbnail);
-		} catch (IOException e) {
-			// TODO Show default image for plant
+		if(! taxon.equals("unknown")){
+			commonName.setText(plant.getCommon() );
+			taxonName.setText(plant.getTaxon() );
+			AssetManager assets = getBaseContext().getResources().getAssets();
+			AssetFileDescriptor asset = null;
+			try {
+				String imagePath = "plant_images/" + plant.getPhotoid().replace("'","")+".jpeg";
+				asset = assets.openFd(imagePath);
+				Drawable plantThumbnail = Drawable.createFromStream(asset.createInputStream(), "");
+				plantThumbnailView.setImageDrawable(plantThumbnail);
+			} catch (IOException e) {
+				// TODO Show default image for plant
+			}
+		} else {
+			//Placehold for unknown plant icon
+			plantThumbnailView.setImageResource(R.drawable.calflora_observer_icon);
+			commonName.setText("Unknown Taxon");
+			//taxonName.setText(plant.getTaxon() );
+
 		}
+		
+		
 	}
 
 
@@ -244,8 +248,9 @@ public class ObservationActivity extends Activity implements
 						return;
 					}
 					
-					String taxon = data.getString(Observer.NEW_PLANT_TAXON);		
+					String taxon = data.getString(Observer.NEW_PLANT_TAXON);
 					loadPlant(taxon);
+			
 					
 				}
 				break;

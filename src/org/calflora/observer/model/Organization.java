@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"logoGraphicPath"})
+@JsonIgnoreProperties({"logoGraphicPath", "splashGraphicPath"})
 public class Organization {
 
 	public String id;

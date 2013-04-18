@@ -32,6 +32,10 @@ public class Project {
 	
 	public static Plant getPlant(String taxon) {
 		
+		if(taxon == "unknown"){
+			return null;
+		}
+		
 		Cursor c = Observer.plantsListDatabase.query("plist", 
 				  new String[] { "taxon", "common", "nstatus", "lifeform", "family", "photoid"  }, 
 				  "taxon = ?", new String[]{ taxon } , null, null, null); 
