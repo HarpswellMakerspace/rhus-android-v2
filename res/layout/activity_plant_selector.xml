@@ -25,7 +25,7 @@
     </ListView>
 
     <RadioGroup
-        android:id="@+id/RadioGroup01"
+        android:id="@+id/plant_name_selector"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_weight="0.10"
@@ -33,21 +33,21 @@
         android:paddingTop="@dimen/plant_selector_radio_button_top_padding" >
 
         <RadioButton
-            android:id="@+id/RadioButton02"
+            android:id="@+id/common_plants_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
             android:text="@string/common_plants" />
 
         <RadioButton
-            android:id="@+id/RadioButton01"
+            android:id="@+id/scientific_plants_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/scientific_plants" />
     </RadioGroup>
 
     <RadioGroup
-        android:id="@+id/radioGroup3"
+        android:id="@+id/plant_list_selector"
         android:layout_width="286dp"
         android:layout_height="20dp"
         android:layout_weight="0.08"
@@ -55,14 +55,14 @@
         android:paddingTop="@dimen/plant_selector_radio_button_top_padding" >
 
         <RadioButton
-            android:id="@+id/radio0"
+            android:id="@+id/project_plants_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="@string/project_plants" />
 
         <RadioButton
-            android:id="@+id/radio1"
+            android:id="@+id/all_plants_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/all_plants" />

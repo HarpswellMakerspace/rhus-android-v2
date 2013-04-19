@@ -5,12 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 import net.smart_json_database.InitJSONDatabaseExcepiton;
 import net.smart_json_database.JSONDatabase;
 
-import org.calflora.observer.api.IdNameItem;
 import org.calflora.observer.api.ObserverAPI;
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Organization;
@@ -20,7 +18,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -31,12 +32,8 @@ import android.provider.Settings;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
-import com.octo.android.robospice.SpiceManager;
 
 public class Observer extends Application implements LocationListener {
 	
@@ -45,6 +42,8 @@ public class Observer extends Application implements LocationListener {
 	public static final String USER_EMAIL_PREF = "UserEmail";
 
 	private static final String DB_NAME = "px137.sqlite"; //Hard coded for testing, this is Yosemite
+	private static final String ALL_CALIFORNIA_DB_NAME = "px0.sqlite"; //Hard coded for testing, this is Yosemite
+
 	
 	public static final String ORGANIZATION_PREFERENCE = "ORGANIZATION_PREFERENCE";
 	public static final String PROJECT_PREFERENCE = "PROJECT_PREFERENCE";
@@ -58,6 +57,8 @@ public class Observer extends Application implements LocationListener {
 	public static ObjectMapper mapper = new ObjectMapper();
 	public static JSONDatabase database;
 	public static SQLiteDatabase plantsListDatabase; // TODO: move to Project ?
+	public static SQLiteDatabase allPlantsListDatabase; 
+
 	
 	public static Observation currentObservation; // The observation being worked on
 													// TODO: this needs to be saved and restored if app is interrupted.
@@ -68,6 +69,7 @@ public class Observer extends Application implements LocationListener {
 	private LocationManager locationManager;
 	private String provider;
 	private Location lastLocation;
+	private AssetManager assets;
 
 	
 	public static final String NEW_PLANT_TAXON = "org.calflora.observer.new_plant_taxon";
@@ -86,6 +88,14 @@ public class Observer extends Application implements LocationListener {
 		
 	}
 	
+	public Drawable getThumbnailForPlant(String id) throws IOException{
+		AssetFileDescriptor asset = null;
+		String imagePath = "plant_images/" + id + ".jpeg";
+		asset = assets.openFd(imagePath);
+		Drawable plantThumbnail = Drawable.createFromStream(asset.createInputStream(), ""); 
+		return plantThumbnail;
+	}
+	
 	public String getAPIKey(){
 		return APIKey;
 	}
@@ -96,6 +106,9 @@ public class Observer extends Application implements LocationListener {
 	public void onCreate() {
 
 		super.onCreate();
+		
+		assets = getBaseContext().getResources().getAssets();
+
 		
 		instance = this;
 		observerAPI = new ObserverAPI();
@@ -133,14 +146,23 @@ public class Observer extends Application implements LocationListener {
 			e.printStackTrace();
 		}
 		
-		try {
-			copyDataBase();  // TODO Shouldn't do this on every load, but OK for now.
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		if( sharedpreferences.getBoolean("firstLaunch", false)) {
+			try {
+				copyDataBase(DB_NAME);  // TODO Shouldn't do this on every load, but OK for now.
+				copyDataBase(ALL_CALIFORNIA_DB_NAME);  // TODO Shouldn't do this on every load, but OK for now.
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		sharedpreferences.edit().putBoolean("firstLaunch", true).commit();
+		
 		
 		Observer.plantsListDatabase = SQLiteDatabase.openDatabase(getApplicationContext().getDatabasePath(DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+		Observer.allPlantsListDatabase = SQLiteDatabase.openDatabase(getApplicationContext().getDatabasePath(ALL_CALIFORNIA_DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+
 		
 		LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
 	    boolean enabledGPS = service
@@ -179,13 +201,13 @@ public class Observer extends Application implements LocationListener {
 		
 	}
 	
-	 private void copyDataBase() throws IOException{
+	 private void copyDataBase(String dbName) throws IOException{
 		 
 	    	//Open your local db as the input stream
-	    	InputStream myInput = getApplicationContext().getAssets().open(DB_NAME);
+	    	InputStream myInput = getApplicationContext().getAssets().open(dbName);
 	 
 	    	// Path to the just created empty db
-	    	File outFileName = getApplicationContext().getDatabasePath(DB_NAME);
+	    	File outFileName = getApplicationContext().getDatabasePath(dbName);
 	 
 	    	//Open the empty db as the output stream
 	    	OutputStream myOutput = new FileOutputStream( outFileName.getAbsolutePath() );
