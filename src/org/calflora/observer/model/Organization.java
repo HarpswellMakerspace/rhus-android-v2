@@ -7,35 +7,26 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"logoGraphicPath", "splashGraphicPath"})
 public class Organization {
 
-	public String id;
-	
-	@Deprecated
-	private String orgId; // TODO workaround until API change
-	
+	public String id;	
 	public String name;
-	@Deprecated	
-	private String orgName; // TODO workaround until API change
 
 	public String splashGraphic;
 	public String logoGraphic;
 	public String orgUrl;
 	public List<ProjectStub> projects;
 
-	
 	public Organization() {
 		super();
 	}
 
 	public void setOrgId(String value){
-		orgId = value;
 		id = value;
 	}
 
 	public String getOrgId() {
-		return orgId;
+		return id;
 	}
 	
-
 	public String getLogoGraphicPath(){
 		return "organization_logo_" + id;
 	}
@@ -45,22 +36,19 @@ public class Organization {
 	}
 
 	public String getName() {
-		return orgName;
+		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-		this.orgName = name;
 	}
 
 	public String getOrgName() {
-		return orgName;
+		return name;
 	}
 
 	public void setOrgName(String name) {
 		this.name = name;
-		this.orgName = name;
 	}
-
 	
 }

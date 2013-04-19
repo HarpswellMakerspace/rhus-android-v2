@@ -11,17 +11,11 @@ import android.database.Cursor;
 public class Project {
 
 	public String id;
-	
+	public String name;
+
 	@Deprecated
 	public String orgId; // @deprecated This var will removed in the near future.
-	@Deprecated
-	private String projectId;
-	
-	public String name;
-	@Deprecated
-	public String projectName;
-	
-	
+		
 	public double center_lat;
 	public double center_lng;
 	public String tilepackage;
@@ -55,26 +49,6 @@ public class Project {
 	
 	public Project() {
 		super();
-	}
-
-	@Deprecated
-	public String getProjectId() {
-		return projectId;
-	}
-
-	@Deprecated
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
-	}
-	
-	@Deprecated
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public void setProjectName(String name) {
-		this.name = name;
-		this.projectName = name;
 	}
 
 }

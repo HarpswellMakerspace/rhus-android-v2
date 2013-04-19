@@ -120,12 +120,18 @@ public class ProjectsActivity extends ApiActivity {
 
 	        @Override
 	        public void onRequestSuccess( APIResponseProject response ) {
-			
-				Observer.instance.setProject(response.data);
-	
-				Intent intent = new Intent("org.calflora.observer.action.DOWNLOAD_PROJECT_ASSETS");
-				startActivity(intent);
-				finish();
+	        	
+	        	if(response.status.equals("ERROR")){
+	        	    Toast.makeText( ProjectsActivity.this, "Error during request: " + response.message, Toast.LENGTH_LONG ).show();
+	        	    showProgress(false);
+	        	} else {
+	        	
+	        		Observer.instance.setProject(response.data);
+
+	        		Intent intent = new Intent("org.calflora.observer.action.DOWNLOAD_PROJECT_ASSETS");
+	        		startActivity(intent);
+	        		finish();
+	        	}
 	        }
 	    }
 		

@@ -110,7 +110,7 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 		Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
 		uriBuilder.appendQueryParameter( "what", "projdata" );
-		uriBuilder.appendQueryParameter( "orgid", projectId);
+		uriBuilder.appendQueryParameter( "project", projectId);
 		uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
 		final String URI = uriBuilder.build().toString();
 

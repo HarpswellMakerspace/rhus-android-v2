@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 	    	 //First load the organization and project!
 	    	 String projectJSON = settings.getString(Observer.PROJECT_PREFERENCE, null);
 	    	 String organizationJSON = settings.getString(Observer.ORGANIZATION_PREFERENCE, null);
-	    	 if(projectJSON == null || organizationJSON == null){
+	    	 if(projectJSON == null || organizationJSON == null || projectJSON.equals("null") || organizationJSON.equals("null") ){
 	    		 // Reselect organization and project
 	    		 launchOrganizationActivity();
 	    		 return;
