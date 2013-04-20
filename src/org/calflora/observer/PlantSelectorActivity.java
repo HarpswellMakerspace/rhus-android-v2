@@ -57,6 +57,15 @@ public class PlantSelectorActivity extends BaseActivity {
 		
 		
 		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			int count =  super.getCount();
+			return count;
+		}
+
+
+
+		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view;
 			if(position==0){
@@ -89,7 +98,7 @@ public class PlantSelectorActivity extends BaseActivity {
 			 } else {
 				 Drawable plantThumbnail;
 				 try {
-					 plantThumbnail = Observer.instance.getThumbnailForPlant(projectPlantsCursor.getString(3));
+					 plantThumbnail = Observer.instance.getThumbnailForPlant(c.getString(3));
 					 thumbnail.setImageDrawable(plantThumbnail);
 				 } catch (IOException e) {
 					 thumbnail.setImageDrawable(null);
@@ -132,9 +141,9 @@ public class PlantSelectorActivity extends BaseActivity {
 	
 	
 	private MatrixCursor getSearchFieldCursor(){
-		String[] columnNames = {"id"};
+		String[] columnNames = {"_id", "type"};
 		MatrixCursor matrix = new MatrixCursor(columnNames);
-		String[] value = {"search"};
+		Object[] value = {999, "search"};
 		matrix.addRow(value);
 		return matrix;
 	}
@@ -158,7 +167,7 @@ public class PlantSelectorActivity extends BaseActivity {
 			}
 		}
 
-		Cursor [] cursors = {projectPlantsCursor, getSearchFieldCursor()};
+		Cursor [] cursors = {getSearchFieldCursor(),projectPlantsCursor};
 		MergeCursor mergedCursor = new MergeCursor( cursors );
 
 		return mergedCursor;
@@ -166,33 +175,12 @@ public class PlantSelectorActivity extends BaseActivity {
 	}
 	
 	private MergeCursor getAllPlantsCursor(){
-		// TODO put this into a static method
 		Cursor cursor = Observer.allPlantsListDatabase.query("plist", 
 				new String[] { "rowid _id", "taxon", "common", "photoid" }, 
 				null, null, null, null, null); 
 
-
-
 		cursor.moveToFirst();
-	
-
-		/*
-		 * TODO: all these drawables can't be held in memory.
-		while(cursor.moveToNext()){
-			AssetFileDescriptor asset = null;
-			String imagePath = "plant_images/" + c.getString(3).replace("'","")+".jpeg";
-			try {
-				asset = assets.openFd(imagePath);
-				Drawable plantThumbnail = Drawable.createFromStream(asset.createInputStream(), "");
-				plantImages.add(plantThumbnail);
-			} catch (IOException e) {
-				plantImages.add(null);
-			}
-
-		}
-		*/
-
-		Cursor [] cursors = {cursor, getSearchFieldCursor()};
+		Cursor [] cursors = {getSearchFieldCursor(),cursor};
 		MergeCursor mergedCursor = new MergeCursor( cursors );
 
 		return mergedCursor;

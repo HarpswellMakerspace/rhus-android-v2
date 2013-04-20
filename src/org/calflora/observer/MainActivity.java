@@ -52,8 +52,10 @@ public class MainActivity extends Activity {
 	    	 }
 	    	 
 	    	 try {
-	    		 Observer.instance.setProject(Observer.mapper.readValue(projectJSON, Project.class) );
-	    		 Observer.instance.setOrganization(Observer.mapper.readValue(organizationJSON, Organization.class) );
+	    		 Project project = Observer.mapper.readValue(projectJSON, Project.class);
+	    		 Organization organization = Observer.mapper.readValue(organizationJSON, Organization.class);
+	    		 Observer.instance.setProject(project);
+	    		 Observer.instance.setOrganization(organization);
 	    		 
 	    		 
 	    		String splashImagePath = Observer.instance.getOrganization().getSplashGraphicPath();

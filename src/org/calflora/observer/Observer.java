@@ -42,6 +42,7 @@ public class Observer extends Application implements LocationListener {
 	public static final String USER_EMAIL_PREF = "UserEmail";
 
 	private static final String DB_NAME = "px137.sqlite"; //Hard coded for testing, this is Yosemite
+	//private static final String DB_NAME = "test.sqlite"; //Hard coded for testing, this is Yosemite
 	private static final String ALL_CALIFORNIA_DB_NAME = "px0.sqlite"; //Hard coded for testing, this is Yosemite
 
 	

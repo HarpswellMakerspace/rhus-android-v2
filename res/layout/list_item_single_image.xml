@@ -8,8 +8,9 @@
            android:id="@+id/list_item_image_view"
            android:layout_width="60dp"
            android:layout_height="60dp"
-           android:scaleType="fitXY"
            android:layout_gravity="center_vertical"
+           android:background="@color/main_theme_color"
+           android:scaleType="center"
            android:src="@drawable/cancel" />
     
        <TextView
