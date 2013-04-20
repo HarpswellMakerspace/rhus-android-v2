@@ -17,6 +17,8 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -69,7 +72,11 @@ public class PlantSelectorActivity extends BaseActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view;
 			if(position==0){
-				view =mInflater.inflate(R.layout.list_item_search,parent,false); 
+				view=mInflater.inflate(R.layout.list_item_search,parent,false); 
+				
+				EditText searchField = (EditText) view.findViewById(R.id.search_field);
+				searchField.setText(searchText);
+				searchField.addTextChangedListener(filterTextWatcher);
 			} else {
 				view=mInflater.inflate(R.layout.list_item_single_image,parent,false); 
 			}	
@@ -125,17 +132,33 @@ public class PlantSelectorActivity extends BaseActivity {
 		}
 
 
-
+/*
 		@Override
 		public Filter getFilter() {
-			return super.getFilter();
+			Filter filter = new Filter(){
+
+				@Override
+				protected FilterResults performFiltering(CharSequence constraint) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+
+				@Override
+				protected void publishResults(CharSequence constraint,
+						FilterResults results) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			};
+			
 		}
-		
+	*/	
 		
 
 	}
-	MyCustomAdapter adapter;
 	
+	MyCustomAdapter adapter;
 	MergeCursor projectPlantsCursor;
 	MergeCursor allPlantsCursor;
 	
@@ -186,6 +209,26 @@ public class PlantSelectorActivity extends BaseActivity {
 		return mergedCursor;
 	
 	}
+	
+	String searchText;
+	
+	private TextWatcher filterTextWatcher = new TextWatcher() {
+
+	    public void afterTextChanged(Editable s) {
+	    }
+
+	    public void beforeTextChanged(CharSequence s, int start, int count,
+	            int after) {
+	    }
+
+	    public void onTextChanged(CharSequence s, int start, int before,
+	            int count) {
+	    	searchText = String.valueOf(s);
+	        adapter.getFilter().filter(s);
+	    }
+
+	};
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

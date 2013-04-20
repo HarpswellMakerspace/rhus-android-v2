@@ -12,12 +12,15 @@
         android:focusableInTouchMode="true" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/search_field"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:ems="10"
-        android:hint="Search" >
-
+        android:hint="Search"
+        android:inputType="text"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:imeOptions="actionDone" >
+        
         <requestFocus />
     </EditText>
 
