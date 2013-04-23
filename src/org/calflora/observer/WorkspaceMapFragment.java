@@ -14,6 +14,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -65,26 +67,31 @@ public class WorkspaceMapFragment extends MapFragment {
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
 		transaction.add(R.id.observation_map_layout, mapFragment);
 		transaction.commit();
-*/
-		
-		// TODO change to adding this map programatically, so we get the zoom level setting
-		map = this.getMap();
-		map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-		//map.setMapType(GoogleMap.MAP_TYPE_NONE);
+		 */
 
-		map.setMyLocationEnabled(true);
-		
-	
-		// Custom offline layer.
-		map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
-	    
-		LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
-		// -119.784,37.6747 Yosemite
-		latLng = new LatLng(37.6747, -119.784);
-		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
+		if(ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity() ) ){
+			// TODO change to adding this map programatically, so we get the zoom level setting
+			map = this.getMap();
+			map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+			//map.setMapType(GoogleMap.MAP_TYPE_NONE);
 
-		addMarkersFromDatabase();
+			map.setMyLocationEnabled(true);
+
+			// Custom offline layer.
+			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+
+			LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
+			// -119.784,37.6747 Yosemite
+			latLng = new LatLng(37.6747, -119.784);
+			map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
+
+			addMarkersFromDatabase();
+		} else {
+			Observer.toast("Google Maps Not Available", getActivity());
+		}
 	}
+
+	
 
 	public void addMarkersFromDatabase(){
 		

@@ -177,8 +177,6 @@ public class PlantSelectorActivity extends BaseActivity {
 				new String[] { "rowid _id", "taxon", "common", "photoid" }, 
 				null, null, null, null, null); 
 
-
-
 		projectPlantsCursor.moveToFirst();
 
 		while(projectPlantsCursor.moveToNext()){
