@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.exception.NoNetworkException;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -88,9 +89,9 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 		Collection<JSONEntity> entities =  Observer.database.fetchByFields(search, new Order());
 		pendingObservations = entities.size();
 		
+		progressBar.setVisibility(View.GONE);
 		if(pendingObservations == 0 ){
 			uploadButton.setVisibility(View.GONE);
-			progressBar.setVisibility(View.GONE);
 		} else {
 			uploadButton.setVisibility(View.VISIBLE);
 		    uploadButton.setText("Upload " + String.valueOf(pendingObservations) + " Observations" );
@@ -161,8 +162,16 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				public void onRequestFailure( SpiceException e ) {
 
 					//showProgress(false);
-					Toast.makeText( activity, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
-					e.printStackTrace();
+					//if( e.getMessage().equals("Network is not available")  )
+					if(e instanceof NoNetworkException){
+						Toast.makeText( activity, "Network connection is unavailable.  Canceling upload", Toast.LENGTH_LONG ).show();
+						activity.getSpiceManager().cancelAllRequests();
+						updateUploadButton();
+					} else {
+						Toast.makeText( activity, "Error during upload, please try again: "+ e.getMessage() + " "  + e.getClass(), Toast.LENGTH_LONG ).show();
+						e.printStackTrace();
+					}
+					
 				}
 
 				@Override
