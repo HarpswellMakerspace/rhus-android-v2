@@ -1,9 +1,8 @@
 package org.calflora.observer;
 
-import net.winterroot.rhus.util.DWHostUnreachableException;
-
 import org.calflora.observer.api.APIResponseSignIn;
 
+import com.octo.android.robospice.exception.NoNetworkException;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -26,20 +25,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
 public class LoginActivity extends ApiActivity  {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
-
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -185,9 +176,13 @@ public class LoginActivity extends ApiActivity  {
 		        @Override
 		        public void onRequestFailure( SpiceException e ) {
 		        	
-		            Toast.makeText( LoginActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
-					e.printStackTrace();
-		            showProgress(false);
+		        	if(e instanceof NoNetworkException){
+						Observer.toast("Network connection is unavailable.  Please connect with wifi to choose a different organization.",  LoginActivity.this);
+						spiceManager.cancelAllRequests();
+					} else {
+						Observer.unhandledErrorToast("Error during request: " + e.getMessage(), LoginActivity.this);
+						e.printStackTrace();
+					}
 		        }
 
 		        @Override

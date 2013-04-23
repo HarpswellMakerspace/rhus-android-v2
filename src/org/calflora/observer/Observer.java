@@ -89,6 +89,16 @@ public class Observer extends Application implements LocationListener {
 		
 	}
 	
+	public static void unhandledErrorToast(String message, Context context){
+		
+		int duration = Toast.LENGTH_LONG;
+
+		Toast toast = Toast.makeText(context, message, duration);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
+		
+	}
+	
 	public Drawable getThumbnailForPlant(String id) throws IOException{
 		AssetFileDescriptor asset = null;
 		String imagePath = "plant_images/" + id + ".jpeg";

@@ -112,7 +112,7 @@ public class ProjectsActivity extends ApiActivity {
 
 	        	showProgress(false);
 	        	
-	            Toast.makeText( ProjectsActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
+	        	Observer.unhandledErrorToast("Error during request: " + e.getMessage(), ProjectsActivity.this);
 				e.printStackTrace();
 				
 			

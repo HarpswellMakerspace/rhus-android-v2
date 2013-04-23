@@ -2,25 +2,21 @@ package org.calflora.observer;
 
 import java.util.Collection;
 
-import com.google.android.gms.maps.GoogleMapOptions;
-import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
-import com.octo.android.robospice.SpiceManager;
-
 import net.smart_json_database.JSONEntity;
 import net.smart_json_database.SearchFields;
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.app.FragmentManager;
-import android.app.TabActivity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
+import com.octo.android.robospice.SpiceManager;
 
 public class WorkspaceActivity extends BaseActivity implements
 		ActionBar.TabListener {
@@ -32,24 +28,12 @@ public class WorkspaceActivity extends BaseActivity implements
 	private TextView pendingNumberLabel;
 	
 	private WorkspaceMapFragment workspaceMapFragment;
-	private WorkspaceListFragment workspaceListFragment;
+	//private WorkspaceListFragment workspaceListFragment;
 	private WorkspaceUploadFragment workspaceUploadFragment;
 	
 	protected static final String JSON_CACHE_KEY = "CACHE_KEY";
 	protected SpiceManager spiceManager = new SpiceManager( JacksonSpringAndroidSpiceService.class );
 	
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
-	//ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +52,7 @@ public class WorkspaceActivity extends BaseActivity implements
 		//		workspaceMapFragment = (WorkspaceMapFragment) WorkspaceMapFragment.newInstance(options);
 
 		workspaceMapFragment = new WorkspaceMapFragment();
-		workspaceListFragment = new WorkspaceListFragment();
+		//workspaceListFragment = new WorkspaceListFragment();
 		workspaceUploadFragment = new WorkspaceUploadFragment();
 
 		pendingTab = (RelativeLayout)getLayoutInflater().inflate(R.layout.tab_pending, null);		

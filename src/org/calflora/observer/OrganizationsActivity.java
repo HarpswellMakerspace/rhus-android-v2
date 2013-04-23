@@ -37,6 +37,7 @@ import org.calflora.observer.model.Project;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.octo.android.robospice.exception.NoNetworkException;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -94,9 +95,14 @@ public class OrganizationsActivity extends ApiActivity {
 				@Override
 				public void onRequestFailure( SpiceException e ) {
 
-					showProgress(false);
-					Toast.makeText( OrganizationsActivity.this, "Error during request: " + e.getMessage(), Toast.LENGTH_LONG ).show();
-					e.printStackTrace();
+					if(e instanceof NoNetworkException){
+						Observer.toast("Network connection is unavailable.  Please connect with wifi to choose a different organization.",  OrganizationsActivity.this);
+						spiceManager.cancelAllRequests();
+					} else {
+						Observer.unhandledErrorToast("Error during request: " + e.getMessage(), OrganizationsActivity.this);
+						e.printStackTrace();
+					}
+					
 				}
 
 				@Override
@@ -380,7 +386,16 @@ public class OrganizationsActivity extends ApiActivity {
 					
 					// OK, now we can move onto projects
 					ImageView home = (ImageView)findViewById(android.R.id.home);
-					Drawable logoImage = Drawable.createFromPath(Observer.instance.getOrganization().getLogoGraphicPath()); 
+					Drawable logoImage = null;
+					
+					try {
+						String logoFileName = Observer.instance.getOrganization().getLogoGraphicPath();
+						logoImage = Drawable.createFromPath(logoFileName); 
+
+					} catch (Exception e) {
+						// File not found
+					}
+					
 					if(logoImage != null){
 						home.setImageDrawable(logoImage);
 					}

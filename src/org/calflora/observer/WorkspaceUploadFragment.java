@@ -164,11 +164,11 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 					//showProgress(false);
 					//if( e.getMessage().equals("Network is not available")  )
 					if(e instanceof NoNetworkException){
-						Toast.makeText( activity, "Network connection is unavailable.  Canceling upload", Toast.LENGTH_LONG ).show();
+						Observer.toast("Network connection is unavailable.  Canceling upload",  activity);
 						activity.getSpiceManager().cancelAllRequests();
 						updateUploadButton();
 					} else {
-						Toast.makeText( activity, "Error during upload, please try again: "+ e.getMessage() + " "  + e.getClass(), Toast.LENGTH_LONG ).show();
+						Observer.unhandledErrorToast("Error during request: " + e.getMessage(), activity);
 						e.printStackTrace();
 					}
 					
