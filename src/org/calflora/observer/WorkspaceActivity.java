@@ -12,17 +12,19 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.FragmentManager;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 public class WorkspaceActivity extends BaseActivity implements
 		ActionBar.TabListener {
 
-	private enum Tabs { MAP, LIST, UPLOAD, ADD };
+	private enum Tabs { MAP, UPLOAD, ADD };
 	private Tabs selectedTab;
 	
 	private RelativeLayout pendingTab;
@@ -108,19 +110,8 @@ public class WorkspaceActivity extends BaseActivity implements
 		if(selectedTab == Tabs.ADD){
 			selectedTab = Tabs.MAP; 
 		}
-		
-		if(selectedTab != Tabs.MAP){
-			FragmentManager fragmentManager = getFragmentManager();
-			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			selectedTab = Tabs.MAP;
-			transaction.replace(R.id.workspace_fragment_container, workspaceMapFragment);
-			transaction.commit();
-		}
-		
-		
+
 		updatePendingTotal();
-
-
 	}
 	
 	public void updatePendingTotal(){
@@ -129,6 +120,23 @@ public class WorkspaceActivity extends BaseActivity implements
 		SearchFields search = SearchFields.Where("uploaded", 0);
 		Collection<JSONEntity> entities = Observer.database.fetchByFields(search);
 		pendingNumberLabel.setText(  String.valueOf(entities.size() ) ); //TODO: query the json database for pending
+				
+	}
+	
+	public void updateFragments(){
+		
+		updatePendingTotal();
+		
+		if(selectedTab == Tabs.MAP){
+			getActionBar().setSelectedNavigationItem(0);
+		} else {
+			getActionBar().setSelectedNavigationItem(1);	
+			
+			workspaceUploadFragment.notifyListChanged();
+		}
+
+	
+		
 	}
 
 
@@ -149,6 +157,12 @@ public class WorkspaceActivity extends BaseActivity implements
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent intent)
+	{
+		// Called after creating an observation
+		updateFragments();
 	}
 	
 	protected void showSettings(){
@@ -185,9 +199,8 @@ public class WorkspaceActivity extends BaseActivity implements
 			
 		case 2:
 			//if(Observer.getInstance().getLastLocation() != null){
-				selectedTab = Tabs.ADD;
 				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
-				startActivity(intent);	
+				startActivityForResult(intent, 0);	
 			//} else {
 				Observer.toast("Please wait for a geofix", getApplicationContext());
 			//}

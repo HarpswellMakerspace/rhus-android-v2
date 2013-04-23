@@ -176,5 +176,9 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 			 position++;
 		}
 	}
+	
+	public void notifyListChanged(){
+		adapter.notifyDataSetChanged();
+	}
 
 }

@@ -44,10 +44,13 @@ public class ObservationActivity extends Activity implements
 
 
 	protected void done(){
+		finish();
 		
+		/*
 		Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
+		*/
 	}
 	
 
