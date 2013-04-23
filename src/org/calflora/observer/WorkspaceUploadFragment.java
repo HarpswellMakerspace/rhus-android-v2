@@ -33,7 +33,12 @@ import android.widget.Toast;
 public class WorkspaceUploadFragment extends WorkspaceListFragment {
 
 	ProgressBar progressBar;
+	//ProgressDialog progressDialog;
 
+	private Iterator<JSONEntity> uploadIterator;
+	private int currentPosition;
+	private int pendingObservations;
+	private Button uploadButton;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,9 +50,9 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	
 	public void onStart() {
 		super.onStart();
-
+		
+		uploadButton = (Button) getView().findViewById(R.id.upload_button);
 		progressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
-		Button uploadButton = (Button) getView().findViewById(R.id.upload_button);
 
 		uploadButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
@@ -66,18 +71,33 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	public void onResume(){
 		super.onResume();
 		progressBar.setProgress( 0 );
+		
+		updateUploadButton();
+		
+
 	}
 	
 	@Override
 	public void onStop() {
 	      super.onStop();
 	}
-
 	
-	private Iterator<JSONEntity> uploadIterator;
-	private int currentPosition;
-	private int totalObservations;
-	private Button uploadButton;
+	private void updateUploadButton(){
+
+		SearchFields search = SearchFields.Where("uploaded", 0);
+		Collection<JSONEntity> entities =  Observer.database.fetchByFields(search, new Order());
+		pendingObservations = entities.size();
+		
+		if(pendingObservations == 0 ){
+			uploadButton.setVisibility(View.GONE);
+			progressBar.setVisibility(View.GONE);
+		} else {
+			uploadButton.setVisibility(View.VISIBLE);
+		    uploadButton.setText("Upload " + String.valueOf(pendingObservations) + " Observations" );
+		    uploadButton.setEnabled(true);
+		}
+	}
+
 	
 	private void doUpload() {
 		currentPosition= 0;
@@ -85,11 +105,13 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 		SearchFields search = SearchFields.Where("uploaded", 0);
 		Collection<JSONEntity> entities =  Observer.database.fetchByFields(search, new Order());
 		uploadIterator = entities.iterator();
-        totalObservations = entities.size();
+        pendingObservations = entities.size();
         
         uploadButton = (Button) getView().findViewById(R.id.upload_button);
-        uploadButton.setText("Uploading " + String.valueOf(totalObservations) + " Observations" );
+        uploadButton.setText("Uploading " + String.valueOf(pendingObservations) + " Observations" );
         uploadButton.setEnabled(false);
+        
+        progressBar.setVisibility(View.VISIBLE);
         
         postEntitiesToServer();
 	}
@@ -120,7 +142,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 			
 			final WorkspaceActivity activity = (WorkspaceActivity) getActivity();	
 			
-			final Toast toast = Toast.makeText( activity, "Uploaded record" , Toast.LENGTH_LONG );
+			//final Toast toast = Toast.makeText( activity, "Uploaded record" , Toast.LENGTH_LONG );
 
 			class UploadRequestListener implements RequestListener< APIResponseUpload > {
 
@@ -153,17 +175,23 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					toast.show();
+					//toast.show();
 				    activity.updatePendingTotal();
 
 					currentPosition++;
-					int progress = (currentPosition * 100 / totalObservations );
+					int progress = (currentPosition * 100 / pendingObservations );
 					progressBar.setProgress( progress );
 					
-					if(currentPosition == totalObservations){
-						uploadButton = (Button) getView().findViewById(R.id.upload_button);
-						uploadButton.setText("Done Uploading!" );
-						uploadButton.setEnabled(false);
+					if(currentPosition == pendingObservations){
+						
+						updateUploadButton();
+						
+						SearchFields search = SearchFields.Where("uploaded", 0);
+						Collection<JSONEntity> entities =  Observer.database.fetchByFields(search, new Order());
+						pendingObservations = entities.size();
+						if(pendingObservations == 0){
+							Observer.toast("All pending observations have been uploaded!", getActivity());
+						}
 					}
 					
 					adapter.setRowUploaded(index);

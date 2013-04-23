@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
@@ -28,6 +29,8 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 	public static String API_URI = "https://www.calflora.org/mgrapi";
 
+	
+	
 	@Override
 	public SpringAndroidSpiceRequest<APIResponseSignIn> signInRequest(
 			String username, String password) {
@@ -46,7 +49,9 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 			@Override
 			public APIResponseSignIn loadDataFromNetwork() throws Exception {
-				return getRestTemplate().getForObject( URI, APIResponseSignIn.class  );
+				RestTemplate restTemplate = getRestTemplate();
+				restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+				return restTemplate.getForObject( URI, APIResponseSignIn.class  );
 			}
 		}
 
@@ -70,7 +75,9 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 			@Override
 			public APIResponseOrganizations loadDataFromNetwork() throws Exception {
-				return getRestTemplate().getForObject( URI, APIResponseOrganizations.class  );
+				RestTemplate restTemplate = getRestTemplate();
+				restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+				return restTemplate.getForObject( URI, APIResponseOrganizations.class  );
 			} 
 		}
 
@@ -96,7 +103,9 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 			@Override
 			public APIResponseOrganization loadDataFromNetwork() throws Exception {
-				return getRestTemplate().getForObject( URI, APIResponseOrganization.class  );
+				RestTemplate restTemplate = getRestTemplate();
+				restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+				return restTemplate.getForObject( URI, APIResponseOrganization.class  );
 			} 
 		}
 
@@ -122,7 +131,9 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 			@Override
 			public APIResponseProject loadDataFromNetwork() throws Exception {
-				return getRestTemplate().getForObject( URI, APIResponseProject.class  );
+				RestTemplate restTemplate = getRestTemplate();
+				restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+				return restTemplate.getForObject( URI, APIResponseProject.class  );
 			} 
 		}
 
@@ -201,6 +212,7 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				RestTemplate restTemplate = getRestTemplate();
 				restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
 				restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+				restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
 				return restTemplate.postForObject(URI, requestEntity, APIResponseUpload.class);
 	

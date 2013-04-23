@@ -103,20 +103,36 @@ public class ObservationActivity extends Activity implements
         		}
         		);
 		
+
+		
 		ImageButton doneButton = (ImageButton) findViewById(R.id.doneButton);
 		doneButton.setOnClickListener(
         		new OnClickListener(){
-        			public void onClick(View v){
+        			
+        			Boolean storingObservation = false;
+        		    Object lock = new Object();
 
-        				try {
-        					Observer.currentObservation.storeObservation();
-        				} catch (JSONException e1) {
-        					Observer.toast("JSON Failed", getApplicationContext());
-        					e1.printStackTrace();
-        					return;
+        			public void onClick(View v){
+	
+        				synchronized (lock) {
+        		
+        					if(storingObservation){
+            					return;
+            				}
+            				storingObservation = true;
+            				            				
+            				try {
+            					Observer.currentObservation.storeObservation();
+            				} catch (JSONException e1) {
+            					Observer.toast("JSON Failed", getApplicationContext());
+            					e1.printStackTrace();
+            					return;
+            				}
+
+            				done();
+
         				}
 
-        				done();
         			}
         		}
         		);

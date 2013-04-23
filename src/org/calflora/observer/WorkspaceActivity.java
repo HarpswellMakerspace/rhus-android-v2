@@ -15,6 +15,7 @@ import android.app.FragmentManager;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
@@ -198,12 +199,11 @@ public class WorkspaceActivity extends BaseActivity implements
 			break;
 			
 		case 2:
-			//if(Observer.getInstance().getLastLocation() != null){
-				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
-				startActivityForResult(intent, 0);	
-			//} else {
+			if(Observer.getInstance().getLastLocation() == null){
 				Observer.toast("Please wait for a geofix", getApplicationContext());
-			//}
+			}
+			Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
+			startActivityForResult(intent, 0);	
 			break;
 			
 		}
@@ -236,6 +236,11 @@ public class WorkspaceActivity extends BaseActivity implements
 	}
 	
 	public SpiceManager getSpiceManager(){
-		return this.spiceManager;
+		if(! spiceManager.isStarted()){
+			spiceManager.start(this);
+			Log.d("Spice Manager Restarting", "Spice Manager Restarting");
+		}
+		return spiceManager;
+		
 	}
 }

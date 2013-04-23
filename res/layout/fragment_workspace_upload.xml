@@ -2,23 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
- >
+    android:orientation="vertical" >
 
     <ListView
         android:id="@+id/workspace_list_view"
         android:layout_width="match_parent"
-        android:layout_height="290dp" >
+        android:layout_height="290dp"
+        android:layout_weight="1.01" >
     </ListView>
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
+        android:layout_height="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="0.12" />
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/upload_button"
