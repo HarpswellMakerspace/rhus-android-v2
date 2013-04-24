@@ -24,7 +24,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
+
 import android.location.LocationListener;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -42,14 +52,28 @@ public class WorkspaceMapFragment extends MapFragment {
 		super.onCreate(savedInstanceState);
 	}
 
-	/*
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_observation_map, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle) {
+	    View mapView = super.onCreateView(inflater, viewGroup, bundle);
+	    RelativeLayout view = new RelativeLayout(getActivity());
+	    view.addView(mapView, new RelativeLayout.LayoutParams(-1, -1));
+	    // working with view
+	    
+	    ImageButton button = new ImageButton(getActivity());
+		button.setImageResource(R.drawable.layers);
+	    
+	    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
+	    params.rightMargin = 120;
+	    params.bottomMargin = 50;
+	    params.width = 100;
+	    params.height= 100;
+	    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+	    params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+	    //button.setPadding(0, 0, 0, 40);
+	    view.addView(button, params);
+	    
+	    return view;
 	}
-	*/
 	
 	
 	@Override
@@ -79,6 +103,10 @@ public class WorkspaceMapFragment extends MapFragment {
 
 			// Custom offline layer.
 			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+			
+			// Custom offline layer.
+			//TileOverlayOptions tp = new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "true_marble_california"));
+			//map.addTileOverlay(tp);
 
 			LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
 			// -119.784,37.6747 Yosemite
