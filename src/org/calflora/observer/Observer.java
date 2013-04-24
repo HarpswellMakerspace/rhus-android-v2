@@ -150,16 +150,11 @@ public class Observer extends Application implements LocationListener {
 			}
 		}*/
 		
-		try {
-			Observer.database = JSONDatabase.GetDatabase(getApplicationContext());
-		} catch (InitJSONDatabaseExcepiton e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		
 		
 		SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		if( sharedpreferences.getBoolean("firstLaunch", false)) {
+		if( false == sharedpreferences.getBoolean("firstLaunch", false)) {
 			try {
 				copyDataBase(DB_NAME);  // TODO Shouldn't do this on every load, but OK for now.
 				copyDataBase(ALL_CALIFORNIA_DB_NAME);  // TODO Shouldn't do this on every load, but OK for now.
@@ -170,6 +165,13 @@ public class Observer extends Application implements LocationListener {
 		}
 		sharedpreferences.edit().putBoolean("firstLaunch", true).commit();
 		
+		
+		try {
+			Observer.database = JSONDatabase.GetDatabase(getApplicationContext());
+		} catch (InitJSONDatabaseExcepiton e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		Observer.plantsListDatabase = SQLiteDatabase.openDatabase(getApplicationContext().getDatabasePath(DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.NO_LOCALIZED_COLLATORS);
 		Observer.allPlantsListDatabase = SQLiteDatabase.openDatabase(getApplicationContext().getDatabasePath(ALL_CALIFORNIA_DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.NO_LOCALIZED_COLLATORS);
