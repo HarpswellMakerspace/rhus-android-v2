@@ -42,15 +42,19 @@
          android:text="@string/empty"
          android:textAppearance="?android:attr/textAppearanceMedium"
          android:textStyle="italic" />
-
-     <ListView
-         android:id="@+id/settings_list"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
+     
+     <LinearLayout
+         style="@style/displayGroupRoundedEdges"
          android:layout_alignLeft="@+id/current_project"
-         android:layout_below="@+id/current_project"
-         android:background="@color/pending_observation_color" >
+         android:layout_below="@+id/current_project" >
 
-     </ListView>
+        <ListView
+            android:id="@+id/settings_list"
+            style="@style/displayGroupRoundedEdges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pending_observation_color" >
+        </ListView>
+    </LinearLayout>
      
 </RelativeLayout>

@@ -118,4 +118,20 @@
         <item name="android:actionBarStyle">@style/Workspace.ActionBarStyle.ActionSheet</item>   
      </style>
     
+      <style name="displayGroupRoundedEdges" parent="@android:style/Theme.Light">
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/rounded_edges</item>
+        <item name="android:paddingLeft">5.0sp</item>
+        <item name="android:paddingTop">5.0sp</item>
+        <item name="android:paddingRight">5.0sp</item>
+        <item name="android:paddingBottom">5.0sp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">5.0sp</item>
+        <item name="android:layout_marginTop">5.0sp</item>
+        <item name="android:layout_marginRight">5.0sp</item>
+        <item name="android:layout_marginBottom">5.0sp</item>
+    </style>
+     
 </resources>
