@@ -8,6 +8,7 @@ import java.io.OutputStream;
 
 import net.smart_json_database.InitJSONDatabaseExcepiton;
 import net.smart_json_database.JSONDatabase;
+import net.winterroot.rhus.util.DataBaseHelper;
 
 import org.calflora.observer.api.ObserverAPI;
 import org.calflora.observer.model.Observation;
@@ -156,10 +157,11 @@ public class Observer extends Application implements LocationListener {
 		SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		if( false == sharedpreferences.getBoolean("firstLaunch", false)) {
 			try {
-				copyDataBase(DB_NAME);  // TODO Shouldn't do this on every load, but OK for now.
-				copyDataBase(ALL_CALIFORNIA_DB_NAME);  // TODO Shouldn't do this on every load, but OK for now.
+				DataBaseHelper projectDatabaseHelper = new DataBaseHelper(getBaseContext(), DB_NAME);
+				projectDatabaseHelper.createDataBase();
+				DataBaseHelper allPlantsDatabaseHelper = new DataBaseHelper(getBaseContext(), DB_NAME);
+				allPlantsDatabaseHelper.createDataBase();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -213,7 +215,7 @@ public class Observer extends Application implements LocationListener {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 		
 	}
-	
+	/*
 	 private void copyDataBase(String dbName) throws IOException{
 		 
 	    	//Open your local db as the input stream
@@ -238,6 +240,7 @@ public class Observer extends Application implements LocationListener {
 	    	myInput.close();
 	 
 	 }
+	 */
 	
 
 	 // Location Manager
