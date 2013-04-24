@@ -14,12 +14,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBaseHelper extends SQLiteOpenHelper{
 	 
     //The Android's default system path of your application database.
-    private static String DB_PATH = "";
-    private static String DB_NAME = "";
+   // private static String DB_PATH = "";
+   // private static String DB_NAME = "";
     
  
     private String dbName = "myDBName";
- 
+    private String dbPath = "myDBPath";
+    
+    
     private SQLiteDatabase myDataBase; 
  
     private final Context myContext;
@@ -36,7 +38,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         this.dbPath = context.getDatabasePath(dbName).getPath();// TODO should be an argument
     }	
  
-  /**
+    /**
      * Creates a empty database on the system and rewrites it with your own database.
      * */
     public void createDataBase() throws IOException{
@@ -47,8 +49,8 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     		//do nothing - database already exist
     	}else{
  
-    		//By calling this method and empty database will be created into the default system path
-               //of your application so we are gonna be able to overwrite that database with our database.
+    		// By calling this method an empty database will be created into the default system path
+            // of your application so we are gonna be able to overwrite that database with our database.
         	this.getReadableDatabase();
  
         	try {
