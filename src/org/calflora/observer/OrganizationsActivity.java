@@ -164,7 +164,6 @@ public class OrganizationsActivity extends ApiActivity {
 		ListDataItem listDataItem = null;
 		
 		
-		int i=1;
 		for(IdNameItem o: organizations){
 				listDataItem = new ListDataItem();
 				listDataItem.name = o.name;
@@ -193,7 +192,8 @@ public class OrganizationsActivity extends ApiActivity {
 		    @Override
 		    public View getView(int position, View convertView, ViewGroup parent)
 		    {
-		        View row = convertView;
+		        //View row = convertView;
+		    	View row = convertView;
 		        MyStringReaderHolder holder;
 		        
 		        if(row==null)
