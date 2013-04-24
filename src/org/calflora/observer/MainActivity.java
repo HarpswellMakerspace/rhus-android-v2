@@ -62,7 +62,13 @@ public class MainActivity extends Activity {
 	    		if(splashImagePath != null){
 	    			ImageView splashImageView = (ImageView) findViewById(R.id.splashImage);
 	    			
-	    			Drawable splashImage = Drawable.createFromPath(Observer.instance.getOrganization().getSplashGraphicPath()); 
+	    			Drawable splashImage = null;
+	    			try {
+	    				splashImage = Drawable.createFromPath(Observer.instance.getOrganization().getSplashGraphicPath()); 
+	    			} catch (Exception e){
+	    				// no splash image available
+	    				// should show teh default, actually getOrganization() shoudl just return this.
+	    			}
 					if(splashImage != null){
 						splashImageView.setImageDrawable(splashImage);
 					}
