@@ -52,7 +52,9 @@
         <activity
             android:name="org.calflora.observer.MainActivity"
             android:label="@string/app_name"
-            android:noHistory="true" >
+            android:noHistory="true" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,7 +70,9 @@
         <activity
             android:name="org.calflora.observer.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.LOGIN" />
 
@@ -77,7 +81,9 @@
         </activity>
         <activity
             android:name="org.calflora.observer.OrganizationsActivity"
-            android:label="@string/title_activity_organizations" >
+            android:label="@string/title_activity_organizations" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.ORGANIZATIONS" />
 
@@ -86,7 +92,9 @@
         </activity>
         <activity
             android:name="org.calflora.observer.ProjectsActivity"
-            android:label="@string/title_activity_projects" >
+            android:label="@string/title_activity_projects" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.PROJECTS" />
 
@@ -95,7 +103,9 @@
         </activity>
         <activity
             android:name="org.calflora.observer.DashboardActivity"
-            android:label="@string/title_activity_dashboard" >
+            android:label="@string/title_activity_dashboard" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.DASHBOARD" />
 
@@ -105,7 +115,9 @@
         <activity
             android:name="org.calflora.observer.WorkspaceActivity"
             android:label="@string/title_activity_workspace"
-            android:theme="@style/Theme.Workspace" >
+            android:theme="@style/Theme.Workspace" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.WORKSPACE" />
 
@@ -115,7 +127,9 @@
         <activity
             android:name="org.calflora.observer.ObservationActivity"
             android:label="@string/title_activity_observation"
-            android:theme="@style/Theme.Workspace.ActionSheet" >
+            android:theme="@style/Theme.Workspace.ActionSheet" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.EDITOBSERVATION" />
 
@@ -132,6 +146,7 @@
             android:label="@string/title_activity_plant_selector"
             android:noHistory="true"
             android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
              >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.PLANTSELECTOR" />
@@ -142,7 +157,9 @@
         <activity
             android:name="org.calflora.observer.CapturePhotoActivity"
             android:label="@string/title_activity_capture_photo"
-            android:noHistory="true" >
+            android:noHistory="true" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.CAPTUREPHOTO" />
 
@@ -151,7 +168,9 @@
         </activity>
         <activity
             android:name="org.calflora.observer.SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/title_activity_settings" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.SETTINGS" />
 
@@ -160,7 +179,9 @@
         </activity>
         <activity
             android:name="org.calflora.observer.HelpActivity"
-            android:label="@string/title_activity_help" >
+            android:label="@string/title_activity_help" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.HELP" />
 
@@ -169,7 +190,9 @@
         </activity>
         <activity
             android:name="org.calflora.observer.SplashActivity"
-            android:label="@string/title_activity_splash" >
+            android:label="@string/title_activity_splash" 
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.SPLASH_THEN_PROJECTS" />
 
@@ -183,7 +206,9 @@
         </activity>
         <activity
             android:name="org.calflora.observer.DownloadProjectAssetsActivity"
-            android:label="@string/title_activity_download_project_assets" >
+            android:label="@string/title_activity_download_project_assets"
+            android:screenOrientation="portrait"
+             >
                       <intent-filter>
                 <action android:name="org.calflora.observer.action.DOWNLOAD_PROJECT_ASSETS" />
 
