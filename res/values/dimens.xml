@@ -12,7 +12,7 @@
     <dimen name="observation_fragment_layout_margin">100dp</dimen>
     <dimen name="progress_margin_top">40dp</dimen>
     <dimen name="text_size_plant_observation_plant_name">20dp</dimen>
-    <dimen name="tab_icon_margin_top">5dp</dimen>
+    <dimen name="tab_icon_margin_top">10dp</dimen>
     <dimen name="chooser_header_text_size">24dp</dimen>
 
 </resources>
