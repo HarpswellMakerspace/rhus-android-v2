@@ -177,6 +177,12 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				@Override
 				public void onRequestSuccess( APIResponseUpload response ) {
 
+					if(response.status.equals("ERROR") ){
+						Toast.makeText( getActivity(), "Error during request: " + response.message, Toast.LENGTH_LONG ).show();
+						return;
+
+		        	}
+					
 					try {
 						observationEntity.put("uploaded", 1);
 						Observer.database.store(observationEntity);

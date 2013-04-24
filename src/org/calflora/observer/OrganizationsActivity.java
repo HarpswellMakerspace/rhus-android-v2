@@ -108,6 +108,13 @@ public class OrganizationsActivity extends ApiActivity {
 				@Override
 				public void onRequestSuccess( APIResponseOrganizations response ) {
 
+					if(response.status.equals("ERROR") ){
+						Toast.makeText( OrganizationsActivity.this, "Error during request: " + response.message, Toast.LENGTH_LONG ).show();
+						showProgress(false);
+						return;
+
+		        	}
+					
 					showProgress(false);
 					organizations = response.data;
 					// TODO And we may want to cache this here
@@ -305,7 +312,6 @@ public class OrganizationsActivity extends ApiActivity {
 
 				@Override
 				public void onRequestSuccess(InputStream inputStream) {
-					// TODO Auto-generated method stub
 					
 					String logoFileName = Observer.instance.getOrganization().getLogoGraphicPath();
 												
@@ -366,7 +372,6 @@ public class OrganizationsActivity extends ApiActivity {
 
 				@Override
 				public void onRequestSuccess(InputStream inputStream) {
-					// TODO Auto-generated method stub
 					
 					String splashFileName =  Observer.instance.getOrganization().getSplashGraphicPath();
 					
