@@ -11,37 +11,47 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/projectsOrganizationLabel"
+        <LinearLayout
+            style="@style/displayGroupRoundedEdges"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:ellipsize="end"
-            android:maxLines="@integer/projects_header_max_lines"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="@dimen/chooser_header_text_size"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="302dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-    	    android:paddingBottom="10dp"    
-            android:text="Choose Project:"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="@dimen/chooser_list_item_text_size" />
+            <TextView
+                android:id="@+id/projectsOrganizationLabel"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:ellipsize="end"
+                android:maxLines="@integer/projects_header_max_lines"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="@dimen/chooser_header_text_size"
+                android:textStyle="bold" />
 
-        <ListView
-            android:id="@+id/projectsListView"
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:text="Choose Project:"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="@dimen/chooser_list_item_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/displayGroupRoundedEdges"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/chooser_list_item_padding_left" >
+            android:layout_height="wrap_content" >
 
-        </ListView>
-        
+            <ListView
+                android:id="@+id/projectsListView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/chooser_list_item_padding_left" >
+            </ListView>
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
