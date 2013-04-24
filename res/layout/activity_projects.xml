@@ -15,17 +15,29 @@
             android:id="@+id/projectsOrganizationLabel"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:ellipsize="end"
             android:maxLines="@integer/projects_header_max_lines"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/chooser_header_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="302dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+    	    android:paddingBottom="10dp"    
+            android:text="Choose Project:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="@dimen/chooser_list_item_text_size" />
 
         <ListView
             android:id="@+id/projectsListView"
-            android:layout_width="match_parent"
-            android:layout_height="412dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:paddingLeft="@dimen/chooser_list_item_padding_left" >
 
         </ListView>
