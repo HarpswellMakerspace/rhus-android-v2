@@ -178,7 +178,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				public void onRequestSuccess( APIResponseUpload response ) {
 
 					if(response.status.equals("ERROR") ){
-						Toast.makeText( getActivity(), "Error during request: " + response.message, Toast.LENGTH_LONG ).show();
+						Toast.makeText( activity, "Error during request: " + response.message, Toast.LENGTH_LONG ).show();
 						return;
 
 		        	}

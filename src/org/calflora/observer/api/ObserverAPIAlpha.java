@@ -178,10 +178,8 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 			public UploadJsonRequest(Class<APIResponseUpload> clazz) {
 				super(clazz);
-				// TODO Auto-generated constructor stub
 			}
 
-			//private LinkedMultiValueMap<String, Object> formData;
 
 			@Override
 			public APIResponseUpload loadDataFromNetwork() throws Exception {
@@ -193,6 +191,9 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				parts.add("record", Observer.mapper.writeValueAsString(base));
 
 				for(org.calflora.observer.model.Attachment a : o.attachments){
+					if(a.name.equals("thumbnail")){
+						//continue;
+					}
 					
 					HttpHeaders imageHeaders = new HttpHeaders();
 					imageHeaders.setContentType(MediaType.IMAGE_JPEG);

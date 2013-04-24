@@ -1,6 +1,7 @@
 package org.calflora.observer.model;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import net.smart_json_database.JSONEntity;
+import net.winterroot.rhus.util.RHImage;
 
 import org.calflora.observer.Observer;
 import org.json.JSONException;
@@ -20,6 +22,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -67,6 +71,25 @@ public class Observation {
 		return o;
 
 	}
+	
+	public static byte[] createThubmnailBytes(String photoFileName){
+
+		Bitmap thumb = RHImage.resizeBitMapImage(photoFileName, 140, 120, 90);
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		thumb.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] thumbBytes = stream.toByteArray();
+		return thumbBytes;
+	}
+
+	public static byte[] createFullImageBytes(String photoFileName){
+
+		Bitmap image = RHImage.resizeBitMapImage(photoFileName, 1200, 1600, 90);
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] imageBytes = stream.toByteArray();
+		return imageBytes;
+	}
+	
 	
 	public Observation(){
 		plant = new Plant();
@@ -116,7 +139,7 @@ public class Observation {
 			throw new FileNotFoundException();
 		}
 		
-		return localPath;
+		return context.getFilesDir() + "/" + localPath;
 		
 	}
 	

@@ -4,6 +4,7 @@ package org.calflora.observer;
 import java.io.ByteArrayOutputStream;
 
 import org.calflora.map.OfflineMapTileProvider;
+import org.calflora.observer.model.Observation;
 
 import net.winterroot.rhus.util.RHImage;
 
@@ -23,6 +24,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +68,8 @@ public class ObservationSummaryFragment extends Fragment {
 		return layout;
 	}
 
-	
+	Boolean lockUI = false;
+	Object lock = new Object();
 	
 	@Override
 	public void onStart() {
@@ -92,13 +95,33 @@ public class ObservationSummaryFragment extends Fragment {
 		captureImageButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				
-				 Intent intent = new Intent("org.calflora.observer.action.CAPTUREPHOTO");
-				 startActivityForResult(intent, CAPTURE_PHOTO);	
+				synchronized(lock) {
+
+					if(!lockUI){
+						lockUI = true;
+
+						Intent intent = new Intent("org.calflora.observer.action.CAPTUREPHOTO");
+						startActivityForResult(intent, CAPTURE_PHOTO);	
+
+					}
+
+				}
 				 
 			}
 		});
 		
 		
+	}
+
+
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		
+		synchronized(lock) {
+			lockUI = false;
+		}
 	}
 
 
@@ -111,6 +134,7 @@ public class ObservationSummaryFragment extends Fragment {
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent)
 	{
+		
 		if(!(resultCode == Activity.RESULT_OK)){
 			Observer.toast("Error capturing image: result code is not OK", getActivity());
 			return;
@@ -133,19 +157,25 @@ public class ObservationSummaryFragment extends Fragment {
 
 					Button photoButton = (Button) getView().findViewById(R.id.plant_photo_image_button);
 	
-					Bitmap thumb = RHImage.resizeBitMapImage(photoFileName, 140, 120, 0);
-					ByteArrayOutputStream stream = new ByteArrayOutputStream();
-					thumb.compress(Bitmap.CompressFormat.PNG, 100, stream);
-					byte[] thumbBytes = stream.toByteArray();
+					byte[] thumbBytes = Observation.createThubmnailBytes(photoFileName);
+					byte[] plantImageBytes = Observation.createFullImageBytes(photoFileName);
+
 					
 					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
-					Observer.currentObservation.addAttachment("photo1", thumbBytes, "image/jpeg", getActivity()); // TODO this is just for testing
+					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); // TODO this is just for testing
 
 					
 					if (photoButton != null)
 						photoButton.setBackgroundDrawable(null);// free mem from last photo
-					photoButton.setBackgroundDrawable( new BitmapDrawable(thumb) );
+					String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
+					if(thumbnailPath != null){
+						Drawable d = Drawable.createFromPath(thumbnailPath);
+						if(d != null){
+							photoButton.setBackgroundDrawable(d);
+						}
+					}
 					photoButton.setText("");
+					
 					
 				}
 				break;
@@ -154,7 +184,7 @@ public class ObservationSummaryFragment extends Fragment {
 		catch (Throwable ex)
 		{
 			ex.printStackTrace();
-			Observer.toast("trouble saving file" + ex, getActivity());
+			Observer.toast("trouble saving file: " + ex, getActivity());
 		}
 	}
 
