@@ -17,6 +17,51 @@ public class RHImage {
 
 	// Utility Functions
 
+	public static Bitmap getResizedBitmap(String filePath, int targetWidth, int targetHeight) {
+
+		Options options = new Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(filePath, options);
+		double sampleSize = 0;
+		// Only scale if we need to
+		// (16384 buffer for img processing)
+
+		//Switched inequality to scale by opposite dimension
+		Boolean scaleByHeight = Math.abs(options.outHeight - targetHeight) <= Math
+				.abs(options.outWidth - targetWidth);
+
+
+		// Load, scaling to smallest power of 2 that'll get it <= desired
+		// dimensions
+		/*
+		if (options.outHeight * options.outWidth * 2 >= 1638) {
+			sampleSize = scaleByHeight ? options.outHeight / targetHeight
+					: options.outWidth / targetWidth;
+			sampleSize = (int) Math.pow(2d,
+					Math.floor(Math.log(sampleSize) / Math.log(2d)));
+		}
+		*/
+		
+        Bitmap bm = BitmapFactory.decodeFile(filePath, options);
+
+        options.inJustDecodeBounds = false;
+        options.inTempStorage = new byte[128];
+        options.inSampleSize = (int) sampleSize;
+
+	    int width = bm.getWidth();
+	    int height = bm.getHeight();
+	    float scaleWidth = ((float) targetWidth) / width;
+	    float scaleHeight = ((float) targetHeight) / height;
+	    // CREATE A MATRIX FOR THE MANIPULATION
+	    Matrix matrix = new Matrix();
+	    // RESIZE THE BIT MAP
+	    matrix.postScale(scaleWidth, scaleHeight);
+
+	    // "RECREATE" THE NEW BITMAP
+	    Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+	    return resizedBitmap;
+	}
+	
 		
 		public static Bitmap resizeBitMapImage(String filePath, int targetWidth,
 	            int targetHeight, int orientation) {
@@ -52,6 +97,7 @@ public class RHImage {
 	            try {
 	                options.inSampleSize = (int) sampleSize;
 	                bitMapImage = BitmapFactory.decodeFile(filePath, options);
+	                
 	                if(orientation > 0){
 	                	 Matrix matrix = new Matrix();
 	                     matrix.postRotate(orientation);
@@ -59,6 +105,7 @@ public class RHImage {
 	                     bitMapImage = Bitmap.createBitmap(bitMapImage, 0, 0, bitMapImage.getWidth(),
 	                    		 bitMapImage.getHeight(), matrix, true);	                   
 	                }
+	                
 
 	                break;
 	            } catch (Exception ex) {
@@ -75,8 +122,8 @@ public class RHImage {
             int originy = 0;
             int width = bitMapImage.getWidth() ;
             int height = bitMapImage.getHeight() ; 
-            float ratio = targetWidth / targetHeight;
-            float reverseRatio = targetHeight / targetWidth;
+            float ratio = (float) targetWidth / (float) targetHeight;
+            float reverseRatio = (float) targetHeight / (float) targetWidth;
             //use smaller dimension
             if(width > height){
             	targetHeight = height;
