@@ -17,7 +17,8 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:text="@string/empty"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
           
     <TextView
         android:id="@+id/current_organization"
@@ -39,7 +40,8 @@
          android:layout_below="@+id/current_organization"
          android:gravity="center"
          android:text="@string/empty"
-         android:textAppearance="?android:attr/textAppearanceMedium" />
+         android:textAppearance="?android:attr/textAppearanceMedium"
+         android:textStyle="italic" />
 
      <ListView
          android:id="@+id/settings_list"
