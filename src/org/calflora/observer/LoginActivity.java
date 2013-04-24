@@ -176,6 +176,7 @@ public class LoginActivity extends ApiActivity  {
 		        @Override
 		        public void onRequestFailure( SpiceException e ) {
 		        	
+					showProgress(false);
 		        	if(e instanceof NoNetworkException){
 						Observer.toast("Network connection is unavailable.  Please connect with wifi to choose a different organization.",  LoginActivity.this);
 						spiceManager.cancelAllRequests();

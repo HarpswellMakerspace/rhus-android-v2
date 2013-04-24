@@ -159,15 +159,12 @@ public class OrganizationsActivity extends ApiActivity {
 		
 		int i=1;
 		for(IdNameItem o: organizations){
-			if(o.name.contains("Yosemite") || o.name.contains("Independent")){
 				listDataItem = new ListDataItem();
 				listDataItem.name = o.name;
 				if(o.name.contains("Yosemite")){
 					listDataItem.image = R.drawable.logo;
 				}
 				listData.add(listDataItem);
-			}
-
 		}
 		
 		class MyCustomAdaptor extends ArrayAdapter<ListDataItem>
@@ -267,6 +264,13 @@ public class OrganizationsActivity extends ApiActivity {
 	        @Override
 	        public void onRequestSuccess( APIResponseOrganization response ) {
 
+	        	if(response.status.equals("ERROR") ){
+					Toast.makeText( OrganizationsActivity.this, "Error during request: " + response.message, Toast.LENGTH_LONG ).show();
+					showProgress(false);
+					return;
+
+	        	}
+	        	
 				// TODO This needs to be cached
 				Observer.instance.setOrganization(response.data);
 				
@@ -333,11 +337,16 @@ public class OrganizationsActivity extends ApiActivity {
 				}
 		}
 		
-		SmallBinaryRequest request = new SmallBinaryRequest(Observer.instance.getOrganization().logoGraphic);
-		
-		mStatusMessageView.setText("Getting Organization Graphics");
-		showProgress(true);
-		spiceManager.execute(request, JSON_CACHE_KEY, DurationInMillis.NEVER, new LogoDownloadListener());
+		Organization o = Observer.instance.getOrganization();
+		if(o.logoGraphic != null){
+			SmallBinaryRequest request = new SmallBinaryRequest(Observer.instance.getOrganization().logoGraphic);
+
+			mStatusMessageView.setText("Getting Organization Graphics");
+			showProgress(true);
+			spiceManager.execute(request, JSON_CACHE_KEY, DurationInMillis.NEVER, new LogoDownloadListener());
+		} else {
+			downloadSplash();
+		}
 		
 
 	}
@@ -400,21 +409,28 @@ public class OrganizationsActivity extends ApiActivity {
 						home.setImageDrawable(logoImage);
 					}
 					
-					
-					Intent intent = new Intent("org.calflora.observer.action.SPLASH_THEN_PROJECTS");
-					startActivity(intent);
-					showProgress(false);	
-					finish(); // TODO We should handle organization and project as fragments in a flow
+					showSplash();
 				}
 		}
 		
-		SmallBinaryRequest request = new SmallBinaryRequest(Observer.instance.getOrganization().splashGraphic);
-		
-		mStatusMessageView.setText("Getting Organization Graphics");
-		showProgress(true);
-		spiceManager.execute(request, JSON_CACHE_KEY, DurationInMillis.NEVER, new SplashDownloadListener());
-		
+		if(Observer.instance.getOrganization().splashGraphic != null){
+			SmallBinaryRequest request = new SmallBinaryRequest(Observer.instance.getOrganization().splashGraphic);
 
+			mStatusMessageView.setText("Getting Organization Graphics");
+			showProgress(true);
+			spiceManager.execute(request, JSON_CACHE_KEY, DurationInMillis.NEVER, new SplashDownloadListener());
+		} else {
+			showSplash();
+		}
+
+
+	}
+	
+	public void showSplash(){
+		Intent intent = new Intent("org.calflora.observer.action.SPLASH_THEN_PROJECTS");
+		startActivity(intent);
+		showProgress(false);	
+		finish(); // TODO We should handle organization and project as fragments in a flow
 
 	}
 		

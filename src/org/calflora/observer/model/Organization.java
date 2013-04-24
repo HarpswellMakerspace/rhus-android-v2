@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Organization {
 
 	public String id;	
-	public String name;
+	public String name = null;
 
-	public String splashGraphic;
-	public String logoGraphic;
-	public String orgUrl;
+	public String splashGraphic = null;
+	public String logoGraphic = null;
+	public String orgUrl = null;
 	public List<ProjectStub> projects;
 
 	public Organization() {
