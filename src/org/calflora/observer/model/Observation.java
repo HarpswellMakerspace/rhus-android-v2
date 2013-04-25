@@ -17,14 +17,13 @@ import net.winterroot.rhus.util.RHImage;
 import org.calflora.observer.Observer;
 import org.json.JSONException;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Environment;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.Environment;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Observation {

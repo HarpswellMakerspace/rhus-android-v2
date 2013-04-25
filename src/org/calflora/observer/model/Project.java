@@ -34,7 +34,13 @@ public class Project {
 				  new String[] { "taxon", "common", "nstatus", "lifeform", "family", "photoid"  }, 
 				  "taxon = ?", new String[]{ taxon } , null, null, null); 
 		if(!c.moveToFirst()){
-			return null;
+			// Try the all plants database
+			c = Observer.allPlantsListDatabase.query("plist", 
+					  new String[] { "taxon", "common", "nstatus", "lifeform", "family", "photoid"  }, 
+					  "taxon = ?", new String[]{ taxon } , null, null, null);
+			if(!c.moveToFirst()){
+				return null;
+			}
 		}
 		
 		Plant plant = new Plant();

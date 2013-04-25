@@ -45,12 +45,12 @@ public class ObservationActivity extends Activity implements
 
 	protected void done(){
 		finish();
-		
+
 		/*
 		Intent intent = new Intent("org.calflora.observer.action.WORKSPACE");
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		*/
+		 */
 	}
 	
 
@@ -69,10 +69,7 @@ public class ObservationActivity extends Activity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		//actionBar.setBackgroundDrawable(R.drawable.map);
-		//Drawable d = getApplicationContext().getResources().getDrawable(R.drawable.map);
-		//actionBar.setBackgroundDrawable(d);
-	
+
 		actionBar.addTab(actionBar.newTab()
 				.setText("Observation")
 				.setTabListener(this)
@@ -278,7 +275,7 @@ public class ObservationActivity extends Activity implements
 		catch (Throwable ex)
 		{
 			ex.printStackTrace();
-			Observer.toast("trouble saving file" + ex, this);
+			Observer.toast("trouble choosing plant " + ex, this);
 		}
 	}
 	
