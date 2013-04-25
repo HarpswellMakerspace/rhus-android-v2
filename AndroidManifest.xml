@@ -34,9 +34,9 @@
     <application
         android:name="org.calflora.observer.Observer"
         android:allowBackup="true"
-        android:icon="@drawable/calflora_observer_icon"
+        android:icon="@drawable/poppy_logo_70"
         android:label="@string/app_name"
-        android:logo="@drawable/calflora_observer_icon"
+        android:logo="@drawable/poppy_logo_70"
         android:theme="@style/Theme.Workspace" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
