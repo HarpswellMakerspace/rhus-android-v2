@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.Filter;
+import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -43,35 +44,52 @@ public class PlantSelectorActivity extends BaseActivity {
 	Boolean scientificName = true;
 	
 	
-	class MyCustomAdapter extends CursorAdapter {
+	class SearchFieldAndCursorAdapter extends CursorAdapter {
 
-		Context context;
-	    public Cursor c;
 	    private final LayoutInflater mInflater;
 		
-		public MyCustomAdapter(Context context, Cursor c) {
+		public SearchFieldAndCursorAdapter(Context context, Cursor c) {
 			super(context, c);
-			
-			this.context = context;
-			this.c = c;
 			mInflater=LayoutInflater.from(context);
 		}
 
-		
-		
+
 		@Override
-		public int getCount() {
+		public void bindView(View view, Context context, Cursor cursor) {
+			
+			if(getItemViewType(cursor.getPosition()) == 0){
+				return;
+			}
+			
 			// TODO Auto-generated method stub
-			int count =  super.getCount();
-			return count;
+			 TextView plantName =(TextView)view.findViewById(R.id.col1);
+			 String nameValue;
+			 if(scientificName){
+				 nameValue = cursor.getString(1);
+			 } else {
+				 nameValue = cursor.getString(2);
+			 }
+			 plantName.setText(nameValue);
+
+			 ImageView thumbnail = (ImageView)view.findViewById(R.id.list_item_image_view);
+			 if(plantImages.get(cursor.getString(1)) != null){
+				 thumbnail.setImageDrawable(plantImages.get(cursor.getString(1)) );
+			 } else {
+				 Drawable plantThumbnail;
+				 try {
+					 plantThumbnail = Observer.instance.getThumbnailForPlant(cursor.getString(3));
+					 thumbnail.setImageDrawable(plantThumbnail);
+				 } catch (IOException e) {
+					 thumbnail.setImageDrawable(null);
+				 }
+			 }
+
 		}
 
-
-
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View newView(Context context, Cursor cursor, ViewGroup parent) {
 			View view;
-			if(position==0){
+			if(getItemViewType(cursor.getPosition()) == 0){
 				view=mInflater.inflate(R.layout.list_item_search,parent,false); 
 				
 				EditText searchField = (EditText) view.findViewById(R.id.search_field);
@@ -81,84 +99,30 @@ public class PlantSelectorActivity extends BaseActivity {
 				view=mInflater.inflate(R.layout.list_item_single_image,parent,false); 
 			}	
 	
-			if(position == 0){
-				//This is the search cell
-				return view;
-			}
-			
-			c.moveToPosition(position);
-			
-			
-			// TODO Auto-generated method stub
-			 TextView plantName =(TextView)view.findViewById(R.id.col1);
-			 String nameValue;
-			 if(scientificName){
-				 nameValue = c.getString(1);
-			 } else {
-				 nameValue = c.getString(2);
-			 }
-			 plantName.setText(nameValue);
-
-			 ImageView thumbnail = (ImageView)view.findViewById(R.id.list_item_image_view);
-			 if(plantImages.get(c.getString(1)) != null){
-				 thumbnail.setImageDrawable(plantImages.get(c.getString(1)) );
-			 } else {
-				 Drawable plantThumbnail;
-				 try {
-					 plantThumbnail = Observer.instance.getThumbnailForPlant(c.getString(3));
-					 thumbnail.setImageDrawable(plantThumbnail);
-				 } catch (IOException e) {
-					 thumbnail.setImageDrawable(null);
-				 }
-			 }
-			
-			 
-			 return view;
-
+			return view;
 		}
-
-		@Override
-		public void bindView(View view, Context context, Cursor cursor) {
-			// TODO Auto-generated method stub
-			// getView is overriding this..
-			
-		}
-
-		@Override
-		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			// TODO Auto-generated method stub
-			// getView is overriding this.
-			return null;
-		}
-
-
-/*
-		@Override
-		public Filter getFilter() {
-			Filter filter = new Filter(){
-
-				@Override
-				protected FilterResults performFiltering(CharSequence constraint) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-
-				@Override
-				protected void publishResults(CharSequence constraint,
-						FilterResults results) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-			};
-			
-		}
-	*/	
 		
+		
+		@Override
+		public int getViewTypeCount() {                 
+
+		    return 2;
+		}
+
+		@Override
+		public int getItemViewType(int position) {
+
+		    if(position == 0){
+		    	return 0;
+		    } else {
+		    	return 1;
+		    }
+		}
+
 
 	}
 	
-	MyCustomAdapter adapter;
+	SearchFieldAndCursorAdapter adapter;
 	MergeCursor projectPlantsCursor;
 	MergeCursor allPlantsCursor;
 	
@@ -171,13 +135,11 @@ public class PlantSelectorActivity extends BaseActivity {
 		return matrix;
 	}
 	
-	private MergeCursor getProjectPlantsCursor(){
+	private MergeCursor getProjectPlantsCursor(CharSequence constraint){
 		// TODO put this into a static method
 		Cursor projectPlantsCursor = Observer.plantsListDatabase.query("plist", 
 				new String[] { "rowid _id", "taxon", "common", "photoid" }, 
-				null, null, null, null, null); 
-
-		projectPlantsCursor.moveToFirst();
+				"taxon like ?", new String[] { constraint.toString()+"%" }, null, null, null); 
 
 		while(projectPlantsCursor.moveToNext()){
 			Drawable plantThumbnail;
@@ -210,6 +172,7 @@ public class PlantSelectorActivity extends BaseActivity {
 	
 	String searchText;
 	
+
 	private TextWatcher filterTextWatcher = new TextWatcher() {
 
 	    public void afterTextChanged(Editable s) {
@@ -236,12 +199,23 @@ public class PlantSelectorActivity extends BaseActivity {
 		final ListView lv = (ListView)findViewById(R.id.plantSelectionList);
 		
 		
-		projectPlantsCursor = getProjectPlantsCursor();
+		projectPlantsCursor = getProjectPlantsCursor("");
 		allPlantsCursor = getAllPlantsCursor();
 		
-		adapter = new MyCustomAdapter(this, projectPlantsCursor);
+		adapter = new SearchFieldAndCursorAdapter(this, projectPlantsCursor);
         lv.setAdapter(adapter);
 		
+        
+        adapter.setFilterQueryProvider(new FilterQueryProvider() {
+			public Cursor runQuery(CharSequence constraint) {
+				// Search for states whose names begin with the specified letters.
+				//Cursor cursor = database.query("streets", new String[] { "rowid _id", "street"}, selection, selectionArgs, groupBy, having, orderBy, limit)
+				//database.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit)
+				Cursor cursor =  getProjectPlantsCursor(constraint);
+						
+				return cursor;
+			}
+		});
 		
 		
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -251,8 +225,8 @@ public class PlantSelectorActivity extends BaseActivity {
 					long arg3) {
 
 				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
-				adapter.c.moveToPosition(arg2);
-				intent.putExtra(Observer.NEW_PLANT_TAXON, adapter.c.getString(1) );
+				adapter.getCursor().moveToPosition(arg2);
+				intent.putExtra(Observer.NEW_PLANT_TAXON, adapter.getCursor().getString(1) );
 				setResult(RESULT_OK, intent);
 				finish();
 
@@ -294,10 +268,10 @@ public class PlantSelectorActivity extends BaseActivity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if(checkedId == R.id.project_plants_radio){
-					adapter = new MyCustomAdapter(getBaseContext(), projectPlantsCursor);
+					adapter = new SearchFieldAndCursorAdapter(getBaseContext(), projectPlantsCursor);
 					lv.setAdapter(adapter);				
 				} else {
-					adapter = new MyCustomAdapter(getBaseContext(), allPlantsCursor);
+					adapter = new SearchFieldAndCursorAdapter(getBaseContext(), allPlantsCursor);
 					lv.setAdapter(adapter);	
 				}
 				lv.invalidate();

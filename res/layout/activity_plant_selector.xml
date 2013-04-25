@@ -9,14 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".PlantSelectorActivity" >
 
-    <Button
-        android:id="@+id/unknown_button"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Unknown" >
-        
-    </Button>
-    
+
     <ListView
         android:id="@+id/plantSelectionList"
         android:layout_width="match_parent"
@@ -67,5 +60,10 @@
             android:layout_height="wrap_content"
             android:text="@string/all_plants" />
     </RadioGroup>
-
+    
+    <Button
+        android:id="@+id/unknown_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Unknown" />
 </LinearLayout>

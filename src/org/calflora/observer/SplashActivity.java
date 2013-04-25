@@ -36,7 +36,7 @@ public class SplashActivity extends BaseActivity {
 		if(o != null){
 			
 			if (! o.getName().contentEquals("Independent") ){
-				imageView.setImageResource(R.drawable.logo);
+				imageView.setImageResource(R.drawable.poppy_logo);
 			}
 
 		} 
