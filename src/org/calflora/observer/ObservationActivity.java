@@ -1,9 +1,6 @@
 package org.calflora.observer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import net.winterroot.rhus.util.RHImage;
 
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Plant;
@@ -19,8 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;

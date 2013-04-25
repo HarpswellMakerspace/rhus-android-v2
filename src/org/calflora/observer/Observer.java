@@ -1,10 +1,6 @@
 package org.calflora.observer;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import net.smart_json_database.InitJSONDatabaseExcepiton;
 import net.smart_json_database.JSONDatabase;

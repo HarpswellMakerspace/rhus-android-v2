@@ -1,57 +1,41 @@
 package org.calflora.observer;
 
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-
-
-import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
-import net.winterroot.rhus.util.DWHostUnreachableException;
 
 import org.calflora.observer.api.APIResponseOrganization;
 import org.calflora.observer.api.APIResponseOrganizations;
-import org.calflora.observer.api.APIResponseSignIn;
-import org.calflora.observer.api.APIResponseUpload;
 import org.calflora.observer.api.IdNameItem;
 import org.calflora.observer.model.Organization;
-import org.calflora.observer.model.Project;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.octo.android.robospice.exception.NoNetworkException;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.request.simple.SmallBinaryRequest;
 import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceRequest;
-
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class OrganizationsActivity extends ApiActivity {
