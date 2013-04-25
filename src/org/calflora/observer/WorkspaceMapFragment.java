@@ -10,6 +10,7 @@ import org.json.JSONException;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -22,9 +23,11 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.VisibleRegion;
 
 import android.location.LocationListener;
 import android.view.LayoutInflater;
@@ -42,6 +45,7 @@ import android.widget.Toast;
 
 public class WorkspaceMapFragment extends MapFragment {
 	
+	private static final String PREFS_NAME = null;
 	private GoogleMap map;
 	private LocationManager locationManager;
 	private String provider;
@@ -50,6 +54,17 @@ public class WorkspaceMapFragment extends MapFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//Clear saved span
+	    SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME,0);
+        SharedPreferences.Editor editor = settings.edit();
+        // Necessary to clear first if we save preferences onPause. 
+        editor.clear();
+        editor.putFloat("left", 0);
+        editor.putFloat("top", 0);
+        editor.putFloat("right", 0);
+        editor.putFloat("bottom", 0);
+        editor.commit();
 	}
 
 	@Override
@@ -104,23 +119,78 @@ public class WorkspaceMapFragment extends MapFragment {
 
 			// Custom offline layer.
 			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
-			
+
 			// Custom offline layer.
 			//TileOverlayOptions tp = new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "true_marble_california"));
 			//map.addTileOverlay(tp);
 
-			LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
-			// -119.784,37.6747 Yosemite
-			latLng = new LatLng(37.6747, -119.784);
-			map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
-
 			addMarkersFromDatabase();
+			
 		} else {
 			Observer.toast("Google Maps Not Available", getActivity());
 		}
 	}
 
 	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		VisibleRegion vr = map.getProjection().getVisibleRegion();
+		double left = vr.latLngBounds.southwest.longitude;
+		double top = vr.latLngBounds.northeast.latitude;
+		double right = vr.latLngBounds.northeast.longitude;
+		double bottom = vr.latLngBounds.southwest.latitude;
+		
+	    SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME,0);
+        SharedPreferences.Editor editor = settings.edit();
+        // Necessary to clear first if we save preferences onPause. 
+        editor.clear();
+        editor.putFloat("left", (float) left);
+        editor.putFloat("top", (float) top);
+        editor.putFloat("right", (float) right);
+        editor.putFloat("bottom", (float) bottom);
+        editor.commit();
+	}
+
+	
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity() ) ){
+
+		    SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME,0);
+		    float left = settings.getFloat("left", 0);
+		    float top = settings.getFloat("top", 0);
+		    float right = settings.getFloat("right", 0);
+		    float bottom = settings.getFloat("bottom", 0);
+
+		    if(left != 0 && top != 0 && right != 0 && bottom != 0){
+		    	// if we saved a bounds, use it.
+		    	LatLng southWest = new LatLng(bottom, left);
+		    	LatLng northEast = new LatLng(top, right);
+		    	LatLngBounds latLngBounds = new LatLngBounds(southWest, northEast);
+		    	map.moveCamera( CameraUpdateFactory.newLatLngBounds(latLngBounds, 0) );
+		    	
+		    } else if(Observer.instance.getLastLocation() != null){	
+				//if we have a geofix, move the current users last known locatioin
+				Location lc = Observer.instance.getLastLocation();
+				LatLng latLng = new LatLng(lc.getLatitude(), lc.getLongitude());
+				map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
+
+			} else {
+				// and if we don't have either, move to the project center
+				// -119.784,37.6747 Yosemite
+				LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
+				latLng = new LatLng(37.6747, -119.784);
+				map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
+			}
+		}
+
+
+	}
 
 	public void addMarkersFromDatabase(){
 		
