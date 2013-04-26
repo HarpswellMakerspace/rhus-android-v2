@@ -17,9 +17,9 @@
         android:layout_height="60dp"
         android:hint="Search"
         android:inputType="text"
-        android:maxLines="1"
         android:singleLine="true"
-        android:imeOptions="actionDone" >
+        android:imeOptions="actionDone"
+      >
         
         <requestFocus />
     </EditText>

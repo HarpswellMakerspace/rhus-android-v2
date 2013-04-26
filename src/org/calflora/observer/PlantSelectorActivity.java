@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
@@ -42,6 +43,10 @@ public class PlantSelectorActivity extends BaseActivity {
 	Cursor c;
 	Map<String, Drawable> plantImages = new HashMap<String, Drawable>();
 	Boolean scientificName = true;
+	public View searchView;
+	SearchFieldAndCursorAdapter adapter;
+	MergeCursor projectPlantsCursor;
+	MergeCursor allPlantsCursor;
 	
 	
 	class SearchFieldAndCursorAdapter extends CursorAdapter {
@@ -51,6 +56,12 @@ public class PlantSelectorActivity extends BaseActivity {
 		public SearchFieldAndCursorAdapter(Context context, Cursor c) {
 			super(context, c);
 			mInflater=LayoutInflater.from(context);
+			
+			searchView=mInflater.inflate(R.layout.list_item_search,null,false); 
+			
+			EditText searchField = (EditText) searchView.findViewById(R.id.search_field);
+			searchField.setText(searchText);
+			searchField.addTextChangedListener(filterTextWatcher);
 		}
 
 
@@ -90,13 +101,9 @@ public class PlantSelectorActivity extends BaseActivity {
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
 			View view;
 			if(getItemViewType(cursor.getPosition()) == 0){
-				view=mInflater.inflate(R.layout.list_item_search,parent,false); 
-				
-				EditText searchField = (EditText) view.findViewById(R.id.search_field);
-				searchField.setText(searchText);
-				searchField.addTextChangedListener(filterTextWatcher);
+				view = searchView;
 			} else {
-				view=mInflater.inflate(R.layout.list_item_single_image,parent,false); 
+				view = mInflater.inflate(R.layout.list_item_single_image,parent,false); 
 			}	
 	
 			return view;
@@ -105,7 +112,6 @@ public class PlantSelectorActivity extends BaseActivity {
 		
 		@Override
 		public int getViewTypeCount() {                 
-
 		    return 2;
 		}
 
@@ -120,11 +126,20 @@ public class PlantSelectorActivity extends BaseActivity {
 		}
 
 
+		@Override
+		public void changeCursor(Cursor cursor) {
+			super.changeCursor(cursor);
+			/*
+			searchView.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
+			*/
+		}
+		
+
 	}
 	
-	SearchFieldAndCursorAdapter adapter;
-	MergeCursor projectPlantsCursor;
-	MergeCursor allPlantsCursor;
+
 	
 	
 	private MatrixCursor getSearchFieldCursor(){

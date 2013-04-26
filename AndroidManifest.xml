@@ -145,8 +145,9 @@
             android:name="org.calflora.observer.PlantSelectorActivity"
             android:label="@string/title_activity_plant_selector"
             android:noHistory="true"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:screenOrientation="portrait"
+            
              >
             <intent-filter>
                 <action android:name="org.calflora.observer.action.PLANTSELECTOR" />
