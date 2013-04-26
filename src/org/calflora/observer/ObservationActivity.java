@@ -112,18 +112,27 @@ public class ObservationActivity extends Activity implements
             					return;
             				}
             				storingObservation = true;
-            				            				
-            				try {
-            					Observer.currentObservation.storeObservation();
-            				} catch (JSONException e1) {
-            					Observer.toast("JSON Failed", getApplicationContext());
-            					e1.printStackTrace();
-            					return;
-            				}
-
-            				done();
-
+            				          
         				}
+        				
+        				//Read data from fragments and store.
+        				/*
+        				 "locdesc":"between the big rock and the oak tree",
+        				  "Habitat":"riparian",
+        				  "Notes":"seems to be spreading downhill",
+        				*/
+        				
+        				
+        				
+        				try {
+        					Observer.currentObservation.storeObservation();
+        				} catch (JSONException e1) {
+        					Observer.toast("JSON Failed", getApplicationContext());
+        					e1.printStackTrace();
+        					return;
+        				}
+
+        				done();
 
         			}
         		}
