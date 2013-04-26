@@ -4,80 +4,80 @@
     android:paddingLeft="0dp"
     android:paddingRight="10dp" >
 
-	<Button
-	    android:id="@+id/plant_photo_image_button"
-	    android:layout_width="140dp"
-	    android:layout_height="120dp"
-	    android:layout_alignParentTop="true"
-	    android:layout_marginLeft="15dp"
-	    android:layout_marginTop="10dp"
-	    android:minHeight="100dp"
-	    android:minWidth="100dp"
-	    android:scaleType="center"
-	    android:text="@string/plant_image_button_add_photo" />
+    <Button
+        android:id="@+id/plant_photo_image_button"
+        android:layout_width="140dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:minHeight="100dp"
+        android:minWidth="100dp"
+        android:scaleType="center"
+        android:text="@string/plant_image_button_add_photo" />
 
-	<LinearLayout
-	    android:id="@+id/observation_map_layout"
-	    android:layout_width="140dp"
-	    android:layout_height="120dp"
-	    android:layout_alignTop="@+id/plant_photo_image_button"
-	    android:layout_toRightOf="@+id/plant_photo_image_button" >
-	</LinearLayout>
+    <LinearLayout
+        android:id="@+id/observation_map_layout"
+        android:layout_width="140dp"
+        android:layout_height="120dp"
+        android:layout_alignTop="@+id/plant_photo_image_button"
+        android:layout_toRightOf="@+id/plant_photo_image_button" >
+    </LinearLayout>
 
-	<TextView
-	    android:id="@+id/textView1"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/plant_photo_image_button"
-	    android:layout_below="@+id/plant_photo_image_button"
-	    android:layout_marginTop="10dp"
-	    android:text="Location Description"
-	    android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/location_description_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/plant_photo_image_button"
+        android:layout_below="@+id/plant_photo_image_button"
+        android:layout_marginTop="10dp"
+        android:text="Location Description"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-	<EditText
-	    android:id="@+id/selector_search_field"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/textView1"
-	    android:layout_below="@+id/textView1"
-	    android:ems="10"
-	    android:singleLine="true"
-	    android:imeOptions="actionDone" >
+    <EditText
+        android:id="@+id/observation_location_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/location_description_text_view"
+        android:layout_below="@+id/location_description_text_view"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:singleLine="true" >
 
-	    <requestFocus />
-	</EditText>
+        <requestFocus />
+    </EditText>
 
-	<EditText
-	    android:id="@+id/editText3"
-	    android:layout_width="wrap_content"
-	    android:layout_height="100dp"
-	    android:layout_alignLeft="@+id/editText2"
-	    android:layout_below="@+id/editText2"
-	    android:layout_marginTop="10dp"
-	    android:ems="10"
-	    android:hint="Notes"
-	    android:singleLine="true"
-	    android:imeOptions="actionDone"
-	    android:inputType="textMultiLine" />
+    <EditText
+        android:id="@+id/observation_habitat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/habitat_text_view"
+        android:layout_below="@+id/habitat_text_view"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:singleLine="true" />
 
-	<EditText
-	    android:id="@+id/editText2"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/textView2"
-	    android:layout_below="@+id/textView2"
-	    android:singleLine="true"
-	    android:imeOptions="actionDone"
-	    android:ems="10" />
+    <TextView
+        android:id="@+id/habitat_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/observation_location_description"
+        android:layout_below="@+id/observation_location_description"
+        android:layout_marginTop="10dp"
+        android:text="Habitat"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-	<TextView
-	    android:id="@+id/textView2"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/selector_search_field"
-	    android:layout_below="@+id/selector_search_field"
-	    android:layout_marginTop="10dp"
-	    android:text="Habitat"
-	    android:textAppearance="?android:attr/textAppearanceSmall" />
+    <EditText
+        android:id="@+id/observation_notes"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignLeft="@+id/observation_habitat"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/observation_habitat"
+        android:ems="10"
+        android:hint="Notes"
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine"
+        android:singleLine="true" />
 
 </RelativeLayout>

@@ -241,7 +241,10 @@ public class ObservationActivity extends Activity implements
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent)
 	{
-		if(!(resultCode == Activity.RESULT_OK)){
+		if(resultCode == Activity.RESULT_CANCELED){
+			return;
+			
+		} else if(!(resultCode == Activity.RESULT_OK)){
 			Observer.toast("Error getting plant: result code is not OK", this);
 			return;
 		}
