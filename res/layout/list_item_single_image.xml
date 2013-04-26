@@ -10,7 +10,7 @@
            android:layout_height="60dp"
            android:layout_gravity="center_vertical"
            android:background="@color/main_theme_color"
-           android:scaleType="center"
+           android:scaleType="centerInside"
            android:src="@drawable/cancel" />
     
        <TextView

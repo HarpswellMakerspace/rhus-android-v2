@@ -35,7 +35,7 @@
 	    android:textAppearance="?android:attr/textAppearanceSmall" />
 
 	<EditText
-	    android:id="@+id/editText1"
+	    android:id="@+id/selector_search_field"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignLeft="@+id/textView1"
@@ -74,8 +74,8 @@
 	    android:id="@+id/textView2"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/editText1"
-	    android:layout_below="@+id/editText1"
+	    android:layout_alignLeft="@+id/selector_search_field"
+	    android:layout_below="@+id/selector_search_field"
 	    android:layout_marginTop="10dp"
 	    android:text="Habitat"
 	    android:textAppearance="?android:attr/textAppearanceSmall" />

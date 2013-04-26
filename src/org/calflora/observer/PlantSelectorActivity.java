@@ -16,6 +16,7 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -43,11 +44,10 @@ public class PlantSelectorActivity extends BaseActivity {
 	Cursor c;
 	Map<String, Drawable> plantImages = new HashMap<String, Drawable>();
 	Boolean scientificName = true;
-	public View searchView;
 	SearchFieldAndCursorAdapter adapter;
-	MergeCursor projectPlantsCursor;
-	MergeCursor allPlantsCursor;
-	
+
+	SQLiteDatabase selectedDatabase;
+	CharSequence cursorConstraint;
 	
 	class SearchFieldAndCursorAdapter extends CursorAdapter {
 
@@ -56,21 +56,18 @@ public class PlantSelectorActivity extends BaseActivity {
 		public SearchFieldAndCursorAdapter(Context context, Cursor c) {
 			super(context, c);
 			mInflater=LayoutInflater.from(context);
-			
-			searchView=mInflater.inflate(R.layout.list_item_search,null,false); 
-			
-			EditText searchField = (EditText) searchView.findViewById(R.id.search_field);
-			searchField.setText(searchText);
-			searchField.addTextChangedListener(filterTextWatcher);
+		
 		}
-
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			
+			/*
+			 * This was part of the search field within listview attempts
 			if(getItemViewType(cursor.getPosition()) == 0){
 				return;
 			}
+			*/
 			
 			// TODO Auto-generated method stub
 			 TextView plantName =(TextView)view.findViewById(R.id.col1);
@@ -100,16 +97,21 @@ public class PlantSelectorActivity extends BaseActivity {
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
 			View view;
+			/*
 			if(getItemViewType(cursor.getPosition()) == 0){
 				view = searchView;
 			} else {
 				view = mInflater.inflate(R.layout.list_item_single_image,parent,false); 
-			}	
+			}	*/
+			
+			view = mInflater.inflate(R.layout.list_item_single_image,parent,false); 
+
 	
 			return view;
 		}
 		
 		
+		/*
 		@Override
 		public int getViewTypeCount() {                 
 		    return 2;
@@ -124,18 +126,7 @@ public class PlantSelectorActivity extends BaseActivity {
 		    	return 1;
 		    }
 		}
-
-
-		@Override
-		public void changeCursor(Cursor cursor) {
-			super.changeCursor(cursor);
-			/*
-			searchView.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
-			*/
-		}
-		
+		*/
 
 	}
 	
@@ -150,40 +141,27 @@ public class PlantSelectorActivity extends BaseActivity {
 		return matrix;
 	}
 	
-	private MergeCursor getProjectPlantsCursor(CharSequence constraint){
-		// TODO put this into a static method
-		Cursor projectPlantsCursor = Observer.plantsListDatabase.query("plist", 
-				new String[] { "rowid _id", "taxon", "common", "photoid" }, 
-				"taxon like ?", new String[] { constraint.toString()+"%" }, null, null, null); 
-
-		while(projectPlantsCursor.moveToNext()){
-			Drawable plantThumbnail;
-			try {
-				plantThumbnail = Observer.instance.getThumbnailForPlant(projectPlantsCursor.getString(3));
-				plantImages.put(projectPlantsCursor.getString(1), plantThumbnail);
-			} catch (IOException e) {
-			}
+	
+	private MergeCursor getPlantsCursor(SQLiteDatabase database, CharSequence constraint, Boolean scientificName){
+		String selection;
+		String column;
+		if(scientificName){
+			column = "taxon";
+		} else {
+			column = "common";
 		}
+		selection =  column+" like ? OR "+column+" like ?";
 
-		Cursor [] cursors = {getSearchFieldCursor(),projectPlantsCursor};
-		MergeCursor mergedCursor = new MergeCursor( cursors );
+		String [] selectionArgs = new String [] { constraint.toString()+"%", "% "+constraint.toString()+"%" };
 
-		return mergedCursor;
-	
-	}
-	
-	private MergeCursor getAllPlantsCursor(){
-		Cursor cursor = Observer.allPlantsListDatabase.query("plist", 
+		Cursor cursor = database.query("plist", 
 				new String[] { "rowid _id", "taxon", "common", "photoid" }, 
-				null, null, null, null, null); 
-
-		cursor.moveToFirst();
-		Cursor [] cursors = {getSearchFieldCursor(),cursor};
+				selection, selectionArgs, null, null, column + " asc"); 
+		Cursor [] cursors = {/*getSearchFieldCursor(), */ cursor};
 		MergeCursor mergedCursor = new MergeCursor( cursors );
-
 		return mergedCursor;
-	
 	}
+	
 	
 	String searchText;
 	
@@ -200,10 +178,15 @@ public class PlantSelectorActivity extends BaseActivity {
 	    public void onTextChanged(CharSequence s, int start, int before,
 	            int count) {
 	    	searchText = String.valueOf(s);
-	        adapter.getFilter().filter(s);
+	    	cursorConstraint = searchText;
+	    	filter();
 	    }
 
 	};
+	
+	private void filter(){
+        adapter.getFilter().filter(cursorConstraint);
+	}
 
 	
 	@Override
@@ -213,20 +196,21 @@ public class PlantSelectorActivity extends BaseActivity {
 
 		final ListView lv = (ListView)findViewById(R.id.plantSelectionList);
 		
+		EditText searchField = (EditText) findViewById(R.id.selector_search_field);
+		searchField.setText(searchText);
+		searchField.addTextChangedListener(filterTextWatcher);
 		
-		projectPlantsCursor = getProjectPlantsCursor("");
-		allPlantsCursor = getAllPlantsCursor();
-		
-		adapter = new SearchFieldAndCursorAdapter(this, projectPlantsCursor);
+		selectedDatabase = Observer.plantsListDatabase;
+		MergeCursor plantsCursor= getPlantsCursor( selectedDatabase, "", true);
+
+		adapter = new SearchFieldAndCursorAdapter(this, plantsCursor);
         lv.setAdapter(adapter);
 		
         
         adapter.setFilterQueryProvider(new FilterQueryProvider() {
 			public Cursor runQuery(CharSequence constraint) {
-				// Search for states whose names begin with the specified letters.
-				//Cursor cursor = database.query("streets", new String[] { "rowid _id", "street"}, selection, selectionArgs, groupBy, having, orderBy, limit)
-				//database.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit)
-				Cursor cursor =  getProjectPlantsCursor(constraint);
+				
+				Cursor cursor = getPlantsCursor( selectedDatabase, constraint, scientificName);
 						
 				return cursor;
 			}
@@ -283,14 +267,14 @@ public class PlantSelectorActivity extends BaseActivity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if(checkedId == R.id.project_plants_radio){
-					adapter = new SearchFieldAndCursorAdapter(getBaseContext(), projectPlantsCursor);
-					lv.setAdapter(adapter);				
+					selectedDatabase = Observer.plantsListDatabase;
+					adapter.changeCursor(getPlantsCursor(selectedDatabase, cursorConstraint, scientificName));	
 				} else {
-					adapter = new SearchFieldAndCursorAdapter(getBaseContext(), allPlantsCursor);
-					lv.setAdapter(adapter);	
+					selectedDatabase = Observer.allPlantsListDatabase;
+					adapter.changeCursor(getPlantsCursor(selectedDatabase, cursorConstraint, scientificName));	
 				}
 				lv.invalidate();
-				//adapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();
 				
 			}
 		});

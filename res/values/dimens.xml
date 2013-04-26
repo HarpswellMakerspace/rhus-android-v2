@@ -14,5 +14,6 @@
     <dimen name="text_size_plant_observation_plant_name">20dp</dimen>
     <dimen name="tab_icon_margin_top">10dp</dimen>
     <dimen name="chooser_header_text_size">24dp</dimen>
+    <dimen name="zero_margin">0dp</dimen>
 
 </resources>
