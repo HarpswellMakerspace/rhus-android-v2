@@ -89,4 +89,12 @@
     <!-- version-tag: 1 -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
+
+    <target name="update.build.number">
+      <xmltask source="AndroidManifest.xml" dest="AndroidManifest.xml">
+        <replace path="manifest/@android:versionCode"
+          withText="${buildnum}"/>
+      </xmltask>
+    </target>
+
 </project>
