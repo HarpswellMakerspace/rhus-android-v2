@@ -129,16 +129,8 @@ public class ObservationSummaryFragment extends Fragment {
 
 				}
 
-				Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-				/*
-				if (hasImageCaptureBug()) {
-					i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File("/sdcard/tmp")));
-				} else {
-					Uri uri = android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI;
-					i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
-				}
-				*/	
-				startActivityForResult(i, CAPTURE_PHOTO); 
+				Intent intent = new Intent("org.calflora.observer.action.CAPTUREPHOTO");
+				startActivityForResult(intent, CAPTURE_PHOTO);  
 
 
 

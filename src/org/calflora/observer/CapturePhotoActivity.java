@@ -192,6 +192,7 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 		try
 		{
 			Camera.Parameters p = mCamera.getParameters();
+			/*
 			p.setPreviewSize(w, h);
 			Log.d(TAG, "surface: get sizes:");
 
