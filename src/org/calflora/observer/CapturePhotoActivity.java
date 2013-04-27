@@ -192,7 +192,7 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 		try
 		{
 			Camera.Parameters p = mCamera.getParameters();
-			/*
+			
 			p.setPreviewSize(w, h);
 			Log.d(TAG, "surface: get sizes:");
 
@@ -208,7 +208,8 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 					//Log.d(TAG, i+ " camera size: w: " +cs.width +" h: " + cs.height);
 
 
-					if (cs.width > 500 && cs.width <= 1024 && cs.height > 380 && cs.height <= 768)
+					//if (cs.width >= 1200 && cs.width <= 1024 && cs.height > 380 && cs.height <= 768)
+					if (cs.height >= 1200 && cs.height <= 1400)
 					{
 						best = cs;
 					}
@@ -226,7 +227,7 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 			
 			//This is meant to fix the rotation issues
 	        Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-	        /*
+	        
 			if(display.getRotation() == Surface.ROTATION_0)
 	        {
 	            p.setPreviewSize(h, w);                           
@@ -248,7 +249,7 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 	            p.setPreviewSize(w, h);
 	            mCamera.setDisplayOrientation(180);
 	        }
-	        */
+	        
 
 			
 			mCamera.setParameters(p);

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import net.winterroot.rhus.util.DWUtilities;
+import net.winterroot.rhus.util.RHImage;
 
 import org.calflora.map.OfflineMapTileProvider;
 import org.calflora.observer.model.Observation;
@@ -17,6 +18,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -174,151 +176,50 @@ public class ObservationSummaryFragment extends Fragment {
 			case 1: //CAPTURE_PHOTO
 				if (resultCode == Activity.RESULT_OK)
 				{
-					
-					// Solution from : http://kevinpotgieter.wordpress.com/2011/03/30/null-intent-passed-back-on-samsung-galaxy-tab/
 
-					// Describe the columns you'd like to have returned. Selecting from the Thumbnails location gives you both the Thumbnail Image ID, as well as the original image ID
-					String[] projection = {
-							MediaStore.Images.Thumbnails._ID,  // The columns we want
-							MediaStore.Images.Thumbnails.IMAGE_ID,
-							MediaStore.Images.Thumbnails.KIND,
-							MediaStore.Images.Thumbnails.DATA};
-					String selection = MediaStore.Images.Thumbnails.KIND + "="  + // Select only mini's
-							MediaStore.Images.Thumbnails.MINI_KIND;
-
-					String sort = MediaStore.Images.Thumbnails._ID + " DESC";
-
-					// From stack overflow: At the moment, this is a bit of a hack, as I'm returning ALL images, and just taking the latest one. There is a better way to narrow this down I think with a WHERE clause which is currently the selection variable
-					// TODO should use a Loader
-					Cursor myCursor = getActivity().managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, selection, null, sort);
-
-					long imageId = 0l;
-					long thumbnailImageId = 0l;
-					String thumbnailPath = "";
-
-					try{
-						myCursor.moveToFirst();
-						imageId = myCursor.getLong(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.IMAGE_ID));
-						thumbnailImageId = myCursor.getLong(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID));
-						thumbnailPath = myCursor.getString(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA));
+					Bundle data =  intent.getExtras();
+					if(data == null){
+						Observer.toast("Error capturing image", getActivity());
+						return;
 					}
-					finally{myCursor.close();}
 
-					//Create new Cursor to obtain the file Path for the large image
-
-					String[] largeFileProjection = {
-							MediaStore.Images.ImageColumns._ID,
-							MediaStore.Images.ImageColumns.DATA
-					};
-
-					String largeFileSort = MediaStore.Images.ImageColumns._ID + " DESC";
-					myCursor = getActivity().managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, largeFileProjection, null, null, largeFileSort);
-					String largeImagePath = "";
-
-					try{
-						myCursor.moveToFirst();
-
-						//This will actually give you the file path location of the image.
-						largeImagePath = myCursor.getString(myCursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATA));
-					}
-					finally{myCursor.close();}
-					// These are the two URI's you'll be interested in. They give you a handle to the actual images
-					Uri uriLargeImage = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(imageId));
-					Uri uriThumbnailImage = Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, String.valueOf(thumbnailImageId));
-
-					// I've left out the remaining code, as all I do is assign the URI's to my own objects anyways...
-
-					String photoFileName = DWUtilities.getRealPathFromURI(getActivity(), uriLargeImage);
-					byte[] plantImageBytes = Observation.createFullImageBytes(photoFileName);
-					
-					// MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), photoFileName, "Image from Calflora", "Image from Calflora");
-					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); 
+					String photoFileName = data.getString(CapturePhotoActivity.PHOTO_FILE_NAME);		
 
 					Button photoButton = (Button) getView().findViewById(R.id.plant_photo_image_button);
 
-					/*
-					if (photoButton != null)
-						photoButton.setBackgroundDrawable(null);// free mem from last photo
-
-					try {
-						String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
-						if(thumbnailPath != null){
-							Drawable d = Drawable.createFromPath(thumbnailPath);
-							if(d != null){
-								photoButton.setBackgroundDrawable(d);
-							}
-						}
-					} catch (FileNotFoundException e){
-						// Do nothing
-					}
-					*/
-					
-					photoButton.setText("");
-
-
-				/*
-					Uri u = null;
-					if (hasImageCaptureBug()) {
-						File fi = new File("/sdcard/tmp");
-						try {
-							u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), fi.getAbsolutePath(), null, null));
-							if (!fi.delete()) {
-								Log.i("logMarker", "Failed to delete " + fi);
-							}
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
-						}
-					} else {
-						u = intent.getData();
-					}
-					if( u == null) {
-						throw new Exception("Image not found");
-					}
-
-					String photoFileName = DWUtilities.getRealPathFromURI(getActivity(), u);
-
-			        //Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), u);
-
-					Button photoButton = (Button) getView().findViewById(R.id.plant_photo_image_button);
-
-					//byte[] thumbBytes = Observation.createThubmnailBytes(photo);
-					byte[] plantImageBytes = Observation.createFullImageBytes(photoFileName);
-
+					//byte[] thumbBytes = Observation.createThubmnailBytes(photoFileName);
+					Bitmap bitmap = BitmapFactory.decodeFile(photoFileName);
+					bitmap = RHImage.rotateImage(bitmap);
+					byte[] plantImageBytes = Observation.createFullImageBytes(bitmap);
 
 					//Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
 					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); // TODO this is just for testing
-
-					MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), photoFileName, "Image from Calflora", "Image from Calflora");
-
+					/*
 					if (photoButton != null)
 						photoButton.setBackgroundDrawable(null);// free mem from last photo
-
-					try {
-						String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
-						if(thumbnailPath != null){
-							Drawable d = Drawable.createFromPath(thumbnailPath);
-							if(d != null){
-								photoButton.setBackgroundDrawable(d);
-							}
+					String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
+					if(thumbnailPath != null){
+						Drawable d = Drawable.createFromPath(thumbnailPath);
+						if(d != null){
+							photoButton.setBackgroundDrawable(d);
 						}
-					} catch (FileNotFoundException e){
-						// Do nothing
 					}
-				 */
+					 */
+					photoButton.setText("");
 
-				
+				}
+				break;		
 
 			}
-			break;
+
+		}
+
+		catch (Throwable ex)
+		{
+			ex.printStackTrace();
+			Observer.toast("trouble saving file: " + ex, getActivity());
 		}
 	}
-	catch (Throwable ex)
-	{
-		ex.printStackTrace();
-		Observer.toast("trouble saving file: " + ex, getActivity());
-	}
 }
 
 
-
-}
