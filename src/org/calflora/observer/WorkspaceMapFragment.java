@@ -108,7 +108,7 @@ public class WorkspaceMapFragment extends MapFragment {
 			map.setMyLocationEnabled(true);
 
 			// Custom offline layer.
-			//map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
 
 			// Custom offline layer.
 			//TileOverlayOptions tp = new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "true_marble_california"));

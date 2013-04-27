@@ -15,5 +15,6 @@
     <dimen name="tab_icon_margin_top">10dp</dimen>
     <dimen name="chooser_header_text_size">24dp</dimen>
     <dimen name="zero_margin">0dp</dimen>
+    <dimen name="padding10">10dp</dimen>
 
 </resources>

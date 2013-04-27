@@ -71,21 +71,21 @@ public class Observation {
 		return o;
 
 	}
-	/*
+	
 	public static byte[] createThubmnailBytes(String photoFileName){
 
 		Bitmap thumb = RHImage.resizeBitMapImage(photoFileName, 140, 120, 90);
-		return Observation.createThumbnail
+		return Observation.createThumbnailBytes(thumb);
 	}
 
 	
 	public static byte[] createThumbnailBytes(Bitmap bitmap){
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
 		byte[] thumbBytes = stream.toByteArray();
 		return thumbBytes;
 	}
-	*/
+	
 	
 	
 	public static byte[] createFullImageBytes(Bitmap image){

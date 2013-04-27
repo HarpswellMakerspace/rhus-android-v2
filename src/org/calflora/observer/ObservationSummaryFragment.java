@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -105,7 +106,7 @@ public class ObservationSummaryFragment extends Fragment {
 		map.setMyLocationEnabled(true);
 
 		// Custom offline layer.
-		// map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+		map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
 
 		LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
 		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
@@ -185,26 +186,28 @@ public class ObservationSummaryFragment extends Fragment {
 
 					String photoFileName = data.getString(CapturePhotoActivity.PHOTO_FILE_NAME);		
 
+					ImageView photoThumb = (ImageView) getView().findViewById(R.id.plant_image_thumbnail);
 					Button photoButton = (Button) getView().findViewById(R.id.plant_photo_image_button);
 
-					//byte[] thumbBytes = Observation.createThubmnailBytes(photoFileName);
 					Bitmap bitmap = BitmapFactory.decodeFile(photoFileName);
-					bitmap = RHImage.rotateImage(bitmap);
-					byte[] plantImageBytes = Observation.createFullImageBytes(bitmap);
+					Bitmap rotatedBitmap = RHImage.rotateImage(bitmap);
+					byte[] plantImageBytes = Observation.createFullImageBytes(rotatedBitmap);
+					byte[] thumbBytes = Observation.createThumbnailBytes(rotatedBitmap);
 
-					//Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
+
+					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
 					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); // TODO this is just for testing
-					/*
+					
 					if (photoButton != null)
-						photoButton.setBackgroundDrawable(null);// free mem from last photo
+						photoThumb.setImageDrawable(null);
 					String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
 					if(thumbnailPath != null){
 						Drawable d = Drawable.createFromPath(thumbnailPath);
 						if(d != null){
-							photoButton.setBackgroundDrawable(d);
+							photoThumb.setImageDrawable(d);
 						}
 					}
-					 */
+					 
 					photoButton.setText("");
 
 				}
