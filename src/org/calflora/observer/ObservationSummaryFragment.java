@@ -1,6 +1,12 @@
 package org.calflora.observer;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+import net.winterroot.rhus.util.DWUtilities;
+
 import org.calflora.map.OfflineMapTileProvider;
 import org.calflora.observer.model.Observation;
 
@@ -9,8 +15,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,6 +75,23 @@ public class ObservationSummaryFragment extends Fragment {
 	Boolean lockUI = false;
 	Object lock = new Object();
 	
+	
+	public boolean hasImageCaptureBug() {
+
+	    // list of known devices that have the bug
+	    ArrayList<String> devices = new ArrayList<String>();
+	    devices.add("android-devphone1/dream_devphone/dream");
+	    devices.add("generic/sdk/generic");
+	    devices.add("vodafone/vfpioneer/sapphire");
+	    devices.add("tmobile/kila/dream");
+	    devices.add("verizon/voles/sholes");
+	    devices.add("google_ion/google_ion/sapphire");
+
+	    return devices.contains(android.os.Build.BRAND + "/" + android.os.Build.PRODUCT + "/"
+	            + android.os.Build.DEVICE);
+
+	}
+	
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -75,7 +102,7 @@ public class ObservationSummaryFragment extends Fragment {
 		map.setMyLocationEnabled(true);
 	
 		// Custom offline layer.
-		map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+		// map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
 	    
 		LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
 		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
@@ -91,15 +118,26 @@ public class ObservationSummaryFragment extends Fragment {
 				
 				synchronized(lock) {
 
+					if(lockUI){
+						return;
+					}
+					
 					if(!lockUI){
 						lockUI = true;
-
-						Intent intent = new Intent("org.calflora.observer.action.CAPTUREPHOTO");
-						startActivityForResult(intent, CAPTURE_PHOTO);	
-
 					}
 
 				}
+						
+				Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+				if (hasImageCaptureBug()) {
+				    i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File("/sdcard/tmp")));
+				} else {
+					Uri uri = android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI;
+				    i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
+				}	
+				startActivityForResult(i, CAPTURE_PHOTO); 
+
+				
 				 
 			}
 		});
@@ -141,31 +179,56 @@ public class ObservationSummaryFragment extends Fragment {
 			case 1: //CAPTURE_PHOTO
 				if (resultCode == Activity.RESULT_OK)
 				{
-					Bundle data =  intent.getExtras();
-					if(data == null){
-						Observer.toast("Error capturing image", getActivity());
-						return;
+				
+					
+					Uri u = null;
+					if (hasImageCaptureBug()) {
+						File fi = new File("/sdcard/tmp");
+						try {
+							u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), fi.getAbsolutePath(), null, null));
+							if (!fi.delete()) {
+								Log.i("logMarker", "Failed to delete " + fi);
+							}
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+					} else {
+						u = intent.getData();
+					}
+					if( u == null) {
+						throw new Exception("Image not found");
 					}
 					
-					String photoFileName = data.getString(CapturePhotoActivity.PHOTO_FILE_NAME);		
+					String photoFileName = DWUtilities.getRealPathFromURI(getActivity(), u);
+					
+			        //Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), u);
 
 					Button photoButton = (Button) getView().findViewById(R.id.plant_photo_image_button);
 	
-					byte[] thumbBytes = Observation.createThubmnailBytes(photoFileName);
+					//byte[] thumbBytes = Observation.createThubmnailBytes(photo);
 					byte[] plantImageBytes = Observation.createFullImageBytes(photoFileName);
 					
-					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
+					
+					//Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
 					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); // TODO this is just for testing
+					
+					MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), photoFileName, "Image from Calflora", "Image from Calflora");
 					
 					if (photoButton != null)
 						photoButton.setBackgroundDrawable(null);// free mem from last photo
-					String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
-					if(thumbnailPath != null){
-						Drawable d = Drawable.createFromPath(thumbnailPath);
-						if(d != null){
-							photoButton.setBackgroundDrawable(d);
+					
+					try {
+						String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
+						if(thumbnailPath != null){
+							Drawable d = Drawable.createFromPath(thumbnailPath);
+							if(d != null){
+								photoButton.setBackgroundDrawable(d);
+							}
 						}
+					} catch (FileNotFoundException e){
+						// Do nothing
 					}
+					
 					photoButton.setText("");
 					
 					

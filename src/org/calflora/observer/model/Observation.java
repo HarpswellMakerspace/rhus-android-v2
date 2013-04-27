@@ -71,23 +71,37 @@ public class Observation {
 		return o;
 
 	}
-	
+	/*
 	public static byte[] createThubmnailBytes(String photoFileName){
 
 		Bitmap thumb = RHImage.resizeBitMapImage(photoFileName, 140, 120, 90);
+		return Observation.createThumbnail
+	}
+
+	
+	public static byte[] createThumbnailBytes(Bitmap bitmap){
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		byte[] thumbBytes = stream.toByteArray();
 		return thumbBytes;
 	}
+	*/
+	
+	
+	public static byte[] createFullImageBytes(Bitmap image){
 
-	public static byte[] createFullImageBytes(String photoFileName){
-
-		Bitmap image = BitmapFactory.decodeFile(photoFileName, null);
+		//image = RHImage.rotateImage(image);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		image.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+		image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		byte[] imageBytes = stream.toByteArray();
 		return imageBytes;
+		
+	}
+	
+	public static byte[] createFullImageBytes(String photoFileName){
+
+		Bitmap image = BitmapFactory.decodeFile(photoFileName);
+		return createFullImageBytes(image);
 		
 		/*
 		Bitmap image = RHImage.resizeBitMapImage(photoFileName, 1200, 1600, 90);

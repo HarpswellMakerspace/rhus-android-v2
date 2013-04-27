@@ -50,16 +50,6 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 		super.onCreate(savedInstanceState);
 
 
-		//testWrite();
-
-
-
-		/*if(!TagLocation.isLocationEnabled(this)){
-			this.setResult(WhatsInvasive.RESULT_LOCATION_DISABLED);
-			this.finish();
-			return;
-		}*/
-
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE); 
 		//this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -235,6 +225,7 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 			
 			//This is meant to fix the rotation issues
 	        Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+	        /*
 			if(display.getRotation() == Surface.ROTATION_0)
 	        {
 	            p.setPreviewSize(h, w);                           
@@ -256,6 +247,7 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 	            p.setPreviewSize(w, h);
 	            mCamera.setDisplayOrientation(180);
 	        }
+	        */
 
 			
 			mCamera.setParameters(p);

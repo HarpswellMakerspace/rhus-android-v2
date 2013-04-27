@@ -146,8 +146,6 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 	public SpringAndroidSpiceRequest<APIResponseUpload> getUploadRequest(
 			final Observation o, final Context context) {
 
-
-
 		Uri.Builder uriBuilder = Uri.parse( API_URI ).buildUpon();
 		//uriBuilder.appendQueryParameter( "token", Observer.settings.getString("APIKey", null) );
 		final String URI = Uri.decode(uriBuilder.build().toString());
@@ -183,8 +181,6 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 			@Override
 			public APIResponseUpload loadDataFromNetwork() throws Exception {
-
-	
 				
 				MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
 				parts.add("token", Observer.instance.getAPIKey());

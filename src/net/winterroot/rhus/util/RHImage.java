@@ -16,6 +16,20 @@ import android.util.Log;
 public class RHImage {
 
 	// Utility Functions
+	
+	public static Bitmap rotateImage(Bitmap bitmap){
+		Bitmap bitMapImage = null;
+		int orientation = 90;
+	    if(orientation > 0){
+       	 Matrix matrix = new Matrix();
+            matrix.postRotate(orientation);
+
+            bitMapImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+            		bitmap.getHeight(), matrix, true);	                   
+       }
+	   return bitMapImage;
+       
+	}
 
 	public static Bitmap getResizedBitmap(String filePath, int targetWidth, int targetHeight) {
 
