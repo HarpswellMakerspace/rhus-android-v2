@@ -184,7 +184,7 @@ public class ObservationActivity extends Activity implements
 			//Placehold for unknown plant icon
 			plantThumbnailView.setImageResource(R.drawable.calflora_observer_icon);
 			commonName.setText("Unknown Taxon");
-			//taxonName.setText(plant.getTaxon() );
+			taxonName.setText("");
 
 		}
 		
