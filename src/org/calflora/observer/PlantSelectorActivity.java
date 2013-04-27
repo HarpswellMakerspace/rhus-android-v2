@@ -193,6 +193,8 @@ public class PlantSelectorActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plant_selector);
+		
+		cursorConstraint = "";
 
 		final ListView lv = (ListView)findViewById(R.id.plantSelectionList);
 		

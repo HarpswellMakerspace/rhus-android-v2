@@ -19,6 +19,7 @@ import org.json.JSONException;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -75,18 +76,26 @@ public class Observation {
 
 		Bitmap thumb = RHImage.resizeBitMapImage(photoFileName, 140, 120, 90);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		thumb.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		byte[] thumbBytes = stream.toByteArray();
 		return thumbBytes;
 	}
 
 	public static byte[] createFullImageBytes(String photoFileName){
 
+		Bitmap image = BitmapFactory.decodeFile(photoFileName, null);
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		image.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+		byte[] imageBytes = stream.toByteArray();
+		return imageBytes;
+		
+		/*
 		Bitmap image = RHImage.resizeBitMapImage(photoFileName, 1200, 1600, 90);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		image.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		byte[] imageBytes = stream.toByteArray();
 		return imageBytes;
+		*/
 	}
 	
 	

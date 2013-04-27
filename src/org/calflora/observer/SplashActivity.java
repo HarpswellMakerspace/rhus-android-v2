@@ -30,14 +30,16 @@ public class SplashActivity extends BaseActivity {
 		super.onStart();
 
 		ImageView imageView = (ImageView) findViewById(R.id.splashImage);
-		imageView.setImageResource(R.drawable.calflora_observer_icon);
+		imageView.setImageResource(R.drawable.poppy_logo);
 
 		Organization o = Observer.instance.getOrganization();
 		if(o != null){
 			
-			if (! o.getName().contentEquals("Independent") ){
-				imageView.setImageResource(R.drawable.poppy_logo);
-			}
+			if (!o.getName().contentEquals("Independent") ){
+
+				imageView.setImageResource(R.drawable.logo);
+
+			} 
 
 		} 
 

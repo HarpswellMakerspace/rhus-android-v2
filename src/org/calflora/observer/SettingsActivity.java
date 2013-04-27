@@ -7,6 +7,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,7 +53,18 @@ public class SettingsActivity extends Activity {
 		listData.add(rowSetup("4", "About"));
 		listData.add(rowSetup("5", "Send Comments"));
 		listData.add(rowSetup("6", "Log Out"));
-		listData.add(rowSetup("7", "Prerelease version 2.A.01"));
+		
+		String versionName = "";
+		String versionCode = "";
+		try {
+			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		
+		listData.add(rowSetup("7", "Release "+versionName+" Build "+versionCode));
 
 		String[] from = new String[] {"col_1"};
 		int[] to = new int[] { R.id.col1 };
