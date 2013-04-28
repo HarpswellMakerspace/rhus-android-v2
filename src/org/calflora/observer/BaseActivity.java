@@ -2,6 +2,7 @@ package org.calflora.observer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -36,7 +37,7 @@ public class BaseActivity extends Activity {
 	
 	/*
 	 * This doesn't work, because onRestart is being called every time the activity is launched.
-	 * It's unclear how to know if it's been destoryed, and whether this has anything to do with use wanting
+	 * It's unclear how to know if it's been destroyed, and whether this has anything to do with use wanting
 	 * to display the splash screen.
 	@Override
 	protected void onRestart() {
@@ -48,8 +49,6 @@ public class BaseActivity extends Activity {
 		}
 	}
 	*/
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -64,9 +63,16 @@ public class BaseActivity extends Activity {
 	}
 	
 	private void showHelp(){
+		
+		String url = "http://www.calflora.org/phone";
+		
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(url));
+		startActivity(intent);
 
+		/*
 		Intent intent = new Intent("org.calflora.observer.action.HELP");
 		startActivity(intent);	
-
+		 */
 	}
 }
