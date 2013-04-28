@@ -1,6 +1,7 @@
 package org.calflora.observer;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -191,13 +193,69 @@ public class ObservationSummaryFragment extends Fragment {
 
 					Bitmap bitmap = BitmapFactory.decodeFile(photoFileName);
 					Bitmap rotatedBitmap = RHImage.rotateImage(bitmap);
-					byte[] plantImageBytes = Observation.createFullImageBytes(rotatedBitmap);
-					byte[] thumbBytes = Observation.createThumbnailBytes(rotatedBitmap);
-
-
-					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
-					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); // TODO this is just for testing
 					
+					// Get the full quality image bytes
+					ByteArrayOutputStream stream = new ByteArrayOutputStream();
+					rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+					byte[] plantImageBytes = stream.toByteArray();
+					
+					//Now resize a thumbnail
+					Bitmap square;
+					if (rotatedBitmap.getWidth() >= rotatedBitmap.getHeight()){
+
+						square = Bitmap.createBitmap(
+								rotatedBitmap, 
+								rotatedBitmap.getWidth()/2 - rotatedBitmap.getHeight()/2,
+								0,
+								rotatedBitmap.getHeight(), 
+								rotatedBitmap.getHeight()
+								);
+
+					} else {
+
+						square = Bitmap.createBitmap(
+								rotatedBitmap,
+								0, 
+								rotatedBitmap.getHeight()/2 - rotatedBitmap.getWidth()/2,
+								rotatedBitmap.getWidth(),
+								rotatedBitmap.getWidth() 
+								);
+					}
+
+					Matrix matrix = new Matrix();
+					
+					// RESIZE THE BIT MAP
+	
+					// According to a variety of resources, this function should give us pixels from the dp of the screen
+					// From http://stackoverflow.com/questions/4605527/converting-pixels-to-dp-in-android
+					float targetHeight = DWUtilities.convertDpToPixel(80, getActivity());
+					float targetWidth = DWUtilities.convertDpToPixel(80, getActivity());
+					
+					// However, the above pixel dimension are still too small to show in my 80dp image view
+					// On the Nexus 4, a factor of 4 seems to get us up to the right size
+					// No idea why.
+					targetHeight *= 4;
+					targetWidth *= 4;
+										
+					matrix.postScale( (float) targetHeight / square.getWidth(), (float) targetWidth / square.getHeight());
+					Bitmap resizedBitmap = Bitmap.createBitmap(square, 0, 0, square.getWidth(), square.getHeight(), matrix, false); 
+					
+					// By the way, the below code also gives a full size, but blurry image
+					// Bitmap resizedBitmap = Bitmap.createScaledBitmap(square, (int) targetWidth, (int) targetHeight, false);
+					
+					// NOTE the density of the image is not necessarily equivalent to the screen density
+					
+					// Get the bytes for storage
+					stream = new ByteArrayOutputStream();
+					resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+					byte[] thumbBytes = stream.toByteArray();
+
+					// Add the attachments
+					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
+					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); 
+
+
+					// Update the UI
 					if (photoButton != null)
 						photoThumb.setImageDrawable(null);
 					String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
@@ -207,7 +265,7 @@ public class ObservationSummaryFragment extends Fragment {
 							photoThumb.setImageDrawable(d);
 						}
 					}
-					 
+
 					photoButton.setText("");
 
 				}

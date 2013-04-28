@@ -12,10 +12,11 @@
         android:layout_alignLeft="@+id/plant_photo_image_button"
         android:layout_alignRight="@+id/plant_photo_image_button"
         android:layout_alignTop="@+id/plant_photo_image_button"
+        android:adjustViewBounds="false"
         android:background="@color/main_theme_color"
         android:minHeight="100dp"
         android:minWidth="100dp"
-        android:scaleType="centerInside" />
+        android:scaleType="center" />
 
     <Button
         android:id="@+id/plant_photo_image_button"

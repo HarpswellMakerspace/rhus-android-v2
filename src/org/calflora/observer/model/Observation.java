@@ -72,16 +72,19 @@ public class Observation {
 
 	}
 	
+	/*
 	public static byte[] createThubmnailBytes(String photoFileName){
 
 		Bitmap thumb = RHImage.resizeBitMapImage(photoFileName, 140, 120, 90);
 		return Observation.createThumbnailBytes(thumb);
 	}
+	*/
 
 	
 	public static byte[] createThumbnailBytes(Bitmap bitmap){
+		Bitmap thumb = RHImage.getResizedBitmap(bitmap, 140, 120);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+		thumb.compress(Bitmap.CompressFormat.JPEG, 90, stream);
 		byte[] thumbBytes = stream.toByteArray();
 		return thumbBytes;
 	}
