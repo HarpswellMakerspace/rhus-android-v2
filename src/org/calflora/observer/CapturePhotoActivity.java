@@ -209,10 +209,17 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 
 
 					//if (cs.width >= 1200 && cs.width <= 1024 && cs.height > 380 && cs.height <= 768)
-					if (cs.height >= 1200 && cs.height <= 1400)
-					{
+					if (cs.height <= 1400) {
+						if( best != null ){
+							if(best.height > cs.height){
+								continue;
+							}
+						}
+					
 						best = cs;
+					
 					}
+					
 				}
 			}
 			if (best != null)
@@ -256,6 +263,7 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 		}
 		catch (Throwable ex)
 		{
+			ex.printStackTrace();
 			Log.d(TAG, "cannot set camera params! ex: " + ex);
 		}
 
