@@ -188,7 +188,7 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 
 				for(org.calflora.observer.model.Attachment a : o.attachments){
 					if(a.name.equals("thumbnail")){
-						//continue;
+						continue;
 					}
 					
 					HttpHeaders imageHeaders = new HttpHeaders();

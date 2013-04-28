@@ -251,7 +251,7 @@ public class ObservationSummaryFragment extends Fragment {
 					byte[] thumbBytes = stream.toByteArray();
 
 					// Add the attachments
-					// Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
+					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
 					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); 
 
 
