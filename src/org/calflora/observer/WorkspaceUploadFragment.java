@@ -86,7 +86,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	private void updateUploadButton(){
 
 		SearchFields search = SearchFields.Where("uploaded", 0);
-		Collection<JSONEntity> entities =  Observer.database.fetchByFields(search, new Order());
+		Collection<JSONEntity> entities =  Observer.database.fetchByFields(search);
 		pendingObservations = entities.size();
 		
 		progressBar.setVisibility(View.GONE);
@@ -104,7 +104,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 		currentPosition= 0;
 		
 		SearchFields search = SearchFields.Where("uploaded", 0);
-		Collection<JSONEntity> entities =  Observer.database.fetchByFields(search, new Order());
+		Collection<JSONEntity> entities =  Observer.database.fetchByFields(search);
 		uploadIterator = entities.iterator();
         pendingObservations = entities.size();
         
@@ -114,17 +114,17 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
         
         progressBar.setVisibility(View.VISIBLE);
         
-        postEntitiesToServer();
+        postEntitiesToServer(pendingObservations);
 	}
 	
 
-	private void postEntitiesToServer(){
+	private void postEntitiesToServer(int totalNumberOfEntities){
 		
 		JSONEntity entity = null;
 
 		
 		// TODO late on we may want to do this in batches
-		int position = 0;
+		int indexInListView = totalNumberOfEntities - 1;
 		while( uploadIterator.hasNext() ){
 			entity = uploadIterator.next();
 
@@ -164,7 +164,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 					//showProgress(false);
 					//if( e.getMessage().equals("Network is not available")  )
 					if(e instanceof NoNetworkException){
-						Observer.toast("Network connection is unavailable.  Canceling upload",  activity);
+						Observer.toast("Network connection is unavailable.  Cancelling upload",  activity);
 						activity.getSpiceManager().cancelAllRequests();
 						updateUploadButton();
 					} else {
@@ -185,7 +185,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 					
 					try {
 						observationEntity.put("uploaded", 1);
-						Observer.database.store(observationEntity);
+						//Observer.database.store(observationEntity);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -202,7 +202,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 						updateUploadButton();
 						
 						SearchFields search = SearchFields.Where("uploaded", 0);
-						Collection<JSONEntity> entities =  Observer.database.fetchByFields(search, new Order());
+						Collection<JSONEntity> entities =  Observer.database.fetchByFields(search);
 						pendingObservations = entities.size();
 						if(pendingObservations == 0){
 							Observer.toast("All pending observations have been uploaded!", getActivity());
@@ -215,8 +215,9 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				}
 			}
 			 
-			 activity.getSpiceManager().execute( request, null, DurationInMillis.NEVER, new UploadRequestListener(entity, position) );
-			 position++;
+			//int rowIndex = 
+			 activity.getSpiceManager().execute( request, null, DurationInMillis.NEVER, new UploadRequestListener(entity, indexInListView) );
+			 indexInListView--;
 		}
 	}
 	
