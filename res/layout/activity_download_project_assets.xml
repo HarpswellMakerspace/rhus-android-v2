@@ -12,10 +12,9 @@
         android:id="@+id/org_image_view"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentLeft="false"
         android:layout_alignParentTop="true"
-        android:layout_centerInParent="false"
-        android:layout_marginLeft="75dp"
+        android:layout_centerInParent="true"
         android:layout_marginTop="40dp"
         android:src="@drawable/calflora_observer_icon" />
 

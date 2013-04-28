@@ -37,7 +37,7 @@ public class SplashActivity extends BaseActivity {
 			
 			if (!o.getName().contentEquals("Independent") ){
 
-				imageView.setImageResource(R.drawable.logo);
+				imageView.setImageResource(R.drawable.yosemite_conservancy_splash);
 
 			} 
 

@@ -23,7 +23,7 @@ public class DownloadProjectAssetsActivity extends BaseActivity {
 
 		if(Observer.instance.getOrganization() != null){
 			ImageView imageView = (ImageView) findViewById(R.id.org_image_view);
-			imageView.setImageResource(R.drawable.logo);
+			imageView.setImageResource(R.drawable.yosemite_conservancy_splash );
 
 		}
 	}
