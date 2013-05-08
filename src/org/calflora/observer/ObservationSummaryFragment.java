@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import net.winterroot.rhus.util.DWUtilities;
 import net.winterroot.rhus.util.RHImage;
 
-import org.calflora.experimental.CapturePhotoActivity;
 import org.calflora.map.OfflineMapTileProvider;
 import org.calflora.observer.model.Observation;
 
