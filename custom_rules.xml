@@ -1,23 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_rules" >
 
+  <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>
+
+
+  <path id="groovy.classpath">
+    <fileset dir="/Users/deepwinter1/.gvm/groovy/current/lib/">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy"> 
+    <classpath refid="groovy.classpath"/> 
+  </taskdef> 
+
   <target name="update.build.number">
+    <xmltask source="AndroidManifest.xml"> 
+      <copy path="manifest/@android:versionCode" property="buildNum"/> 
+    </xmltask>
+    <groovy>
+      buildNum = Integer.valueOf(properties["buildNum"])
+      properties["buildNum"] = buildNum + 1
+    </groovy>
     <xmltask source="AndroidManifest.xml" dest="AndroidManifest.xml">
       <replace path="manifest/@android:versionCode"
-        withText="${buildnum}"/>
+        withText="${buildNum}"/>
     </xmltask>
+    <antcall target="commit.and.tag.build">
+      <param name="buildNum" value="{$buildNum}"/>
+    </antcall>
+  </target>
+
+  <target name="commit.and.tag.build">
+    <exec executable="git">
+      <arg value="commit"/>
+      <arg value="-a"/>
+      <arg value="-m'Build Number ${buildNum}'"/>
+    </exec>
+    <exec executable="git">
+      <arg value="tag"/>
+      <arg value="b${buildNum}"/>
+    </exec>
   </target>
 
   <target name="testflight-deploy">
     <input message="Notes for this build:" addproperty="notes"/>
-    <property name="notify">False</property>
+
+    <antcall target="update.build.number">
+    </antcall>
 
     <antcall target="release">
     </antcall>
 
+    <!--
     <exec executable="${user.dir}/tools/upload.sh">
       <arg value="${notes}"/>
     </exec>
+    -->
   </target>
 
 </project>
