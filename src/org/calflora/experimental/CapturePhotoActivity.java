@@ -1,4 +1,4 @@
-package org.calflora.observer;
+package org.calflora.experimental;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
+
+import org.calflora.observer.Observer;
+import org.calflora.observer.R;
+import org.calflora.observer.R.id;
+import org.calflora.observer.R.layout;
 
 import android.app.Activity;
 import android.content.Context;
@@ -281,6 +286,9 @@ public class CapturePhotoActivity extends Activity implements SurfaceHolder.Call
 	public void surfaceCreated(SurfaceHolder holder)
 	{
 		mCamera = Camera.open();
+		if(mCamera==null) { // No backfacing camera
+			mCamera = Camera.open(0);			
+		}
 
 		try {
 			mCamera.setPreviewDisplay(mSurfaceHolder);

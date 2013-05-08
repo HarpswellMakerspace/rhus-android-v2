@@ -185,7 +185,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 					
 					try {
 						observationEntity.put("uploaded", 1);
-						//Observer.database.store(observationEntity);
+						Observer.database.store(observationEntity);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

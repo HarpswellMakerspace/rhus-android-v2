@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -56,6 +57,8 @@ public class WorkspaceMapFragment extends MapFragment {
         editor.putFloat("bottom", 0);
         editor.commit();
 	}
+	
+	ImageButton button;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle) {
@@ -64,7 +67,7 @@ public class WorkspaceMapFragment extends MapFragment {
 	    view.addView(mapView, new RelativeLayout.LayoutParams(-1, -1));
 	    // working with view
 	    
-	    ImageButton button = new ImageButton(getActivity());
+	    button = new ImageButton(getActivity());
 		button.setImageResource(R.drawable.layers);
 	    
 	    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
@@ -119,6 +122,25 @@ public class WorkspaceMapFragment extends MapFragment {
 		} else {
 			Observer.toast("Google Maps Not Available", getActivity());
 		}
+		
+		button.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
+				latLng = new LatLng(37.6747, -119.784);
+				map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
+			}
+			
+		});
+		
+		
+		
+		// and if we don't have either, move to the project center
+		// -119.784,37.6747 Yosemite
+		LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
+		latLng = new LatLng(37.6747, -119.784);
+		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
 	}
 
 	
