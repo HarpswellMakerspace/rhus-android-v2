@@ -27,7 +27,7 @@
         withText="${buildNum}"/>
     </xmltask>
     <antcall target="commit.and.tag.build">
-      <param name="buildNum" value="{$buildNum}"/>
+      <param name="buildNum" value="${buildNum}"/>
     </antcall>
   </target>
 
