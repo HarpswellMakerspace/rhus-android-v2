@@ -53,11 +53,9 @@
     <antcall target="release">
     </antcall>
 
-    <!--
     <exec executable="${user.dir}/tools/upload.sh">
       <arg value="${notes}"/>
     </exec>
-    -->
   </target>
 
 </project>
