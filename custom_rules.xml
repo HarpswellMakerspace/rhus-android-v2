@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="custom_rules" >
+
+  <target name="update.build.number">
+    <xmltask source="AndroidManifest.xml" dest="AndroidManifest.xml">
+      <replace path="manifest/@android:versionCode"
+        withText="${buildnum}"/>
+    </xmltask>
+  </target>
+
+  <target name="testflight-deploy">
+    <input message="Notes for this build:" addproperty="notes"/>
+    <property name="notify">False</property>
+
+    <antcall target="release">
+    </antcall>
+
+    <exec executable="${user.dir}/tools/upload.sh">
+      <arg value="${notes}"/>
+    </exec>
+  </target>
+
+</project>
+
