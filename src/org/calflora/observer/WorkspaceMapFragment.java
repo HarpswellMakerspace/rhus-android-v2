@@ -68,14 +68,14 @@ public class WorkspaceMapFragment extends MapFragment {
 	    // working with view
 	    
 	    button = new ImageButton(getActivity());
-		button.setImageResource(R.drawable.layers);
+		button.setImageResource(R.drawable.disk_tri);
 	    
 	    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
 	    float density = getResources().getDisplayMetrics().density;
-	    params.rightMargin = (int) (9 * density);
+	    params.rightMargin = (int) (12 * density);
 	    params.topMargin =  (int) (57 * density);
-	    params.width = 90;
-	    params.height= 90;
+	    params.width = (int) (38*density);
+	    params.height= (int) (38*density);
 	    //params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 	    params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 	    //button.setPadding(0, 0, 0, 40);
