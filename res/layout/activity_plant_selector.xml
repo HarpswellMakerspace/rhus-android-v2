@@ -12,7 +12,7 @@
     <EditText
         android:id="@+id/selector_search_field"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="20dp"
         android:layout_marginTop="@dimen/zero_margin"
         android:layout_weight="0.24"
         android:ems="10"

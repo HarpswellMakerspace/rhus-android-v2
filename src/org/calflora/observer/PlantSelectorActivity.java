@@ -1,43 +1,33 @@
 package org.calflora.observer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import android.os.Bundle;
 
 import android.content.Context;
 import android.content.Intent;
-
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
-import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class PlantSelectorActivity extends BaseActivity {
 
@@ -62,20 +52,13 @@ public class PlantSelectorActivity extends BaseActivity {
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			
-			/*
-			 * This was part of the search field within listview attempts
-			if(getItemViewType(cursor.getPosition()) == 0){
-				return;
-			}
-			*/
-			
 			// TODO Auto-generated method stub
 			 TextView plantName =(TextView)view.findViewById(R.id.col1);
 			 String nameValue;
 			 if(scientificName){
-				 nameValue = cursor.getString(1);
+				 nameValue = cursor.getString(1)+" ( "+cursor.getString(2)+" )";
 			 } else {
-				 nameValue = cursor.getString(2);
+				 nameValue = cursor.getString(2)+" ( "+cursor.getString(1)+" )";
 			 }
 			 plantName.setText(nameValue);
 
@@ -97,52 +80,16 @@ public class PlantSelectorActivity extends BaseActivity {
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
 			View view;
-			/*
-			if(getItemViewType(cursor.getPosition()) == 0){
-				view = searchView;
-			} else {
-				view = mInflater.inflate(R.layout.list_item_single_image,parent,false); 
-			}	*/
-			
 			view = mInflater.inflate(R.layout.list_item_single_image,parent,false); 
 
 	
 			return view;
 		}
-		
-		
-		/*
-		@Override
-		public int getViewTypeCount() {                 
-		    return 2;
-		}
-
-		@Override
-		public int getItemViewType(int position) {
-
-		    if(position == 0){
-		    	return 0;
-		    } else {
-		    	return 1;
-		    }
-		}
-		*/
 
 	}
 	
-
 	
-	
-	private MatrixCursor getSearchFieldCursor(){
-		String[] columnNames = {"_id", "type"};
-		MatrixCursor matrix = new MatrixCursor(columnNames);
-		Object[] value = {999, "search"};
-		matrix.addRow(value);
-		return matrix;
-	}
-	
-	
-	private MergeCursor getPlantsCursor(SQLiteDatabase database, CharSequence constraint, Boolean scientificName){
+	private Cursor getPlantsCursor(SQLiteDatabase database, CharSequence constraint, Boolean scientificName){
 		String selection;
 		String column;
 		if(scientificName){
@@ -157,9 +104,7 @@ public class PlantSelectorActivity extends BaseActivity {
 		Cursor cursor = database.query("plist", 
 				new String[] { "rowid _id", "taxon", "common", "photoid" }, 
 				selection, selectionArgs, null, null, column + " asc"); 
-		Cursor [] cursors = {/*getSearchFieldCursor(), */ cursor};
-		MergeCursor mergedCursor = new MergeCursor( cursors );
-		return mergedCursor;
+		return cursor;
 	}
 	
 	
@@ -203,7 +148,7 @@ public class PlantSelectorActivity extends BaseActivity {
 		searchField.addTextChangedListener(filterTextWatcher);
 		
 		selectedDatabase = Observer.plantsListDatabase;
-		MergeCursor plantsCursor= getPlantsCursor( selectedDatabase, "", true);
+		Cursor plantsCursor= getPlantsCursor( selectedDatabase, "", true);
 
 		adapter = new SearchFieldAndCursorAdapter(this, plantsCursor);
         lv.setAdapter(adapter);
@@ -258,7 +203,7 @@ public class PlantSelectorActivity extends BaseActivity {
 				} else {
 					scientificName = false;
 				}
-				adapter.notifyDataSetChanged();
+		        adapter.getFilter().filter(cursorConstraint);
 				
 			}
 		});
