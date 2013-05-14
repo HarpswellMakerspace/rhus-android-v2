@@ -25,6 +25,8 @@ import org.odk.collect.android.tasks.FormLoaderTask;
 import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.android.views.ODKView;
 import org.odk.collect.android.widgets.QuestionWidget;
+import org.javarosa.form.api.FormEntryCaption;
+
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -59,13 +61,13 @@ public class ObservationActivity extends Activity implements
 	
 	private ActionBar mActionBar;
 	private ObservationSummaryFragment observationSummaryFragment;
-	private ObservationTreatmentFragment observationTreatmentFragment;
 
 	private ImageView plantThumbnailView;
 
 	private String mFormPath = "";
 	private FormController mFormController = null;
 	private List<ObservationODKFragment> odkFragments;
+	private List<String> tabLabels;
 	
 	protected void done(){
 		finish();
@@ -93,6 +95,7 @@ public class ObservationActivity extends Activity implements
 		
 		observationSummaryFragment = new ObservationSummaryFragment();
 		odkFragments = new ArrayList<ObservationODKFragment>();
+		tabLabels = new ArrayList<String>();
 		
 		plantThumbnailView = (ImageView) findViewById(R.id.plant_thumbnail);
 	
@@ -250,7 +253,6 @@ public class ObservationActivity extends Activity implements
 		int position = tab.getPosition();
 	    transaction = fragmentManager.beginTransaction();
 	    
-		transaction.hide(observationSummaryFragment );
 		for(ObservationODKFragment fragment : odkFragments){
 			transaction.hide(fragment);
 		}
@@ -263,6 +265,8 @@ public class ObservationActivity extends Activity implements
 			
 		case 1:
 		case 2:
+			transaction.hide(observationSummaryFragment );
+
 			// Assessment, or ODK configured 2nd tab
 		    //selectedTab = Tabs.SUMMARY;
 		    ObservationODKFragment fragment = odkFragments.get(position);
@@ -491,10 +495,16 @@ public class ObservationActivity extends Activity implements
             	try {
             		FormEntryPrompt[] prompts = formController.getQuestionPrompts();
             		FormEntryCaption[] groups = formController.getGroupsForCurrentIndex();
+            		
+            		//
+            		// TODO: If we send it nothing for groups it should loose the title.
+            		//
+            		
+            		FormEntryCaption[] emptyGroups = new FormEntryCaption[0];
             		odkv = new ODKView(this, formController.getQuestionPrompts(),
-            				groups, false);
+            				emptyGroups, false);
             		FormEntryCaption g = groups[0];
-            		tabLabel = g.getLongText();
+            		tabLabels.add(g.getLongText());
             		/*
             Log.i(t,
                     "created view for group "
@@ -523,13 +533,12 @@ public class ObservationActivity extends Activity implements
             		}
             	}
 
+            	
             	ObservationODKFragment fragment = new ObservationODKFragment(odkv);
             	odkFragments.add(fragment);
             	
-            	mActionBar.addTab(mActionBar.newTab()
-            			.setText(tabLabel)
-            			.setTabListener(this)
-            			);
+            	
+
             	break;
 
             default :
@@ -551,11 +560,22 @@ public class ObservationActivity extends Activity implements
 	    transaction = fragmentManager.beginTransaction();
 	    
 		transaction.add(R.id.observation_fragment_container, observationSummaryFragment );
+		transaction.show(observationSummaryFragment);
 		for(ObservationODKFragment fragment : odkFragments){
 			transaction.add(R.id.observation_fragment_container, fragment);
 			transaction.hide(fragment);
 		}
 		transaction.commit();
+		
+    	// I think the fragments need to be called in add() before setting up the tabs
+    	// Didn't fix it, need to create a listener for mapfragment and don't initialize until after
+		// it's createView is called, whenever that is.. (onStart() on that MapFragment, not on this fragement)
+		for(String tabLabel : tabLabels) {
+			mActionBar.addTab(mActionBar.newTab()
+					.setText(tabLabel)
+					.setTabListener(this)
+					);
+		}
 
         
     }

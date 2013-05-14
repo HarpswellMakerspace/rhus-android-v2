@@ -135,6 +135,8 @@ public class ObservationSummaryFragment extends Fragment {
 		} else {
 			if(ConnectionResult.SUCCESS != GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity() ) ){
 				Observer.toast("Google Maps Not Available", getActivity());
+			} else {
+				Observer.toast("Google Maps Load Error", getActivity());
 			}
 		}
 
@@ -355,116 +357,7 @@ public class ObservationSummaryFragment extends Fragment {
             }
             mPhotoUri = null; // don't let this hang around
         }
-		/*
-		try
-		{
-			switch (requestCode) {
-			case 1: //CAPTURE_PHOTO
-				if (resultCode == Activity.RESULT_OK)
-				{
-
-					Bundle data =  intent.getExtras();
-					if(data == null){
-						Observer.toast("Error capturing image", getActivity());
-						return;
-					}
-
-					String photoFileName = data.getString(CapturePhotoActivity.PHOTO_FILE_NAME);		
-
-					ImageView photoThumb = (ImageView) getView().findViewById(R.id.plant_image_thumbnail);
-					Button photoButton = (Button) getView().findViewById(R.id.plant_photo_image_button);
-
-					Bitmap bitmap = BitmapFactory.decodeFile(photoFileName);
-					Bitmap rotatedBitmap = RHImage.rotateImage(bitmap);
-					
-					// Get the full quality image bytes
-					ByteArrayOutputStream stream = new ByteArrayOutputStream();
-					rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-					byte[] plantImageBytes = stream.toByteArray();
-					
-					//Now resize a thumbnail
-					Bitmap square;
-					if (rotatedBitmap.getWidth() >= rotatedBitmap.getHeight()){
-
-						square = Bitmap.createBitmap(
-								rotatedBitmap, 
-								rotatedBitmap.getWidth()/2 - rotatedBitmap.getHeight()/2,
-								0,
-								rotatedBitmap.getHeight(), 
-								rotatedBitmap.getHeight()
-								);
-
-					} else {
-
-						square = Bitmap.createBitmap(
-								rotatedBitmap,
-								0, 
-								rotatedBitmap.getHeight()/2 - rotatedBitmap.getWidth()/2,
-								rotatedBitmap.getWidth(),
-								rotatedBitmap.getWidth() 
-								);
-					}
-
-					Matrix matrix = new Matrix();
-					
-					// RESIZE THE BIT MAP
-	
-					// According to a variety of resources, this function should give us pixels from the dp of the screen
-					// From http://stackoverflow.com/questions/4605527/converting-pixels-to-dp-in-android
-					float targetHeight = DWUtilities.convertDpToPixel(80, getActivity());
-					float targetWidth = DWUtilities.convertDpToPixel(80, getActivity());
-					
-					// However, the above pixel dimension are still too small to show in my 80dp image view
-					// On the Nexus 4, a factor of 4 seems to get us up to the right size
-					// No idea why.
-					targetHeight *= 4;
-					targetWidth *= 4;
-										
-					matrix.postScale( (float) targetHeight / square.getWidth(), (float) targetWidth / square.getHeight());
-					Bitmap resizedBitmap = Bitmap.createBitmap(square, 0, 0, square.getWidth(), square.getHeight(), matrix, false); 
-					
-					// By the way, the below code also gives a full size, but blurry image
-					// Bitmap resizedBitmap = Bitmap.createScaledBitmap(square, (int) targetWidth, (int) targetHeight, false);
-					
-					// NOTE the density of the image is not necessarily equivalent to the screen density
-					
-					// Get the bytes for storage
-					stream = new ByteArrayOutputStream();
-					resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-					byte[] thumbBytes = stream.toByteArray();
-
-					// Add the attachments
-					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
-					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); 
-
-
-					// Update the UI
-					if (photoButton != null)
-						photoThumb.setImageDrawable(null);
-					String thumbnailPath = Observer.currentObservation.getAttachmentPath("thumbnail", getActivity());
-					if(thumbnailPath != null){
-						Drawable d = Drawable.createFromPath(thumbnailPath);
-						if(d != null){
-							photoThumb.setImageDrawable(d);
-						}
-					}
-
-					photoButton.setText("");
-
-				}
-				break;		
-
-			}
 		
-
-		}
-
-		catch (Throwable ex)
-		{
-			ex.printStackTrace();
-			Observer.toast("trouble saving file: " + ex, getActivity());
-		}
-			*/
 	}
 }
 
