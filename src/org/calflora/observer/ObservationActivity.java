@@ -1,11 +1,28 @@
 package org.calflora.observer;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Plant;
 import org.calflora.observer.model.Project;
+import org.javarosa.form.api.FormEntryCaption;
+import org.javarosa.form.api.FormEntryController;
+import org.javarosa.form.api.FormEntryPrompt;
 import org.json.JSONException;
+import org.odk.collect.android.activities.FormEntryActivity;
+import org.odk.collect.android.activities.FormHierarchyActivity;
+import org.odk.collect.android.application.Collect;
+import org.odk.collect.android.listeners.FormLoaderListener;
+import org.odk.collect.android.logic.FormController;
+import org.odk.collect.android.provider.FormsProviderAPI.FormsColumns;
+import org.odk.collect.android.tasks.FormLoaderTask;
+import org.odk.collect.android.utilities.FileUtils;
+import org.odk.collect.android.views.ODKView;
+import org.odk.collect.android.widgets.QuestionWidget;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -16,9 +33,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,18 +46,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ObservationActivity extends Activity implements
-		ActionBar.TabListener {
+		ActionBar.TabListener, FormLoaderListener {
 	
 	private static final int SELECT_PLANT = 1001;
+	
+	private ActionBar mActionBar;
 	private ObservationSummaryFragment observationSummaryFragment;
 	private ObservationAssessmentFragment observationAssessmentFragment;
 	private ObservationTreatmentFragment observationTreatmentFragment;
 
 	private ImageView plantThumbnailView;
 
-
+	private String mFormPath = "";
+	private FormController mFormController = null;
+	
 	protected void done(){
 		finish();
 
@@ -49,11 +74,18 @@ public class ObservationActivity extends Activity implements
 	}
 	
 
+	private FormLoaderTask mFormLoaderTask = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_observation);
+		
+		String instancePath = null;
+		mFormPath = Environment.getExternalStorageDirectory().toString() + "/Forms/OAT.xml";
+        mFormLoaderTask = new FormLoaderTask(instancePath, null, null);
+        mFormLoaderTask.setFormLoaderListener(this);
+        mFormLoaderTask.execute(mFormPath);
 		
 		observationSummaryFragment = new ObservationSummaryFragment();
 		observationAssessmentFragment = new ObservationAssessmentFragment();
@@ -62,9 +94,10 @@ public class ObservationActivity extends Activity implements
 		plantThumbnailView = (ImageView) findViewById(R.id.plant_thumbnail);
 	
 		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		mActionBar = getActionBar();
+		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+		/*
 		actionBar.addTab(actionBar.newTab()
 				.setText("Observation")
 				.setTabListener(this)
@@ -77,6 +110,7 @@ public class ObservationActivity extends Activity implements
 				.setText("Treatment")
 				.setTabListener(this)
 				);
+		*/
 		
 		//actionBar.setHomeButtonEnabled(true);
 		
@@ -314,5 +348,244 @@ public class ObservationActivity extends Activity implements
 		return;
 	}
 	
+	
+    /**
+     * loadingComplete() is called by FormLoaderTask once it has finished loading a form.
+     */
+    public void loadingComplete(FormLoaderTask task) {
+        //dismissDialog(PROGRESS_DIALOG);
+
+        FormController formController = task.getFormController();
+        boolean pendingActivityResult = task.hasPendingActivityResult();
+        boolean hasUsedSavepoint = task.hasUsedSavepoint();
+        int requestCode = task.getRequestCode(); // these are bogus if
+                                                 // pendingActivityResult is
+                                                 // false
+        int resultCode = task.getResultCode();
+        Intent intent = task.getIntent();
+
+        mFormLoaderTask.setFormLoaderListener(null);
+        FormLoaderTask t = mFormLoaderTask;
+        mFormLoaderTask = null;
+        t.cancel(true);
+        t.destroy();
+        //Collect.getInstance().setFormController(formController);
+        mFormController = formController;
+        
+        // Set the language if one has already been set in the past
+        String[] languageTest = formController.getLanguages();
+        if (languageTest != null) {
+            String defaultLanguage = formController.getLanguage();
+            String newLanguage = "";
+            String selection = FormsColumns.FORM_FILE_PATH + "=?";
+            String selectArgs[] = {
+                    mFormPath
+            };
+            Cursor c = null;
+            try {
+                c = getContentResolver().query(FormsColumns.CONTENT_URI, null,
+                        selection, selectArgs, null);
+                if (c.getCount() == 1) {
+                    c.moveToFirst();
+                    newLanguage = c.getString(c
+                            .getColumnIndex(FormsColumns.LANGUAGE));
+                }
+            } finally {
+                if (c != null) {
+                    c.close();
+                }
+            }
+
+            // if somehow we end up with a bad language, set it to the default
+            try {
+                formController.setLanguage(newLanguage);
+            } catch (Exception e) {
+                formController.setLanguage(defaultLanguage);
+            }
+        }
+
+        /*
+        if (pendingActivityResult) {
+            // set the current view to whatever group we were at...
+            refreshCurrentView();
+            // process the pending activity request...
+            onActivityResult(requestCode, resultCode, intent);
+            return;
+        }
+        */
+
+        // it can be a normal flow for a pending activity result to restore from a savepoint
+        // (the call flow handled by the above if statement). For all other use cases, the
+        // user should be notified, as it means they wandered off doing other things then
+        // returned to ODK Collect and chose Edit Saved Form, but that the savepoint for that
+        // form is newer than the last saved version of their form data.
+        if (hasUsedSavepoint) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ObservationActivity.this,
+                            getString(R.string.savepoint_used),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        // Set saved answer path
+        if (formController.getInstancePath() == null) {
+
+            // Create new answer folder.
+            String time = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.ENGLISH).format(Calendar.getInstance()
+                    .getTime());
+            String file = mFormPath.substring(mFormPath.lastIndexOf('/') + 1,
+                    mFormPath.lastIndexOf('.'));
+            String path = Collect.INSTANCES_PATH + File.separator + file + "_" + time;
+            if (FileUtils.createFolder(path)) {
+                formController.setInstancePath(new File(path + File.separator + file + "_" + time
+                        + ".xml"));
+            }
+        } else {
+        	/*
+        	 * This would possibly be where to handle loading an existing item for editing.
+            Intent reqIntent = getIntent();
+            boolean showFirst = reqIntent.getBooleanExtra("start", false);
+
+            if (!showFirst) {
+                // we've just loaded a saved form, so start in the hierarchy
+                // view
+                Intent i = new Intent(this, FormHierarchyActivity.class);
+                startActivity(i);
+                return; // so we don't show the intro screen before jumping to
+                        // the hierarchy
+            }
+            */
+        }
+
+        /*
+         * 
+         *  setupView();
+         *  Code below is for this function
+         */
+        
+        boolean done = false;
+        setup: for(int event=0; !done; event = formController.stepToNextScreenEvent()) {
+            switch (event) {
+            case FormEntryController.EVENT_BEGINNING_OF_FORM:
+            	continue setup;
+
+            case FormEntryController.EVENT_END_OF_FORM:
+            	done = true;
+            	break;
+            case FormEntryController.EVENT_QUESTION:
+            	int asdf = 0;
+            	break;
+            case FormEntryController.EVENT_GROUP:
+  
+            	// For the pages (groups) of the form
+
+            	// return createView(event, advancingPage);  ODK Code
+            	ODKView odkv = null;
+            	// should only be a group here if the event_group is a field-list
+            	try {
+            		FormEntryPrompt[] prompts = formController.getQuestionPrompts();
+            		FormEntryCaption[] groups = formController.getGroupsForCurrentIndex();
+            		odkv = new ODKView(this, formController.getQuestionPrompts(),
+            				groups, false);
+            		/*
+            Log.i(t,
+                    "created view for group "
+                            + (groups.length > 0 ? groups[groups.length - 1]
+                                    .getLongText() : "[top]")
+                            + " "
+                            + (prompts.length > 0 ? prompts[0]
+                                    .getQuestionText() : "[no question]"));
+            		 */
+            	} catch (RuntimeException e) {
+            		// this is badness to avoid a crash.
+
+            		done = true;
+
+            		//            		createErrorDialog(e.getMessage(), false);
+            		e.printStackTrace();
+            		break;
+            		// event = formController.stepToNextScreenEvent();
+            		// return createView(event, advancingPage);
+            	}
+
+            	// Makes a "clear answer" menu pop up on long-click
+            	for (QuestionWidget qw : odkv.getWidgets()) {
+            		if (!qw.getPrompt().isReadOnly()) {
+            			registerForContextMenu(qw);
+            		}
+            	}
+
+            	//return odkv;
+
+            	mActionBar.addTab(mActionBar.newTab()
+            			.setText("Observation")
+            			.setTabListener(this)
+            			);
+            	break;
+
+            default :
+            	createErrorDialog("Internal error: step to prompt failed", false);
+            	//..Log.e(t, "Attempted to create a view that does not exist.");
+            	// this is badness to avoid a crash.
+
+            	break;
+
+            }
+        }
+
+        // End ODK code
+
+    }
+
+    /**
+     * called by the FormLoaderTask if something goes wrong.
+     */
+    @Override
+    public void loadingError(String errorMsg) {
+       // dismissDialog(PROGRESS_DIALOG);
+        if (errorMsg != null) {
+			Toast.makeText( ObservationActivity.this, errorMsg, Toast.LENGTH_LONG ).show();
+            //createErrorDialog(errorMsg, EXIT);
+        } else {
+			Toast.makeText( ObservationActivity.this, R.string.parse_error, Toast.LENGTH_LONG ).show();
+            //createErrorDialog(getString(R.string.parse_error), EXIT);
+        }
+    }
+    
+    
+    /**
+     * Creates and displays dialog with the given errorMsg.
+     */
+    private void createErrorDialog(String errorMsg, final boolean shouldExit) {
+        Collect.getInstance()
+                .getActivityLogger()
+                .logInstanceAction(this, "createErrorDialog",
+                        "show." + Boolean.toString(shouldExit));
+        String mErrorMessage = errorMsg;
+        AlertDialog mAlertDialog = new AlertDialog.Builder(this).create();
+        mAlertDialog.setIcon(android.R.drawable.ic_dialog_info);
+        mAlertDialog.setTitle(getString(R.string.error_occured));
+        mAlertDialog.setMessage(errorMsg);
+        DialogInterface.OnClickListener errorListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                switch (i) {
+                    case DialogInterface.BUTTON1:
+                        Collect.getInstance().getActivityLogger()
+                                .logInstanceAction(this, "createErrorDialog", "OK");
+                        if (shouldExit) {
+                            finish();
+                        }
+                        break;
+                }
+            }
+        };
+        mAlertDialog.setCancelable(false);
+        mAlertDialog.setButton(getString(R.string.ok), errorListener);
+        mAlertDialog.show();
+    }
 
 }
