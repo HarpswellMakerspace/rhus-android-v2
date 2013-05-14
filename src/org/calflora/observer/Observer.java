@@ -10,6 +10,7 @@ import org.calflora.observer.api.ObserverAPI;
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Organization;
 import org.calflora.observer.model.Project;
+import org.odk.collect.android.application.Collect;
 
 import android.app.Application;
 import android.content.Context;
@@ -32,7 +33,7 @@ import android.widget.Toast;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Observer extends Application implements LocationListener {
+public class Observer extends Collect implements LocationListener {
 	
 	public static final String API_KEY_PREF = "APIKey";
 

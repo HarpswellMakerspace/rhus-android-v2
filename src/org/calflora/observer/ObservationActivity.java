@@ -3,7 +3,9 @@ package org.calflora.observer;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import org.calflora.observer.model.Observation;
@@ -45,6 +47,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,13 +59,13 @@ public class ObservationActivity extends Activity implements
 	
 	private ActionBar mActionBar;
 	private ObservationSummaryFragment observationSummaryFragment;
-	private ObservationAssessmentFragment observationAssessmentFragment;
 	private ObservationTreatmentFragment observationTreatmentFragment;
 
 	private ImageView plantThumbnailView;
 
 	private String mFormPath = "";
 	private FormController mFormController = null;
+	private List<ObservationODKFragment> odkFragments;
 	
 	protected void done(){
 		finish();
@@ -88,8 +92,7 @@ public class ObservationActivity extends Activity implements
         mFormLoaderTask.execute(mFormPath);
 		
 		observationSummaryFragment = new ObservationSummaryFragment();
-		observationAssessmentFragment = new ObservationAssessmentFragment();
-		observationTreatmentFragment = new ObservationTreatmentFragment();
+		odkFragments = new ArrayList<ObservationODKFragment>();
 		
 		plantThumbnailView = (ImageView) findViewById(R.id.plant_thumbnail);
 	
@@ -244,32 +247,31 @@ public class ObservationActivity extends Activity implements
 		
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
-		switch (tab.getPosition()){
+		int position = tab.getPosition();
+	    transaction = fragmentManager.beginTransaction();
+	    
+		transaction.hide(observationSummaryFragment );
+		for(ObservationODKFragment fragment : odkFragments){
+			transaction.hide(fragment);
+		}
+
+		switch (position){
 		case 0:
-		    transaction = fragmentManager.beginTransaction();
 			//selectedTab = Tabs.SUMMARY;
-			transaction.replace(R.id.observation_fragment_container,observationSummaryFragment );
-			transaction.commit();
+			transaction.show(observationSummaryFragment );
 			break;
 			
 		case 1:
-			// Assessment, or ODK configured 2nd tab
-		    transaction = fragmentManager.beginTransaction();
-				//selectedTab = Tabs.SUMMARY;
-				transaction.replace(R.id.observation_fragment_container,observationAssessmentFragment );
-				transaction.commit();
-			break;
-			
 		case 2:
-			// Treatment, or ODK configured 3rd tab
-		    transaction = fragmentManager.beginTransaction();
-				//selectedTab = Tabs.SUMMARY;
-				transaction.replace(R.id.observation_fragment_container,observationTreatmentFragment );
-				transaction.commit();
-			break;
-			
-	
+			// Assessment, or ODK configured 2nd tab
+		    //selectedTab = Tabs.SUMMARY;
+		    ObservationODKFragment fragment = odkFragments.get(position);
+		    transaction.show(fragment);
+			break;	
 		}
+		
+		transaction.commit();
+
 	}
 
 	@Override
@@ -485,11 +487,14 @@ public class ObservationActivity extends Activity implements
             	// return createView(event, advancingPage);  ODK Code
             	ODKView odkv = null;
             	// should only be a group here if the event_group is a field-list
+            	String tabLabel = "Section";
             	try {
             		FormEntryPrompt[] prompts = formController.getQuestionPrompts();
             		FormEntryCaption[] groups = formController.getGroupsForCurrentIndex();
             		odkv = new ODKView(this, formController.getQuestionPrompts(),
             				groups, false);
+            		FormEntryCaption g = groups[0];
+            		tabLabel = g.getLongText();
             		/*
             Log.i(t,
                     "created view for group "
@@ -518,10 +523,11 @@ public class ObservationActivity extends Activity implements
             		}
             	}
 
-            	//return odkv;
-
+            	ObservationODKFragment fragment = new ObservationODKFragment(odkv);
+            	odkFragments.add(fragment);
+            	
             	mActionBar.addTab(mActionBar.newTab()
-            			.setText("Observation")
+            			.setText(tabLabel)
             			.setTabListener(this)
             			);
             	break;
@@ -538,6 +544,20 @@ public class ObservationActivity extends Activity implements
 
         // End ODK code
 
+
+        //Set up fragments
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction transaction;
+	    transaction = fragmentManager.beginTransaction();
+	    
+		transaction.add(R.id.observation_fragment_container, observationSummaryFragment );
+		for(ObservationODKFragment fragment : odkFragments){
+			transaction.add(R.id.observation_fragment_container, fragment);
+			transaction.hide(fragment);
+		}
+		transaction.commit();
+
+        
     }
 
     /**

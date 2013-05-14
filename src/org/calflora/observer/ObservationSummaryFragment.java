@@ -38,6 +38,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.media.ExifInterface;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
@@ -114,20 +116,29 @@ public class ObservationSummaryFragment extends Fragment {
 
 		// TODO Is this the right place for this in the lifecycle?
 		map = mapFragment.getMap();
-		map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-		map.setMyLocationEnabled(true);
+		if(map != null) {
+			//Avoids a crash
+			map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+			map.setMyLocationEnabled(true);
 
-		// Custom offline layer.
-		map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+			// Custom offline layer.
+			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
 
-		LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
-		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
+			LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
+			map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
 
-		MarkerOptions markerOptions = new MarkerOptions();
-		markerOptions.position(latLng);
-		markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-		map.addMarker(markerOptions);
+			MarkerOptions markerOptions = new MarkerOptions();
+			markerOptions.position(latLng);
+			markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+			map.addMarker(markerOptions);
 
+		} else {
+			if(ConnectionResult.SUCCESS != GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity() ) ){
+				Observer.toast("Google Maps Not Available", getActivity());
+			}
+		}
+
+		
 		Button captureImageButton = (Button) getView().findViewById(R.id.plant_photo_image_button);
 		captureImageButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
