@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 
 // TODO starting point for ODK integration
@@ -25,7 +26,7 @@ public class ObservationODKFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		LinearLayout view = new LinearLayout(getActivity());		
+		RelativeLayout view = new RelativeLayout(getActivity());		
     	view.addView(odkv);
     	return view;
     
