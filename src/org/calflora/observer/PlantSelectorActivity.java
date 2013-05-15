@@ -205,6 +205,7 @@ public class PlantSelectorActivity extends BaseActivity {
 		});
 		
 		RadioGroup rg = (RadioGroup) findViewById(R.id.plant_name_selector);
+		
 		rg.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			@Override
