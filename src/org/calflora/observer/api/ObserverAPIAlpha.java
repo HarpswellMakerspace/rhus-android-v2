@@ -1,6 +1,7 @@
 package org.calflora.observer.api;
 
 import java.io.File;
+import java.util.Map;
 
 import org.calflora.observer.Observer;
 import org.calflora.observer.model.Observation;
@@ -153,25 +154,16 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 		//Only handle the base fields for now..
 		//We need to change the way the API is structured to make this easier
 
-		class BaseFields {
-			public String taxon;
-			public double lat;
-			public double lng;
-			public String date;
-			public int timestamp;
-			
+		
+		final Map<String, Object> fields = o.getFields();
+		if(fields.get("taxon") == null){
+			fields.put("taxon", "unknown");
 		}
-		final BaseFields base = new BaseFields();
-		base.taxon = o.plant.getTaxon();
-		if(base.taxon == null){
-			base.taxon = "unknown";
-		}
-		base.lat = o.latitude;
-		base.lng = o.longitude;
-		base.date = o.date_added;
-		base.timestamp = o.timestamp_added;
-
-
+		fields.put("lat", o.latitude);
+		fields.put("lng", o.longitude);
+		fields.put("date", o.date_added);
+		fields.put("timestamp", o.timestamp_added);
+		
 		class UploadJsonRequest extends SpringAndroidSpiceRequest<APIResponseUpload> {
 
 			public UploadJsonRequest(Class<APIResponseUpload> clazz) {
@@ -184,7 +176,8 @@ public class ObserverAPIAlpha implements ObserverAPICore {
 				
 				MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
 				parts.add("token", Observer.instance.getAPIKey());
-				parts.add("record", Observer.mapper.writeValueAsString(base));
+				String fieldsJson = Observer.mapper.writeValueAsString(fields);
+				parts.add("record",fieldsJson);
 
 				for(org.calflora.observer.model.Attachment a : o.attachments){
 					if(a.name.equals("thumbnail")){

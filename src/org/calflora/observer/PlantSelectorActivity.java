@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.winterroot.rhus.util.DataBaseHelper;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -31,6 +35,8 @@ import android.widget.TextView;
 
 public class PlantSelectorActivity extends BaseActivity {
 
+	protected static final String PROJECT_PLANTS_PREFS_KEY = "PROJECT_PLANTS_PREFS_KEY";
+	protected static final String SCI_NAME_PREFS_KEY = "SCI_NAME_PREFS_KEY";
 	Cursor c;
 	Map<String, Drawable> plantImages = new HashMap<String, Drawable>();
 	Boolean scientificName = true;
@@ -147,8 +153,13 @@ public class PlantSelectorActivity extends BaseActivity {
 		searchField.setText(searchText);
 		searchField.addTextChangedListener(filterTextWatcher);
 		
-		selectedDatabase = Observer.plantsListDatabase;
-		Cursor plantsCursor= getPlantsCursor( selectedDatabase, "", true);
+		SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		if(sharedpreferences.getBoolean(PlantSelectorActivity.PROJECT_PLANTS_PREFS_KEY, true)){
+			selectedDatabase = Observer.plantsListDatabase;
+		} else {
+			selectedDatabase = Observer.allPlantsListDatabase;
+		}
+		Cursor plantsCursor= getPlantsCursor( selectedDatabase, "", sharedpreferences.getBoolean(PlantSelectorActivity.SCI_NAME_PREFS_KEY, true));
 
 		adapter = new SearchFieldAndCursorAdapter(this, plantsCursor);
         lv.setAdapter(adapter);
@@ -203,6 +214,10 @@ public class PlantSelectorActivity extends BaseActivity {
 				} else {
 					scientificName = false;
 				}
+				
+				SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+				sharedpreferences.edit().putBoolean(PlantSelectorActivity.SCI_NAME_PREFS_KEY, scientificName).commit();
+				
 		        adapter.getFilter().filter(cursorConstraint);
 				
 			}
@@ -213,13 +228,19 @@ public class PlantSelectorActivity extends BaseActivity {
 
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				Boolean projectPlantsPref = false;
 				if(checkedId == R.id.project_plants_radio){
 					selectedDatabase = Observer.plantsListDatabase;
 					adapter.changeCursor(getPlantsCursor(selectedDatabase, cursorConstraint, scientificName));	
+					projectPlantsPref = true;
 				} else {
 					selectedDatabase = Observer.allPlantsListDatabase;
 					adapter.changeCursor(getPlantsCursor(selectedDatabase, cursorConstraint, scientificName));	
 				}
+				
+				SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+				sharedpreferences.edit().putBoolean(PlantSelectorActivity.PROJECT_PLANTS_PREFS_KEY, projectPlantsPref).commit();
+				
 				lv.invalidate();
 				adapter.notifyDataSetChanged();
 				

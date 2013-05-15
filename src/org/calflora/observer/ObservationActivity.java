@@ -175,7 +175,6 @@ public class ObservationActivity extends Activity implements
             				 * This is how you handle the constraints
             				 * probably want to save each time they hit a tab item
             				 * */
-            				boolean evaluateConstraints = false;
             				//FailedConstraint constraint = mFormController.saveAllScreenAnswers(answers,
             				//		evaluateConstraints);
             				
@@ -210,7 +209,6 @@ public class ObservationActivity extends Activity implements
             			}
         				
         				
-        				File instancePath = mFormController.getInstancePath();
         				//mFormController.get
         				//This isn't the right map yet, because it doesn't take groups into account
 						Map<String, String> values;
@@ -223,20 +221,19 @@ public class ObservationActivity extends Activity implements
 						}
 						InputStream is = payload.getPayloadStream();
 						values = getOdkCollectFormValues(is);
+						is = null;
+						payload = null;
         				
-        				//Read data from fragments and store.
-        				/*
-        				 "locdesc":"between the big rock and the oak tree",
-        				  "Habitat":"riparian",
-        				  "Notes":"seems to be spreading downhill",
-        				*/
+						// Add values to the current observation
         				
-        				
+        				for(String key : values.keySet()){
+        					Observer.currentObservation.setField(key, values.get(key));
+        				}
         				
         				try {
         					Observer.currentObservation.storeObservation();
         				} catch (JSONException e1) {
-        					Observer.toast("JSON Failed", getApplicationContext());
+        					Observer.toast("Failed to store observation", getApplicationContext());
         					e1.printStackTrace();
         					return;
         				}
@@ -289,17 +286,20 @@ public class ObservationActivity extends Activity implements
 		    Element dataEl = rootNode.getElement(0);
 		    Map<String, String> values = new HashMap<String, String>();
 		    for (int i = 0; i < dataEl.getChildCount(); i++) {
-		      Element child = dataEl.getElement(i);
-		      String key = child.getName();
-		      String value = child.getChildCount() > 0 ? child.getText(0) : null;
-		      values.put(key, value);
+		      Element groupEl = dataEl.getElement(i);
+		      for(int j = 0; j < groupEl.getChildCount(); j++){
+		    	  Element child = groupEl.getElement(j);
+		    	  String key = child.getName();
+		    	  String value = child.getChildCount() > 0 ? child.getText(0) : null;
+		    	  values.put(key, value);
+		      }
 		    }
 		    return values;
 		  }
 
 	private void loadPlant(String taxon) {
 		Plant plant = Project.getPlant(taxon);
-		Observer.currentObservation.plant = plant;
+		Observer.currentObservation.setField("taxon", plant.getTaxon());
 
 		TextView commonName = (TextView)findViewById(R.id.common_name);
 		TextView taxonName = (TextView)findViewById(R.id.taxon);

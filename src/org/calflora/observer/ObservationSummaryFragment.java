@@ -313,8 +313,8 @@ public class ObservationSummaryFragment extends Fragment {
 
 				// Add the attachments
 				try {
-					Observer.currentObservation.addAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
-					Observer.currentObservation.addAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); 
+					Observer.currentObservation.setAttachment("thumbnail", thumbBytes, "image/jpeg", getActivity());
+					Observer.currentObservation.setAttachment("photo1", plantImageBytes, "image/jpeg", getActivity()); 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

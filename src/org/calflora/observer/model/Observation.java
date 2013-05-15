@@ -7,8 +7,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import net.smart_json_database.JSONEntity;
@@ -29,39 +33,42 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Observation {
 
+	// Instance variables for all observations
 	public double latitude;
 	public double longitude;
-	public boolean uploaded;
+	public int uploaded;
 	public String date_added;
 	public int timestamp_added;
 
-	// TODO Plant should be refactored..
-	// This should be a big old String, String map!
-	public Plant plant;
-	
-	public ArrayList<Attachment> attachments;
+	// Dynamic lists of observation specific data
+	public Map<String, Object> fields;	
+	public List<Attachment> attachments;
 	
 	public static Observation loadObservationFromEntity(JSONEntity entity) throws JSONException, JsonParseException, JsonMappingException, IOException{
 		Observation o = new Observation();
 		
-		
-		//Observation o = Observer.mapper.readValue(entity.getData().toString(), Observation.class);
-		// TODO The object maping for the Observation class need to be refactored so we can use Jackson here
-		// and then the jackson line above should go into smart_json, as an additional method.
+		// Observation o = Observer.mapper.readValue(entity.getData().toString(), Observation.class);
+		// TODO ? The object mapping for the Observation class need to be refactored so we can use Jackson here
+		// and then the Jackson line above should go into smart_json, as an additional method.
+		// ALL these fields could be stuffed into the jackson mapper if we wanted..
 		
 		o.latitude = entity.getDouble("latitude");
 		o.longitude = entity.getDouble("longitude");
-		
-		try {
-			o.plant.setTaxon(entity.getString("taxon"));
-		} catch (Exception e){
-			o.plant.setTaxon("unknown"); // TODO this really isn't the right idea.. taxon should be Observation level parameter, primary key
-		}
 		o.date_added = entity.getString("date_added");
 		o.timestamp_added = entity.getInt("timestamp_added");
+		o.uploaded = entity.getInt("uploaded");
+		List<String> ivars = Arrays.asList("type", "latitude", "longitude", "date_added", "timestamp_added", "uploaded");
 		
-		Collection<Integer> collection = entity.hasMany("attachments");  // TODO This should really return the objects themselves
-		for(Integer i : collection){
+		Collection<String> keys = entity.dataKeys();
+		for(String key : keys){
+			if(ivars.contains(key)){
+				continue;
+			}
+			o.fields.put(key, entity.getString(key));
+		}
+		
+		Collection<Integer> attachmentIds = entity.hasMany("attachments");
+		for(Integer i : attachmentIds){
 			JSONEntity attachmentEntity = Observer.database.fetchById(i);
 			String attachmentString = attachmentEntity.getData().toString();
 			Attachment a = Observer.mapper.readValue( attachmentString, Attachment.class);
@@ -72,56 +79,16 @@ public class Observation {
 
 	}
 	
-	/*
-	public static byte[] createThubmnailBytes(String photoFileName){
-
-		Bitmap thumb = RHImage.resizeBitMapImage(photoFileName, 140, 120, 90);
-		return Observation.createThumbnailBytes(thumb);
-	}
-	*/
-
-	
-	public static byte[] createThumbnailBytes(Bitmap bitmap){
-		Bitmap thumb = RHImage.getResizedBitmap(bitmap, 140, 120);
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		thumb.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-		byte[] thumbBytes = stream.toByteArray();
-		return thumbBytes;
-	}
-	
-	
-	
-	public static byte[] createFullImageBytes(Bitmap image){
-
-		//image = RHImage.rotateImage(image);
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-		byte[] imageBytes = stream.toByteArray();
-		return imageBytes;
-		
-	}
-	
-	public static byte[] createFullImageBytes(String photoFileName){
-
-		Bitmap image = BitmapFactory.decodeFile(photoFileName);
-		return createFullImageBytes(image);
-		
-		/*
-		Bitmap image = RHImage.resizeBitMapImage(photoFileName, 1200, 1600, 90);
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		byte[] imageBytes = stream.toByteArray();
-		return imageBytes;
-		*/
-	}
-	
-	
 	public Observation(){
-		plant = new Plant();
+		fields = new HashMap<String, Object>();
 		attachments = new ArrayList<Attachment>();
 	}
 	
-	public void addAttachment(String name, byte[] bytes, String MIMEType, Context context) throws IOException{
+	public void setField(String key, String value){
+		fields.put(key, value);
+	}
+	
+	public void setAttachment(String name, byte[] bytes, String MIMEType, Context context) throws IOException{
 		
 		removeAttachment(name);
 		
@@ -170,37 +137,48 @@ public class Observation {
 	
 	public void storeObservation() throws JSONException{
 		
-		JSONEntity dataPoint = new JSONEntity();
+		JSONEntity record = new JSONEntity();
 		
-		// And insert into JSON Datastore
-		// TODO: JSON Database should be moved to Project
-		dataPoint.put("type", "observation");
-		dataPoint.put("latitude", latitude);
-		dataPoint.put("longitude", longitude);
-		if(plant != null && plant.getTaxon() != null){
-			dataPoint.put("taxon", plant.getTaxon());
-		}
+		// Prepare values
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		String format = s.format(new Date());
 		Long tsLong = System.currentTimeMillis()/1000;
-		//String ts = tsLong.toString();
-		dataPoint.put("date_added", format);
-		dataPoint.put("timestamp_added", tsLong);
-		dataPoint.put("uploaded", 0);
-		int id = Observer.database.store(dataPoint);
-		dataPoint = Observer.database.fetchById(id);
+		
+		// TODO: JSON Database should be moved to Project
+		record.put("type", "observation");
+		record.put("latitude", latitude);
+		record.put("longitude", longitude);
+		record.put("date_added", format);
+		record.put("timestamp_added", tsLong);
+		record.put("uploaded", 0);
+
+		for(String key : fields.keySet()){
+			String value = (String) fields.get(key);
+			if(value != null){
+				record.put(key, value);
+			}
+		}
+		
+		int id = Observer.database.store(record);
+		record = Observer.database.fetchById(id);
 		
 		//Store the attachments
 		for(Attachment a : attachments){
 			// TODO this process could be automated within smart json database
 			JSONEntity attachmentEntity = a.getJSONEntity();
 			int attachmentId = Observer.database.store(attachmentEntity);
-			dataPoint.addIdToHasMany("attachments", attachmentId);
+			record.addIdToHasMany("attachments", attachmentId);
 		}
 		
-		Observer.database.store(dataPoint);
+		Observer.database.store(record);
 		
 	}
+	
+	public Map<String, Object> getFields(){
+		return fields;
+	}
+	
+	
 	
 	/* Checks if external storage is available for read and write */
 	public boolean isExternalStorageWritable() {
