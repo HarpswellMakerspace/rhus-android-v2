@@ -1,5 +1,6 @@
 package org.calflora.observer;
 
+import java.io.File;
 import java.io.IOException;
 
 import net.smart_json_database.InitJSONDatabaseExcepiton;
@@ -25,6 +26,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.Gravity;
@@ -36,7 +38,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Observer extends Collect implements LocationListener {
 	
 	public static final String API_KEY_PREF = "APIKey";
-
 	public static final String USER_EMAIL_PREF = "UserEmail";
 
 	private static final String DB_NAME = "px137.sqlite"; //Hard coded for testing, this is Yosemite
@@ -46,6 +47,10 @@ public class Observer extends Collect implements LocationListener {
 	public static final String ORGANIZATION_PREFERENCE = "ORGANIZATION_PREFERENCE";
 	public static final String PROJECT_PREFERENCE = "PROJECT_PREFERENCE";
 
+	// ODK Settings
+	public static final String ODK_ROOT = Environment.getExternalStorageDirectory()
+            + File.separator + "Calflora";
+	
 	public static ObserverAPI observerAPI;
 	public static SharedPreferences settings;	
 	public static Observer instance;

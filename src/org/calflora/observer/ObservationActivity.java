@@ -1,32 +1,44 @@
 package org.calflora.observer;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Plant;
 import org.calflora.observer.model.Project;
+import org.javarosa.core.model.FormIndex;
+import org.javarosa.core.model.IDataReference;
+import org.javarosa.core.model.data.IAnswerData;
+import org.javarosa.core.services.transport.payload.ByteArrayPayload;
 import org.javarosa.form.api.FormEntryCaption;
 import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.json.JSONException;
-import org.odk.collect.android.activities.FormEntryActivity;
-import org.odk.collect.android.activities.FormHierarchyActivity;
+import org.kxml2.io.KXmlParser;
+import org.kxml2.kdom.Document;
+import org.kxml2.kdom.Element;
+import org.kxml2.kdom.Node;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.listeners.FormLoaderListener;
 import org.odk.collect.android.logic.FormController;
+import org.odk.collect.android.logic.FormController.FailedConstraint;
 import org.odk.collect.android.provider.FormsProviderAPI.FormsColumns;
 import org.odk.collect.android.tasks.FormLoaderTask;
 import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.android.views.ODKView;
 import org.odk.collect.android.widgets.QuestionWidget;
-import org.javarosa.form.api.FormEntryCaption;
-
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -49,8 +61,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +69,7 @@ public class ObservationActivity extends Activity implements
 		ActionBar.TabListener, FormLoaderListener {
 	
 	private static final int SELECT_PLANT = 1001;
+	private static final int ODK_VIEW_TAG = 2002;
 	
 	private ActionBar mActionBar;
 	private ObservationSummaryFragment observationSummaryFragment;
@@ -155,6 +167,63 @@ public class ObservationActivity extends Activity implements
             				          
         				}
         				
+        				for(ObservationODKFragment odkFragment : odkFragments) {
+        					RelativeLayout layout = (RelativeLayout) odkFragment.getView();
+        					ODKView odkView = (ODKView) layout.findViewWithTag(ObservationActivity.ODK_VIEW_TAG);
+            				LinkedHashMap<FormIndex, IAnswerData> answers = odkView.getAnswers();
+            				/*
+            				 * This is how you handle the constraints
+            				 * probably want to save each time they hit a tab item
+            				 * */
+            				boolean evaluateConstraints = false;
+            				//FailedConstraint constraint = mFormController.saveAllScreenAnswers(answers,
+            				//		evaluateConstraints);
+            				
+            				Iterator<FormIndex> it = answers.keySet().iterator();
+            	            while (it.hasNext()) {
+            	                FormIndex index = it.next();
+            	                // Within a group, you can only save for question events
+            	                //if (getEvent(index) == FormEntryController.EVENT_QUESTION) {
+            	                	int saveStatus;
+            	                	IAnswerData answer = answers.get(index);
+            	                	/*if (evaluateConstraints) {
+            	                		saveStatus = answerQuestion(index, answer);
+            	                        if (saveStatus != FormEntryController.ANSWER_OK) {
+            	                            return new FailedConstraint(index, saveStatus);
+            	                        }
+            	                    } else {*/
+            	                        mFormController.saveAnswer(index, answer);
+            	                    //}
+            	                /*} else {
+            	                    Log.w(t,
+            	                        "Attempted to save an index referencing something other than a question: "
+            	                                + index.getReference());
+            	                }*/
+            	            }
+            				
+            				/*
+            				if (constraint != null) {
+            					createConstraintToast(constraint.index, constraint.status);
+            					return false;
+            				}
+            				*/
+            			}
+        				
+        				
+        				File instancePath = mFormController.getInstancePath();
+        				//mFormController.get
+        				//This isn't the right map yet, because it doesn't take groups into account
+						Map<String, String> values;
+						ByteArrayPayload payload = null;
+						try {
+							payload = mFormController.getFilledInFormXml();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						InputStream is = payload.getPayloadStream();
+						values = getOdkCollectFormValues(is);
+        				
         				//Read data from fragments and store.
         				/*
         				 "locdesc":"between the big rock and the oak tree",
@@ -171,6 +240,8 @@ public class ObservationActivity extends Activity implements
         					e1.printStackTrace();
         					return;
         				}
+        				
+        				Toast.makeText(ObservationActivity.this, "Observation Saved", Toast.LENGTH_LONG).show();
 
         				done();
 
@@ -199,6 +270,32 @@ public class ObservationActivity extends Activity implements
 	}
 
 
+	  protected Map<String, String> getOdkCollectFormValues(InputStream is) {
+		   
+		    Document xmlDoc = new Document();
+		    KXmlParser xmlParser = new KXmlParser();
+		    try {
+		      xmlParser.setInput(is, "UTF-8");
+		      xmlDoc.parse(xmlParser);
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		      return null;
+		    } catch (XmlPullParserException e) {
+		      e.printStackTrace();
+		      return null;
+		    }
+		    Element rootEl = xmlDoc.getRootElement();
+		    Node rootNode = rootEl.getRoot();
+		    Element dataEl = rootNode.getElement(0);
+		    Map<String, String> values = new HashMap<String, String>();
+		    for (int i = 0; i < dataEl.getChildCount(); i++) {
+		      Element child = dataEl.getElement(i);
+		      String key = child.getName();
+		      String value = child.getChildCount() > 0 ? child.getText(0) : null;
+		      values.put(key, value);
+		    }
+		    return values;
+		  }
 
 	private void loadPlant(String taxon) {
 		Plant plant = Project.getPlant(taxon);
@@ -503,6 +600,7 @@ public class ObservationActivity extends Activity implements
             		FormEntryCaption[] emptyGroups = new FormEntryCaption[0];
             		odkv = new ODKView(this, formController.getQuestionPrompts(),
             				emptyGroups, false);
+            		odkv.setTag(ObservationActivity.ODK_VIEW_TAG);
             		FormEntryCaption g = groups[0];
             		tabLabels.add(g.getLongText());
             		/*
