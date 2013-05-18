@@ -65,6 +65,22 @@ public class ObservationMainFragment extends ObservationODKFragment {
 		super(odkv);
 		this.odkv = odkv;
 	}
+	
+	
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// We just create the map fragment programmatically, to customize controls
+		// http://developer.android.com/reference/com/google/android/gms/maps/GoogleMapOptions.html
+		GoogleMapOptions options =  new GoogleMapOptions();
+		options.zoomControlsEnabled(false);
+		options.zoomGesturesEnabled(false);
+		mapFragment = MapFragment.newInstance(options);
+
+	}
+
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,13 +88,6 @@ public class ObservationMainFragment extends ObservationODKFragment {
 		// Inflate the layout for this fragment
 		if(layout == null) {
 			RelativeLayout partialLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_observation_summary, container, false);
-
-			// We should just create the map fragment programmatically, to customize controls
-			// http://developer.android.com/reference/com/google/android/gms/maps/GoogleMapOptions.html
-			GoogleMapOptions options =  new GoogleMapOptions();
-			options.zoomControlsEnabled(false);
-			options.zoomGesturesEnabled(false);
-			mapFragment = MapFragment.newInstance(options);
 
 			FragmentManager fragmentManager = getFragmentManager();
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -98,53 +107,10 @@ public class ObservationMainFragment extends ObservationODKFragment {
 	Object lock = new Object();
 
 
-	public boolean hasImageCaptureBug() {
-
-		// list of known devices that have the bug
-		ArrayList<String> devices = new ArrayList<String>();
-		devices.add("android-devphone1/dream_devphone/dream");
-		devices.add("generic/sdk/generic");
-		devices.add("vodafone/vfpioneer/sapphire");
-		devices.add("tmobile/kila/dream");
-		devices.add("verizon/voles/sholes");
-		devices.add("google_ion/google_ion/sapphire");
-
-		return devices.contains(android.os.Build.BRAND + "/" + android.os.Build.PRODUCT + "/"
-				+ android.os.Build.DEVICE);
-
-	}
-
 	@Override
 	public void onStart() {
 		super.onStart();
 
-		// TODO Is this the right place for this in the lifecycle?
-		map = mapFragment.getMap();
-		if(map != null) {
-			//Avoids a crash
-			map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-			map.setMyLocationEnabled(true);
-
-			// Custom offline layer.
-			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
-
-			LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
-			map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
-
-			MarkerOptions markerOptions = new MarkerOptions();
-			markerOptions.position(latLng);
-			markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-			map.addMarker(markerOptions);
-
-		} else {
-			if(ConnectionResult.SUCCESS != GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity() ) ){
-				Observer.toast("Google Maps Not Available", getActivity());
-			} else {
-				Observer.toast("Google Maps Load Error", getActivity());
-			}
-		}
-
-		
 		Button captureImageButton = (Button) getView().findViewById(R.id.plant_photo_image_button);
 		captureImageButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
@@ -191,6 +157,33 @@ public class ObservationMainFragment extends ObservationODKFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		
+		// TODO Is this the right place for this in the lifecycle?
+		// Put this here to ensure we don't get a null map
+		map = mapFragment.getMap();
+		if(map != null) {
+			//Avoids a crash
+			map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+			map.setMyLocationEnabled(true);
+
+			// Custom offline layer.
+			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+
+			LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
+			map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
+
+			MarkerOptions markerOptions = new MarkerOptions();
+			markerOptions.position(latLng);
+			markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+			map.addMarker(markerOptions);
+
+		} else {
+			if(ConnectionResult.SUCCESS != GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity() ) ){
+				Observer.toast("Google Maps Not Available", getActivity());
+			} else {
+				Observer.toast("Google Maps Load Error", getActivity());
+			}
+		}
 	}
 
     private int exifOrientationToDegrees(int orientation) {
