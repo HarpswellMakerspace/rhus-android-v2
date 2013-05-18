@@ -72,8 +72,6 @@ public class ObservationActivity extends Activity implements
 	private static final int ODK_VIEW_TAG = 2002;
 	
 	private ActionBar mActionBar;
-	private ObservationSummaryFragment observationSummaryFragment;
-
 	private ImageView plantThumbnailView;
 
 	private String mFormPath = "";
@@ -100,12 +98,11 @@ public class ObservationActivity extends Activity implements
 		setContentView(R.layout.activity_observation);
 		
 		String instancePath = null;
-		mFormPath = Environment.getExternalStorageDirectory().toString() + "/Forms/OAT.xml";
+		mFormPath = Environment.getExternalStorageDirectory().toString() + "/Calflora/OAT.xml";
         mFormLoaderTask = new FormLoaderTask(instancePath, null, null);
         mFormLoaderTask.setFormLoaderListener(this);
         mFormLoaderTask.execute(mFormPath);
 		
-		observationSummaryFragment = new ObservationSummaryFragment();
 		odkFragments = new ArrayList<ObservationODKFragment>();
 		tabLabels = new ArrayList<String>();
 		
@@ -114,23 +111,6 @@ public class ObservationActivity extends Activity implements
 		// Set up the action bar.
 		mActionBar = getActionBar();
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		/*
-		actionBar.addTab(actionBar.newTab()
-				.setText("Observation")
-				.setTabListener(this)
-				);
-		actionBar.addTab(actionBar.newTab()
-				.setText("Assessment")
-				.setTabListener(this)
-				);
-		actionBar.addTab(actionBar.newTab()
-				.setText("Treatment")
-				.setTabListener(this)
-				);
-		*/
-		
-		//actionBar.setHomeButtonEnabled(true);
 		
 		View homeIcon = findViewById(android.R.id.home);
 		((View) homeIcon.getParent()).setVisibility(View.GONE);
@@ -356,14 +336,8 @@ public class ObservationActivity extends Activity implements
 
 		switch (position){
 		case 0:
-			//selectedTab = Tabs.SUMMARY;
-			transaction.show(observationSummaryFragment );
-			break;
-			
 		case 1:
 		case 2:
-			transaction.hide(observationSummaryFragment );
-
 			// Assessment, or ODK configured 2nd tab
 		    //selectedTab = Tabs.SUMMARY;
 		    ObservationODKFragment fragment = odkFragments.get(position);
@@ -570,6 +544,7 @@ public class ObservationActivity extends Activity implements
          */
         
         boolean done = false;
+        boolean firstGroup = true;
         setup: for(int event=0; !done; event = formController.stepToNextScreenEvent()) {
             switch (event) {
             case FormEntryController.EVENT_BEGINNING_OF_FORM:
@@ -632,11 +607,16 @@ public class ObservationActivity extends Activity implements
             	}
 
             	
-            	ObservationODKFragment fragment = new ObservationODKFragment(odkv);
+            	ObservationODKFragment fragment;
+            	
+            	if(firstGroup){
+            	 	fragment = new ObservationMainFragment(odkv);
+                    firstGroup = false;
+            	} else {
+            	 	fragment = new ObservationODKFragment(odkv);
+            	}
             	odkFragments.add(fragment);
             	
-            	
-
             	break;
 
             default :
@@ -657,12 +637,11 @@ public class ObservationActivity extends Activity implements
 		FragmentTransaction transaction;
 	    transaction = fragmentManager.beginTransaction();
 	    
-		transaction.add(R.id.observation_fragment_container, observationSummaryFragment );
-		transaction.show(observationSummaryFragment);
 		for(ObservationODKFragment fragment : odkFragments){
 			transaction.add(R.id.observation_fragment_container, fragment);
 			transaction.hide(fragment);
 		}
+		transaction.show(odkFragments.get(0));
 		transaction.commit();
 		
     	// I think the fragments need to be called in add() before setting up the tabs

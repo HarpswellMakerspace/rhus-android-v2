@@ -1,14 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:paddingLeft="0dp"
-    android:paddingRight="10dp" >
+    android:paddingRight="10dp"
+    android:id="@+id/observation_photo_map" >
 
     <ImageView
         android:id="@+id/plant_image_thumbnail"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_above="@+id/location_description_text_view"
+        android:layout_width="140dp"
+        android:layout_height="120dp"
         android:layout_alignLeft="@+id/plant_photo_image_button"
         android:layout_alignRight="@+id/plant_photo_image_button"
         android:layout_alignTop="@+id/plant_photo_image_button"
@@ -40,7 +40,18 @@
         android:paddingLeft="@dimen/padding10" >
 
     </LinearLayout>
+    <!-- 
+    <RelativeLayout
+        android:id="@+id/odk_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignLeft="@+id/plant_photo_image_button"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/plant_photo_image_button" >
 
+    </RelativeLayout>
+     -->
+<!-- 
     <TextView
         android:id="@+id/location_description_text_view"
         android:layout_width="wrap_content"
@@ -96,5 +107,8 @@
         android:imeOptions="actionDone"
         android:inputType="textMultiLine"
         android:singleLine="true" />
+ -->
 
+
+ 
 </RelativeLayout>

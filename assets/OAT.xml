@@ -1,0 +1,491 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>OAT</h:title>
+    <model>
+      <instance>
+        <data id="build_OAT_1368599007">
+          <meta>
+            <instanceID/>
+          </meta>
+          <Observation>
+            <locdesc/>
+            <habitat/>
+            <notes/>
+          </Observation>
+          <Assessment>
+            <nplants/>
+            <percent_cover/>
+            <infarea/>
+            <grossarea/>
+            <distribution/>
+            <phenology/>
+          </Assessment>
+          <untitled6>
+            <trmethod/>
+            <herbicide/>
+            <herbconc/>
+            <percent_treated/>
+          </untitled6>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/Observation:label">
+            <value>Observation</value>
+          </text>
+          <text id="/data/Observation/locdesc:label">
+            <value>Location Description</value>
+          </text>
+          <text id="/data/Observation/locdesc:hint">
+            <value>Enter some text here</value>
+          </text>
+          <text id="/data/Observation/habitat:label">
+            <value>Habitat</value>
+          </text>
+          <text id="/data/Observation/notes:label">
+            <value>Notes</value>
+          </text>
+          <text id="/data/Observation/notes:hint">
+            <value>Additional Notes</value>
+          </text>
+          <text id="/data/Assessment:label">
+            <value>Assessment</value>
+          </text>
+          <text id="/data/Assessment/nplants:label">
+            <value>Number of Plants</value>
+          </text>
+          <text id="/data/Assessment/nplants:hint">
+            <value></value>
+          </text>
+          <text id="/data/Assessment/nplants:option0">
+            <value>1</value>
+          </text>
+          <text id="/data/Assessment/nplants:option1">
+            <value>2-10</value>
+          </text>
+          <text id="/data/Assessment/nplants:option2">
+            <value>11-100</value>
+          </text>
+          <text id="/data/Assessment/nplants:option3">
+            <value>101-1000</value>
+          </text>
+          <text id="/data/Assessment/nplants:option4">
+            <value>1001-10,000</value>
+          </text>
+          <text id="/data/Assessment/nplants:option5">
+            <value>&gt; 10,000</value>
+          </text>
+          <text id="/data/Assessment/nplants:option6">
+            <value>0</value>
+          </text>
+          <text id="/data/Assessment/percent_cover:label">
+            <value>Percent Cover</value>
+          </text>
+          <text id="/data/Assessment/percent_cover:option0">
+            <value>0-1</value>
+          </text>
+          <text id="/data/Assessment/percent_cover:option1">
+            <value>1-5</value>
+          </text>
+          <text id="/data/Assessment/percent_cover:option2">
+            <value>5-25</value>
+          </text>
+          <text id="/data/Assessment/percent_cover:option3">
+            <value>25-50</value>
+          </text>
+          <text id="/data/Assessment/percent_cover:option4">
+            <value>50-75</value>
+          </text>
+          <text id="/data/Assessment/percent_cover:option5">
+            <value>75-100</value>
+          </text>
+          <text id="/data/Assessment/percent_cover:option6">
+            <value>0</value>
+          </text>
+          <text id="/data/Assessment/infarea:label">
+            <value>Infested Area Sq. Meters</value>
+          </text>
+          <text id="/data/Assessment/grossarea:label">
+            <value>Gross Area Sq. Meters</value>
+          </text>
+          <text id="/data/Assessment/distribution:label">
+            <value>Distribution</value>
+          </text>
+          <text id="/data/Assessment/distribution:option0">
+            <value>Isolated Individual</value>
+          </text>
+          <text id="/data/Assessment/distribution:option1">
+            <value>Isolated Patch</value>
+          </text>
+          <text id="/data/Assessment/distribution:option2">
+            <value>Scattered</value>
+          </text>
+          <text id="/data/Assessment/distribution:option3">
+            <value>Dense</value>
+          </text>
+          <text id="/data/Assessment/phenology:label">
+            <value>Phenology</value>
+          </text>
+          <text id="/data/Assessment/phenology:hint">
+            <value></value>
+          </text>
+          <text id="/data/Assessment/phenology:option0">
+            <value>N/A</value>
+          </text>
+          <text id="/data/Assessment/phenology:option1">
+            <value>Rosette</value>
+          </text>
+          <text id="/data/Assessment/phenology:option2">
+            <value>Vegetative</value>
+          </text>
+          <text id="/data/Assessment/phenology:option3">
+            <value>Flowering</value>
+          </text>
+          <text id="/data/Assessment/phenology:option4">
+            <value>Fruiting</value>
+          </text>
+          <text id="/data/Assessment/phenology:option5">
+            <value>Leafing out</value>
+          </text>
+          <text id="/data/Assessment/phenology:option6">
+            <value>Dead</value>
+          </text>
+          <text id="/data/Assessment/phenology:option7">
+            <value>Dormant</value>
+          </text>
+          <text id="/data/untitled6:label">
+            <value>Treatment</value>
+          </text>
+          <text id="/data/untitled6/trmethod:label">
+            <value>Treatment Method</value>
+          </text>
+          <text id="/data/untitled6/trmethod:option0">
+            <value>Shovel shear</value>
+          </text>
+          <text id="/data/untitled6/trmethod:option1">
+            <value>Handpull</value>
+          </text>
+          <text id="/data/untitled6/trmethod:option2">
+            <value>Flower / Seed removal</value>
+          </text>
+          <text id="/data/untitled6/trmethod:option3">
+            <value>Mow</value>
+          </text>
+          <text id="/data/untitled6/trmethod:option4">
+            <value>Lop</value>
+          </text>
+          <text id="/data/untitled6/trmethod:option5">
+            <value>Herbicide</value>
+          </text>
+          <text id="/data/untitled6/herbicide:label">
+            <value>Herbicide</value>
+          </text>
+          <text id="/data/untitled6/herbicide:hint">
+            <value></value>
+          </text>
+          <text id="/data/untitled6/herbicide:option0">
+            <value>Aminopyralid</value>
+          </text>
+          <text id="/data/untitled6/herbicide:option1">
+            <value>Chlorsulfuron</value>
+          </text>
+          <text id="/data/untitled6/herbicide:option2">
+            <value>Glyphosate</value>
+          </text>
+          <text id="/data/untitled6/herbicide:option3">
+            <value>Imazapyr</value>
+          </text>
+          <text id="/data/untitled6/herbicide:option4">
+            <value>Rimsulfuron</value>
+          </text>
+          <text id="/data/untitled6/herbicide:option5">
+            <value>Triclorpyr</value>
+          </text>
+          <text id="/data/untitled6/herbconc:label">
+            <value>Concentration (Percent)</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:label">
+            <value>Percent Treated</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:option0">
+            <value>5</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:option1">
+            <value>10</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:option2">
+            <value>15</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:option3">
+            <value>25</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:option4">
+            <value>35</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:option5">
+            <value>50</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:option6">
+            <value>70</value>
+          </text>
+          <text id="/data/untitled6/percent_treated:option7">
+            <value>100</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/Observation/locdesc" type="string"/>
+      <bind nodeset="/data/Observation/habitat" type="string"/>
+      <bind nodeset="/data/Observation/notes" type="string"/>
+      <bind nodeset="/data/Assessment/nplants" type="select1"/>
+      <bind nodeset="/data/Assessment/percent_cover" type="select1"/>
+      <bind nodeset="/data/Assessment/infarea" type="int"/>
+      <bind nodeset="/data/Assessment/grossarea" type="int"/>
+      <bind nodeset="/data/Assessment/distribution" type="select1"/>
+      <bind nodeset="/data/Assessment/phenology" type="select1"/>
+      <bind nodeset="/data/untitled6/trmethod" type="select1"/>
+      <bind nodeset="/data/untitled6/herbicide" type="select1"/>
+      <bind nodeset="/data/untitled6/herbconc" type="int" required="true()"/>
+      <bind nodeset="/data/untitled6/percent_treated" type="select1"/>
+    </model>
+  </h:head>
+  <h:body>
+    <group appearance="field-list">
+      <label ref="jr:itext('/data/Observation:label')"/>
+      <input ref="/data/Observation/locdesc">
+        <label ref="jr:itext('/data/Observation/locdesc:label')"/>
+        <hint ref="jr:itext('/data/Observation/locdesc:hint')"/>
+      </input>
+      <input ref="/data/Observation/habitat">
+        <label ref="jr:itext('/data/Observation/habitat:label')"/>
+      </input>
+      <input ref="/data/Observation/notes">
+        <label ref="jr:itext('/data/Observation/notes:label')"/>
+        <hint ref="jr:itext('/data/Observation/notes:hint')"/>
+      </input>
+    </group>
+    <group appearance="field-list">
+      <label ref="jr:itext('/data/Assessment:label')"/>
+      <select1 ref="/data/Assessment/nplants">
+        <label ref="jr:itext('/data/Assessment/nplants:label')"/>
+        <hint ref="jr:itext('/data/Assessment/nplants:hint')"/>
+        <item>
+          <label ref="jr:itext('/data/Assessment/nplants:option0')"/>
+          <value>1</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/nplants:option1')"/>
+          <value>2-10</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/nplants:option2')"/>
+          <value>11-100</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/nplants:option3')"/>
+          <value>101-1000</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/nplants:option4')"/>
+          <value>1001-10,000</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/nplants:option5')"/>
+          <value>&gt; 10,000</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/nplants:option6')"/>
+          <value>0</value>
+        </item>
+      </select1>
+      <select1 ref="/data/Assessment/percent_cover">
+        <label ref="jr:itext('/data/Assessment/percent_cover:label')"/>
+        <item>
+          <label ref="jr:itext('/data/Assessment/percent_cover:option0')"/>
+          <value>0-1</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/percent_cover:option1')"/>
+          <value>1-5</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/percent_cover:option2')"/>
+          <value>5-25</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/percent_cover:option3')"/>
+          <value>25-50</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/percent_cover:option4')"/>
+          <value>50-75</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/percent_cover:option5')"/>
+          <value>75-100</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/percent_cover:option6')"/>
+          <value>0</value>
+        </item>
+      </select1>
+      <input ref="/data/Assessment/infarea">
+        <label ref="jr:itext('/data/Assessment/infarea:label')"/>
+      </input>
+      <input ref="/data/Assessment/grossarea">
+        <label ref="jr:itext('/data/Assessment/grossarea:label')"/>
+      </input>
+      <select1 ref="/data/Assessment/distribution">
+        <label ref="jr:itext('/data/Assessment/distribution:label')"/>
+        <item>
+          <label ref="jr:itext('/data/Assessment/distribution:option0')"/>
+          <value>Isolated Individual</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/distribution:option1')"/>
+          <value>Isolated Patch</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/distribution:option2')"/>
+          <value>Scattered</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/distribution:option3')"/>
+          <value>Dense</value>
+        </item>
+      </select1>
+      <select1 ref="/data/Assessment/phenology">
+        <label ref="jr:itext('/data/Assessment/phenology:label')"/>
+        <hint ref="jr:itext('/data/Assessment/phenology:hint')"/>
+        <item>
+          <label ref="jr:itext('/data/Assessment/phenology:option0')"/>
+          <value>N/A</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/phenology:option1')"/>
+          <value>Rosette</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/phenology:option2')"/>
+          <value>Vegetative</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/phenology:option3')"/>
+          <value>Flowering</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/phenology:option4')"/>
+          <value>Fruiting</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/phenology:option5')"/>
+          <value>Leafing out</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/phenology:option6')"/>
+          <value>Dead</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Assessment/phenology:option7')"/>
+          <value>Dormant</value>
+        </item>
+      </select1>
+    </group>
+    <group appearance="field-list">
+      <label ref="jr:itext('/data/untitled6:label')"/>
+      <select1 ref="/data/untitled6/trmethod">
+        <label ref="jr:itext('/data/untitled6/trmethod:label')"/>
+        <item>
+          <label ref="jr:itext('/data/untitled6/trmethod:option0')"/>
+          <value>Shovel shear</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/trmethod:option1')"/>
+          <value>Handpull</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/trmethod:option2')"/>
+          <value>Flower / Seed removal</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/trmethod:option3')"/>
+          <value>Mow</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/trmethod:option4')"/>
+          <value>Lop</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/trmethod:option5')"/>
+          <value>Herbicide</value>
+        </item>
+      </select1>
+      <select1 ref="/data/untitled6/herbicide">
+        <label ref="jr:itext('/data/untitled6/herbicide:label')"/>
+        <hint ref="jr:itext('/data/untitled6/herbicide:hint')"/>
+        <item>
+          <label ref="jr:itext('/data/untitled6/herbicide:option0')"/>
+          <value>Aminopyralid</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/herbicide:option1')"/>
+          <value>Chlorsulfuron</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/herbicide:option2')"/>
+          <value>Glyphosate</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/herbicide:option3')"/>
+          <value>Imazapyr</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/herbicide:option4')"/>
+          <value>Rimsulfuron</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/herbicide:option5')"/>
+          <value>Triclorpyr</value>
+        </item>
+      </select1>
+      <input ref="/data/untitled6/herbconc">
+        <label ref="jr:itext('/data/untitled6/herbconc:label')"/>
+      </input>
+      <select1 ref="/data/untitled6/percent_treated">
+        <label ref="jr:itext('/data/untitled6/percent_treated:label')"/>
+        <item>
+          <label ref="jr:itext('/data/untitled6/percent_treated:option0')"/>
+          <value>5</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/percent_treated:option1')"/>
+          <value>10</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/percent_treated:option2')"/>
+          <value>15</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/percent_treated:option3')"/>
+          <value>25</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/percent_treated:option4')"/>
+          <value>35</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/percent_treated:option5')"/>
+          <value>50</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/percent_treated:option6')"/>
+          <value>70</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/untitled6/percent_treated:option7')"/>
+          <value>100</value>
+        </item>
+      </select1>
+    </group>
+  </h:body>
+</h:html>

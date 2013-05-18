@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 
 public class ObservationODKFragment extends Fragment {
 
-	private ODKView odkv;
+	protected ODKView odkv;
 	
 	public ObservationODKFragment(ODKView odkv) {
 		super();

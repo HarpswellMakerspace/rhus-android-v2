@@ -1,7 +1,9 @@
 package org.calflora.observer;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import net.smart_json_database.InitJSONDatabaseExcepiton;
 import net.smart_json_database.JSONDatabase;
@@ -29,6 +31,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -129,32 +132,24 @@ public class Observer extends Collect implements LocationListener {
 
 		username = settings.getString(USER_EMAIL_PREF, null);
 		APIKey = settings.getString(API_KEY_PREF, null);
-		/*
-		String projectJSON = settings.getString(Observer.PROJECT_PREFERENCE, null);
-		String organizationJSON = settings.getString(Observer.ORGANIZATION_PREFERENCE, null);
-
-		if(username != null && APIKey != null){
-			if(organizationJSON != null){
-				try {
-					Organization o = Observer.mapper.readValue(organizationJSON, Organization.class);
-					organization = o;
-				} catch (Exception e) {
-					organization = null;
-				}
-			}
-			if(projectJSON != null){
-				try {
-					Project p = Observer.mapper.readValue(projectJSON, Project.class);
-					project = p;
-				} catch (Exception e) {
-					project = null;
-				}
-			}
-		}*/
 		
-
-		
-		
+		//Copy OAT.xml from assets
+		File assetDir = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/");
+		assetDir.mkdirs();
+		File  assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/OAT.xml");
+		try {    
+            InputStream in = assets.open("OAT.xml");
+            FileOutputStream f = new FileOutputStream(assetDestination); 
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = in.read(buffer)) > 0) {
+            f.write(buffer, 0, len1);
+            }
+            f.close();
+        } catch (Exception e) {
+            Log.d("CopyFileFromAssetsToSD", e.getMessage());
+        }
+	
 		SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		if( false == sharedpreferences.getBoolean("firstLaunch", false)) {
 			try {
