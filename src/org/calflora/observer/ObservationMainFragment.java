@@ -25,6 +25,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,20 +67,6 @@ public class ObservationMainFragment extends ObservationODKFragment {
 		this.odkv = odkv;
 	}
 	
-	
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// We just create the map fragment programmatically, to customize controls
-		// http://developer.android.com/reference/com/google/android/gms/maps/GoogleMapOptions.html
-		GoogleMapOptions options =  new GoogleMapOptions();
-		options.zoomControlsEnabled(false);
-		options.zoomGesturesEnabled(false);
-		mapFragment = MapFragment.newInstance(options);
-
-	}
-
 
 
 	@Override
@@ -88,11 +75,6 @@ public class ObservationMainFragment extends ObservationODKFragment {
 		// Inflate the layout for this fragment
 		if(layout == null) {
 			RelativeLayout partialLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_observation_summary, container, false);
-
-			FragmentManager fragmentManager = getFragmentManager();
-			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			transaction.add(R.id.observation_map_layout, mapFragment);
-			transaction.commit();
 			
 			LinearLayout formLayout = (LinearLayout) odkv.getChildAt(0);
 			formLayout.addView(partialLayout, 0);
@@ -160,11 +142,12 @@ public class ObservationMainFragment extends ObservationODKFragment {
 		
 		// TODO Is this the right place for this in the lifecycle?
 		// Put this here to ensure we don't get a null map
+		mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFragment);
 		map = mapFragment.getMap();
 		if(map != null) {
 			//Avoids a crash
 			map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-			map.setMyLocationEnabled(true);
+			map.setMyLocationEnabled(false);
 
 			// Custom offline layer.
 			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
