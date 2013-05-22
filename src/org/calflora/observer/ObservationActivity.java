@@ -1,7 +1,6 @@
 package org.calflora.observer;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -18,7 +17,6 @@ import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Plant;
 import org.calflora.observer.model.Project;
 import org.javarosa.core.model.FormIndex;
-import org.javarosa.core.model.IDataReference;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.services.transport.payload.ByteArrayPayload;
 import org.javarosa.form.api.FormEntryCaption;
@@ -32,7 +30,6 @@ import org.kxml2.kdom.Node;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.listeners.FormLoaderListener;
 import org.odk.collect.android.logic.FormController;
-import org.odk.collect.android.logic.FormController.FailedConstraint;
 import org.odk.collect.android.provider.FormsProviderAPI.FormsColumns;
 import org.odk.collect.android.tasks.FormLoaderTask;
 import org.odk.collect.android.utilities.FileUtils;
@@ -52,6 +49,7 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -70,6 +68,7 @@ ActionBar.TabListener, FormLoaderListener {
 
 	private static final int SELECT_PLANT = 1001;
 	private static final int ODK_VIEW_TAG = 2002;
+	private static final String ODK_AUTHORITY = "org.calflora.observer.provider";
 
 	private ActionBar mActionBar;
 	private ImageView plantThumbnailView;
@@ -466,7 +465,7 @@ ActionBar.TabListener, FormLoaderListener {
 			};
 			Cursor c = null;
 			try {
-				c = getContentResolver().query(FormsColumns.CONTENT_URI, null,
+				c = getContentResolver().query( Uri.parse("content://" + ODK_AUTHORITY + "/forms"), null,
 						selection, selectArgs, null);
 				if (c.getCount() == 1) {
 					c.moveToFirst();
@@ -560,23 +559,16 @@ ActionBar.TabListener, FormLoaderListener {
 				done = true;
 				break;
 			case FormEntryController.EVENT_QUESTION:
-				int asdf = 0;
 				break;
 			case FormEntryController.EVENT_GROUP:
 
 				// For the pages (groups) of the form
 
-				// return createView(event, advancingPage);  ODK Code
 				ODKView odkv = null;
 				// should only be a group here if the event_group is a field-list
-				String tabLabel = "Section";
 				try {
 					FormEntryPrompt[] prompts = formController.getQuestionPrompts();
 					FormEntryCaption[] groups = formController.getGroupsForCurrentIndex();
-
-					//
-					// TODO: If we send it nothing for groups it should loose the title.
-					//
 
 					FormEntryCaption[] emptyGroups = new FormEntryCaption[0];
 					odkv = new ODKView(this, formController.getQuestionPrompts(),
@@ -584,25 +576,13 @@ ActionBar.TabListener, FormLoaderListener {
 					odkv.setTag(ObservationActivity.ODK_VIEW_TAG);
 					FormEntryCaption g = groups[0];
 					tabLabels.add(g.getLongText());
-					/*
-            Log.i(t,
-                    "created view for group "
-                            + (groups.length > 0 ? groups[groups.length - 1]
-                                    .getLongText() : "[top]")
-                            + " "
-                            + (prompts.length > 0 ? prompts[0]
-                                    .getQuestionText() : "[no question]"));
-					 */
+
+					
 				} catch (RuntimeException e) {
 					// this is badness to avoid a crash.
-
 					done = true;
-
-					//            		createErrorDialog(e.getMessage(), false);
 					e.printStackTrace();
 					break;
-					// event = formController.stepToNextScreenEvent();
-					// return createView(event, advancingPage);
 				}
 
 				// Makes a "clear answer" menu pop up on long-click

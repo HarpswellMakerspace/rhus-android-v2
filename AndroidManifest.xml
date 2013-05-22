@@ -1,143 +1,219 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="31" android:versionName=".5" package="org.calflora.observer">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.calflora.observer"
+    android:versionCode="31"
+    android:versionName=".5" >
 
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17"/>
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
 
-    <permission android:name="org.calflora.observer.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
+    <permission
+        android:name="org.calflora.observer.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="org.calflora.observer.permission.MAPS_RECEIVE"/>
-    
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE"/>
-    
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    
-    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <application android:allowBackup="true" android:icon="@drawable/poppy_logo_70" android:label="@string/app_name" android:logo="@drawable/poppy_logo_70" android:name="org.calflora.observer.Calflora" android:theme="@style/Theme.Workspace">
-        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAlu0reGu9zqOh-I0fuvzfREuv9DJ8QzLo"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="org.calflora.observer.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-        <service android:exported="false" android:name="com.octo.android.robospice.JacksonSpringAndroidSpiceService"/>
-        <service android:exported="false" android:name="org.calflora.observer.service.UploaderService"/>
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
-        <activity android:label="@string/app_name" android:name="org.calflora.observer.MainActivity" android:noHistory="true" android:screenOrientation="portrait">
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:name="org.calflora.observer.Calflora"
+        android:allowBackup="true"
+        android:icon="@drawable/poppy_logo_70"
+        android:label="@string/app_name"
+        android:logo="@drawable/poppy_logo_70"
+        android:theme="@style/Theme.Workspace" >
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAlu0reGu9zqOh-I0fuvzfREuv9DJ8QzLo" />
+
+        <service
+            android:name="com.octo.android.robospice.JacksonSpringAndroidSpiceService"
+            android:exported="false" />
+        <service
+            android:name="org.calflora.observer.service.UploaderService"
+            android:exported="false" />
+
+        <activity
+            android:name="org.calflora.observer.MainActivity"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.calflora.observer.action.MAIN"/>
+                <action android:name="org.calflora.observer.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- android:noHistory="true" -->
-        <activity android:label="@string/title_activity_login" android:name="org.calflora.observer.LoginActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden">
+        <activity
+            android:name="org.calflora.observer.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.LOGIN"/>
+                <action android:name="org.calflora.observer.action.LOGIN" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_organizations" android:name="org.calflora.observer.OrganizationsActivity" android:screenOrientation="portrait">
+        <activity
+            android:name="org.calflora.observer.OrganizationsActivity"
+            android:label="@string/title_activity_organizations"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.ORGANIZATIONS"/>
+                <action android:name="org.calflora.observer.action.ORGANIZATIONS" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_projects" android:name="org.calflora.observer.ProjectsActivity" android:screenOrientation="portrait">
+        <activity
+            android:name="org.calflora.observer.ProjectsActivity"
+            android:label="@string/title_activity_projects"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.PROJECTS"/>
+                <action android:name="org.calflora.observer.action.PROJECTS" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_dashboard" android:name="org.calflora.observer.DashboardActivity" android:screenOrientation="portrait">
+        <activity
+            android:name="org.calflora.observer.DashboardActivity"
+            android:label="@string/title_activity_dashboard"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.DASHBOARD"/>
+                <action android:name="org.calflora.observer.action.DASHBOARD" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_workspace" android:name="org.calflora.observer.WorkspaceActivity" android:screenOrientation="portrait" android:theme="@style/Theme.Workspace">
+        <activity
+            android:name="org.calflora.observer.WorkspaceActivity"
+            android:label="@string/title_activity_workspace"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Workspace" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.WORKSPACE"/>
+                <action android:name="org.calflora.observer.action.WORKSPACE" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_observation" android:name="org.calflora.observer.ObservationActivity" android:screenOrientation="portrait" android:theme="@style/Theme.Workspace.ActionSheet">
+        <activity
+            android:name="org.calflora.observer.ObservationActivity"
+            android:label="@string/title_activity_observation"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Workspace.ActionSheet" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.EDITOBSERVATION"/>
+                <action android:name="org.calflora.observer.action.EDITOBSERVATION" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.calflora.observer.action.NEWOBSERVATION"/>
+                <action android:name="org.calflora.observer.action.NEWOBSERVATION" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_plant_selector" android:name="org.calflora.observer.PlantSelectorActivity" android:noHistory="true" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden|adjustPan">
+        <activity
+            android:name="org.calflora.observer.PlantSelectorActivity"
+            android:label="@string/title_activity_plant_selector"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.PLANTSELECTOR"/>
+                <action android:name="org.calflora.observer.action.PLANTSELECTOR" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_capture_photo" android:name="org.calflora.experimental.CapturePhotoActivity" android:noHistory="true" android:screenOrientation="portrait">
+        <activity
+            android:name="org.calflora.experimental.CapturePhotoActivity"
+            android:label="@string/title_activity_capture_photo"
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.CAPTUREPHOTO"/>
+                <action android:name="org.calflora.observer.action.CAPTUREPHOTO" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_settings" android:name="org.calflora.observer.SettingsActivity" android:screenOrientation="portrait">
+        <activity
+            android:name="org.calflora.observer.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.SETTINGS"/>
+                <action android:name="org.calflora.observer.action.SETTINGS" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_help" android:name="org.calflora.observer.HelpActivity" android:screenOrientation="portrait">
+        <activity
+            android:name="org.calflora.observer.HelpActivity"
+            android:label="@string/title_activity_help"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.HELP"/>
+                <action android:name="org.calflora.observer.action.HELP" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_splash" android:name="org.calflora.observer.SplashActivity" android:screenOrientation="portrait">
+        <activity
+            android:name="org.calflora.observer.SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="org.calflora.observer.action.SPLASH_THEN_PROJECTS"/>
+                <action android:name="org.calflora.observer.action.SPLASH_THEN_PROJECTS" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.calflora.observer.action.SPLASH"/>
+                <action android:name="org.calflora.observer.action.SPLASH" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_download_project_assets" android:name="org.calflora.observer.DownloadProjectAssetsActivity" android:screenOrientation="portrait">
-                      <intent-filter>
-                <action android:name="org.calflora.observer.action.DOWNLOAD_PROJECT_ASSETS"/>
+        <activity
+            android:name="org.calflora.observer.DownloadProjectAssetsActivity"
+            android:label="@string/title_activity_download_project_assets"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="org.calflora.observer.action.DOWNLOAD_PROJECT_ASSETS" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="org.calflora.observer.provider.FormsProvider"
+            android:authorities="org.calflora.observer.provider"
+            android:exported="false" />
+        <provider
+            android:name="org.calflora.observer.provider.InstanceProvider"
+            android:authorities="org.calflora.observer.provider"
+            android:exported="false" />
     </application>
 
 </manifest>
