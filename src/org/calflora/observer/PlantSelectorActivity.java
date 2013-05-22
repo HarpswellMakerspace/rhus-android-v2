@@ -140,7 +140,7 @@ public class PlantSelectorActivity extends BaseActivity {
         adapter.getFilter().filter(cursorConstraint);
 	}
 
-	
+	EditText searchField;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -150,7 +150,7 @@ public class PlantSelectorActivity extends BaseActivity {
 
 		final ListView lv = (ListView)findViewById(R.id.plantSelectionList);
 		
-		EditText searchField = (EditText) findViewById(R.id.selector_search_field);
+		searchField = (EditText) findViewById(R.id.selector_search_field);
 		searchField.setText(searchText);
 		searchField.addTextChangedListener(filterTextWatcher);
 		
@@ -200,7 +200,7 @@ public class PlantSelectorActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
-				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
+				Intent intent = new Intent();
 				adapter.getCursor().moveToPosition(arg2);
 				intent.putExtra(Observer.NEW_PLANT_TAXON, adapter.getCursor().getString(1) );
 				setResult(RESULT_OK, intent);
@@ -215,8 +215,21 @@ public class PlantSelectorActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent("org.calflora.observer.action.NEWOBSERVATION");
+				Intent intent = new Intent();
 				intent.putExtra(Observer.NEW_PLANT_TAXON, "unknown" );
+				setResult(RESULT_OK, intent);
+				finish();				
+			}
+			
+		});
+		
+		Button customTaxonButton = (Button) findViewById(R.id.custom_taxon_button);
+		customTaxonButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra(Observer.NEW_PLANT_TAXON, searchField.getText().toString() );
 				setResult(RESULT_OK, intent);
 				finish();				
 			}

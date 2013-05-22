@@ -28,5 +28,6 @@
     <string name="sign_in">Sign In</string>
     <string name="title_activity_splash">Lauching...</string>
     <string name="title_activity_download_project_assets">Downloading Assets...</string>
+    <string name="custom_taxon_button_text">Use</string>
 
 </resources>
