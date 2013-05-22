@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -154,10 +155,28 @@ public class PlantSelectorActivity extends BaseActivity {
 		searchField.addTextChangedListener(filterTextWatcher);
 		
 		SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		RadioButton commonNamesRadio = (RadioButton) findViewById(R.id.common_plants_radio);
+		RadioButton scientificNamesRadio = (RadioButton) findViewById(R.id.scientific_plants_radio);
+		RadioButton projectPlantsRadio = (RadioButton) findViewById(R.id.project_plants_radio);
+		RadioButton allPlantsRadio = (RadioButton) findViewById(R.id.all_plants_radio);
+		
+		if(sharedpreferences.getBoolean(PlantSelectorActivity.SCI_NAME_PREFS_KEY, true)){
+			commonNamesRadio.setChecked(false);
+			scientificNamesRadio.setChecked(true);
+		} else {
+			commonNamesRadio.setChecked(true);
+			scientificNamesRadio.setChecked(false);
+		}
+		
+
 		if(sharedpreferences.getBoolean(PlantSelectorActivity.PROJECT_PLANTS_PREFS_KEY, true)){
 			selectedDatabase = Observer.plantsListDatabase;
+			projectPlantsRadio.setChecked(true);
+			allPlantsRadio.setChecked(false);
 		} else {
 			selectedDatabase = Observer.allPlantsListDatabase;
+			projectPlantsRadio.setChecked(false);
+			allPlantsRadio.setChecked(true);
 		}
 		Cursor plantsCursor= getPlantsCursor( selectedDatabase, "", sharedpreferences.getBoolean(PlantSelectorActivity.SCI_NAME_PREFS_KEY, true));
 
