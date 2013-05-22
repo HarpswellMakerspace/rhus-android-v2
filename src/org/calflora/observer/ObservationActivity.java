@@ -278,13 +278,14 @@ public class ObservationActivity extends Activity implements
 		  }
 
 	private void loadPlant(String taxon) {
-		Plant plant = Project.getPlant(taxon);
-		Observer.currentObservation.setField("taxon", plant.getTaxon());
+	
 
 		TextView commonName = (TextView)findViewById(R.id.common_name);
 		TextView taxonName = (TextView)findViewById(R.id.taxon);
 		
 		if(! taxon.equals("unknown")){
+			Plant plant = Project.getPlant(taxon);
+			Observer.currentObservation.setField("taxon", plant.getTaxon());
 			commonName.setText(plant.getCommon() );
 			taxonName.setText(plant.getTaxon() );
 			AssetManager assets = getBaseContext().getResources().getAssets();
@@ -298,9 +299,10 @@ public class ObservationActivity extends Activity implements
 				// TODO Show default image for plant
 			}
 		} else {
+			Observer.currentObservation.setField("taxon", taxon);
 			//Placehold for unknown plant icon
 			plantThumbnailView.setImageResource(R.drawable.calflora_observer_icon);
-			commonName.setText("Unknown Taxon");
+			commonName.setText(taxon);
 			taxonName.setText("");
 
 		}
