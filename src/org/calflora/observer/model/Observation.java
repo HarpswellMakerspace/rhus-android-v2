@@ -2,6 +2,7 @@ package org.calflora.observer.model;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -90,7 +91,7 @@ public class Observation {
 	
 	public void setAttachment(String name, byte[] bytes, String MIMEType, Context context) throws IOException{
 		
-		removeAttachment(name);
+		removeAttachment(name, context);
 		
 		Attachment attachment = new Attachment();
 		
@@ -109,12 +110,21 @@ public class Observation {
 		
 	}
 	
-	public void removeAttachment(String name){
+	public void removeAttachment(String name, Context context){
 		for(Attachment a : attachments){
 			if(a.name == name){
 				attachments.remove(a);
+				context.deleteFile(a.localPath);
 				break;
 			}
+		}
+	}
+	
+	public void removeAllAttachments(Context context) {
+		List<Attachment> shallowList = new ArrayList<Attachment>(attachments);
+		for(Attachment a : shallowList){
+			attachments.remove(a);
+			context.deleteFile(a.localPath);
 		}
 	}
 	

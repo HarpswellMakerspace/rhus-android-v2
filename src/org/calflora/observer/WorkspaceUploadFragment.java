@@ -186,7 +186,18 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 					try {
 						observationEntity.put("uploaded", 1);
 						Observer.database.store(observationEntity);
+						Observation o = Observation.loadObservationFromEntity(observationEntity);
+						o.removeAllAttachments(getActivity());
 					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JsonParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JsonMappingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -206,6 +217,8 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 						pendingObservations = entities.size();
 						if(pendingObservations == 0){
 							Observer.toast("All pending observations have been uploaded!", getActivity());
+							
+							// Delete attachments for uploaded observations
 						}
 					}
 					
