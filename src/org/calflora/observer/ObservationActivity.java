@@ -68,7 +68,7 @@ ActionBar.TabListener, FormLoaderListener {
 
 	private static final int SELECT_PLANT = 1001;
 	private static final int ODK_VIEW_TAG = 2002;
-	private static final String ODK_AUTHORITY = "org.calflora.observer.provider";
+	private static final String ODK_AUTHORITY = "org.calflora.observer.provider.forms";
 
 	private ActionBar mActionBar;
 	private ImageView plantThumbnailView;
@@ -97,7 +97,7 @@ ActionBar.TabListener, FormLoaderListener {
 		setContentView(R.layout.activity_observation);
 
 		String instancePath = null;
-		mFormPath = Environment.getExternalStorageDirectory().toString() + "/Calflora/OAT.xml";
+		mFormPath = Environment.getExternalStorageDirectory().toString() + "/Calflora/" + Observer.getInstance().odkXmlForProject(); //OAT.xml";
 		mFormLoaderTask = new FormLoaderTask(instancePath, null, null);
 		mFormLoaderTask.setFormLoaderListener(this);
 		mFormLoaderTask.execute(mFormPath);

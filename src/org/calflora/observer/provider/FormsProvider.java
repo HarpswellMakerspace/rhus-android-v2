@@ -562,8 +562,8 @@ public class FormsProvider extends ContentProvider {
 
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI("org.calflora.observer.provider", "forms", FORMS);
-        sUriMatcher.addURI("org.calflora.observer.provider", "forms/#", FORM_ID);
+        sUriMatcher.addURI("org.calflora.observer.provider.forms", "forms", FORMS);
+        sUriMatcher.addURI("org.calflora.observer.provider.forms", "forms/#", FORM_ID);
 
         sFormsProjectionMap = new HashMap<String, String>();
         sFormsProjectionMap.put(FormsColumns._ID, FormsColumns._ID);

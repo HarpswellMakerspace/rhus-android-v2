@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="35" android:versionName=".5" package="org.calflora.observer">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="36" android:versionName=".5" package="org.calflora.observer">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17"/>
 
@@ -139,8 +139,8 @@
             </intent-filter>
         </activity>
 
-        <provider android:authorities="org.calflora.observer.provider" android:exported="false" android:name="org.calflora.observer.provider.FormsProvider"/>
-        <provider android:authorities="org.calflora.observer.provider" android:exported="false" android:name="org.calflora.observer.provider.InstanceProvider"/>
+        <provider android:authorities="org.calflora.observer.provider.forms" android:exported="false" android:name="org.calflora.observer.provider.FormsProvider"/>
+        <!--  <provider android:authorities="org.calflora.observer.provider.instances" android:exported="false" android:name="org.calflora.observer.provider.InstanceProvider"/> -->
     </application>
 
 </manifest>

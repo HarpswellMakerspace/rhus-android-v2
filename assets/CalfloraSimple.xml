@@ -1,0 +1,41 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>Simple Calflora</h:title>
+    <model>
+      <instance>
+        <data id="build_Simple-Calflora_1369276148">
+          <meta>
+            <instanceID/>
+          </meta>
+          <Observation>
+            <notes/>
+          </Observation>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/Observation:label">
+            <value>Observation</value>
+          </text>
+          <text id="/data/Observation/notes:label">
+            <value>Notes</value>
+          </text>
+          <text id="/data/Observation/notes:hint">
+            <value>Additional Notes</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/Observation/notes" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <group appearance="field-list">
+      <label ref="jr:itext('/data/Observation:label')"/>
+      <input ref="/data/Observation/notes">
+        <label ref="jr:itext('/data/Observation/notes:label')"/>
+        <hint ref="jr:itext('/data/Observation/notes:hint')"/>
+      </input>
+    </group>
+  </h:body>
+</h:html>

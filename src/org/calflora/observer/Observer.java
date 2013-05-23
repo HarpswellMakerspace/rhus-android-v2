@@ -133,12 +133,26 @@ public class Observer extends Collect implements LocationListener {
 		username = settings.getString(USER_EMAIL_PREF, null);
 		APIKey = settings.getString(API_KEY_PREF, null);
 		
-		//Copy OAT.xml from assets
+		//Copy testing ODK XMLs from assets
 		File assetDir = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/");
 		assetDir.mkdirs();
 		File  assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/OAT.xml");
 		try {    
             InputStream in = assets.open("OAT.xml");
+            FileOutputStream f = new FileOutputStream(assetDestination); 
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = in.read(buffer)) > 0) {
+            f.write(buffer, 0, len1);
+            }
+            f.close();
+        } catch (Exception e) {
+            Log.d("CopyFileFromAssetsToSD", e.getMessage());
+        }
+		
+		assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/CalfloraSimple.xml");
+		try {    
+            InputStream in = assets.open("CalfloraSimple.xml");
             FileOutputStream f = new FileOutputStream(assetDestination); 
             byte[] buffer = new byte[1024];
             int len1 = 0;
@@ -362,4 +376,13 @@ public class Observer extends Collect implements LocationListener {
 	}
 	
 
+	public String odkXmlForProject(){
+		Project project = getProject();
+		if(project.name.equals("Yosemite Project 2") ){
+			return "CalfloraSimple.xml";
+		} else {
+			return "OAT.xml";
+		}
+	
+	}
 }
