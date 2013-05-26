@@ -17,7 +17,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
+import com.actionbarsherlock.view.*;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -285,7 +285,7 @@ public class PlantSelectorActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.plant_selector, menu);
+		getMenuInflater().inflate(R.menu.plant_selector, (android.view.Menu) menu);
 		return true;
 	}    
 

@@ -1,7 +1,7 @@
 package org.calflora.observer;
 
 import android.os.Bundle;
-import android.view.Menu;
+import com.actionbarsherlock.view.*;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -14,7 +14,7 @@ public class DashboardActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.dashboard, menu);
+		getMenuInflater().inflate(R.menu.dashboard, (android.view.Menu) menu);
 		return true;
 	}
 

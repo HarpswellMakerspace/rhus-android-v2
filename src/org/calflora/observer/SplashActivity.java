@@ -5,7 +5,7 @@ import org.calflora.observer.model.Organization;
 import android.os.Bundle;
 import android.os.Handler;
 import android.content.Intent;
-import android.view.Menu;
+import com.actionbarsherlock.view.*;
 import android.widget.ImageView;
 
 public class SplashActivity extends BaseActivity {
@@ -21,7 +21,7 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.splash, menu);
+		getMenuInflater().inflate(R.menu.splash, (android.view.Menu) menu);
 		return true;
 	}
 

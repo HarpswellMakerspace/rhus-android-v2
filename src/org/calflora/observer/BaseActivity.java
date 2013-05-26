@@ -1,5 +1,7 @@
 package org.calflora.observer;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,7 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class BaseActivity extends Activity {
 	*/
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	        case R.id.menu_help:
@@ -61,6 +63,7 @@ public class BaseActivity extends Activity {
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+	
 	
 	private void showHelp(){
 		
