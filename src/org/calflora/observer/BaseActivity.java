@@ -31,9 +31,11 @@ public class BaseActivity extends SherlockFragmentActivity {
 		if(Observer.instance.getOrganization() != null){
 
 			if( ! Observer.instance.getOrganization().getName().contentEquals("Independent") ){
-				ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
-				homeIcon.setImageResource(R.drawable.logo);
+				//ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
+				//homeIcon.setImageResource(R.drawable.logo);
 			}
+			ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
+			homeIcon.setImageResource(R.drawable.icon);
 		}
 	}
 	
