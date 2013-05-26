@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.actionbarsherlock.view.*;
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -125,7 +126,7 @@ public class SettingsActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.settings, (android.view.Menu) menu);
+		getSupportMenuInflater().inflate(R.menu.settings, (Menu) menu);
 		return true;
 	}
 

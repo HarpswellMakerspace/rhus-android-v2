@@ -53,7 +53,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Menu;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.*;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -63,7 +65,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ObservationActivity extends Activity implements
+public class ObservationActivity extends SherlockActivity implements
 ActionBar.TabListener, FormLoaderListener {
 
 	private static final int SELECT_PLANT = 1001;
@@ -317,7 +319,7 @@ ActionBar.TabListener, FormLoaderListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.observation, menu);
+		getSupportMenuInflater().inflate(R.menu.observation, menu);
 		return true;
 	}
 

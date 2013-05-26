@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.content.Intent;
 import com.actionbarsherlock.view.*;
+
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -31,7 +32,7 @@ public class DownloadProjectAssetsActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.download_project_assets, (android.view.Menu) menu);
+		getSupportMenuInflater().inflate(R.menu.download_project_assets, (Menu) menu);
 		return true;
 	}
 

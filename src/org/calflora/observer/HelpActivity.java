@@ -2,6 +2,7 @@ package org.calflora.observer;
 
 import android.os.Bundle;
 import com.actionbarsherlock.view.*;
+
 import android.webkit.WebView;
 
 public class HelpActivity extends BaseActivity {
@@ -26,7 +27,7 @@ public class HelpActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.help, (android.view.Menu) menu);
+		getSupportMenuInflater().inflate(R.menu.help, (Menu) menu);
 		return true;
 	}
 

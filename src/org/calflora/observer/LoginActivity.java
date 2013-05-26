@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import com.actionbarsherlock.view.*;
+
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -116,7 +117,7 @@ public class LoginActivity extends ApiActivity  {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login, (android.view.Menu) menu);
+		getSupportMenuInflater().inflate(R.menu.login, (Menu) menu);
 		return true;
 	}
 

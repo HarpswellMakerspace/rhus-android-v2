@@ -14,7 +14,7 @@ public class DashboardActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.dashboard, (android.view.Menu) menu);
+		getSupportMenuInflater().inflate(R.menu.dashboard, (Menu) menu);
 		return true;
 	}
 

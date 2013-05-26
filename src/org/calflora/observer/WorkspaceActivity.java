@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import com.actionbarsherlock.view.*;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -127,7 +128,7 @@ public class WorkspaceActivity extends BaseActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.workspace, (android.view.Menu) menu);
+		getSupportMenuInflater().inflate(R.menu.workspace, (Menu) menu);
 		return true;
 	}
 	

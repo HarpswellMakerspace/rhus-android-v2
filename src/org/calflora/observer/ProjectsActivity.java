@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import com.actionbarsherlock.view.*;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -92,7 +93,7 @@ public class ProjectsActivity extends ApiActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.projects, (android.view.Menu) menu);
+		getSupportMenuInflater().inflate(R.menu.projects, (Menu) menu);
 		return true;
 	}
 
