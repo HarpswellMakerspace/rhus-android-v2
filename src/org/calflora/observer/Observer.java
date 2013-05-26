@@ -377,12 +377,16 @@ public class Observer extends Collect implements LocationListener {
 	
 
 	public String odkXmlForProject(){
-		Project project = getProject();
+		//Project project = getProject();
+		
+		return "Wildflowers of Detroit.xml";
+		/*
 		if(project.name.equals("Yosemite Project 2") ){
 			return "CalfloraSimple.xml";
 		} else {
 			return "OAT.xml";
 		}
+		*/
 	
 	}
 }
