@@ -206,7 +206,7 @@ public class WorkspaceMapFragment extends MapFragment {
 
 	public void addMarkersFromDatabase(){
 		
-		SearchFields search = SearchFields.Where("type", "observation");
+		SearchFields search = SearchFields.Where("type", "observation").Where("uploaded", 0);
 		Collection<JSONEntity> points = Observer.database.fetchByFields(search);
 		for( JSONEntity p: points){
 			addMarker(p);
