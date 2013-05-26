@@ -135,6 +135,7 @@ public class WorkspaceActivity extends BaseActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
+		/*
 	    switch (item.getItemId()) {
 	        case R.id.menu_settings:
 	            showSettings();
@@ -142,6 +143,8 @@ public class WorkspaceActivity extends BaseActivity implements
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	    */
+		return false;
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent)
