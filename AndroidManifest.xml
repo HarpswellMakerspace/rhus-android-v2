@@ -37,9 +37,9 @@
     <application
         android:name="net.winterroot.WildflowersOfDetroit"
         android:allowBackup="true"
-        android:icon="icon.png"
+        android:icon="@drawable/icon"
         android:label="Wildflowers of Detroit"
-        android:logo="icon.png"
+        android:logo="@drawable/icon"
         android:theme="@style/Theme.Workspace" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
