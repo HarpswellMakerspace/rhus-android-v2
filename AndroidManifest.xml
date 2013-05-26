@@ -208,7 +208,7 @@
         <!-- <provider android:authorities="org.calflora.observer.provider.instances" android:exported="false" android:name="org.calflora.observer.provider.InstanceProvider"/> -->
         <activity
             android:name="net.winterroot.rhus.activity.RhusActivity"
-            android:label="Rhus"
+            android:label="Wildflowers of Detroit"
             android:noHistory="true"
             android:screenOrientation="portrait"
              >
