@@ -1,0 +1,132 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>Wildflowers of Detroit</h:title>
+    <model>
+      <instance>
+        <data id="build_Wildflowers-of-Detroit_1369593161">
+          <meta>
+            <instanceID/>
+          </meta>
+          <Observation>
+            <location_description/>
+            <notes/>
+            <type/>
+            <edible/>
+          </Observation>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/Observation:label">
+            <value>Observation</value>
+          </text>
+          <text id="/data/Observation/location_description:label">
+            <value>Location Description</value>
+          </text>
+          <text id="/data/Observation/location_description:hint">
+            <value>What does the area look like?</value>
+          </text>
+          <text id="/data/Observation/notes:label">
+            <value>Notes</value>
+          </text>
+          <text id="/data/Observation/notes:hint">
+            <value>Additional Notes</value>
+          </text>
+          <text id="/data/Observation/type:label">
+            <value>What kind?</value>
+          </text>
+          <text id="/data/Observation/type:option0">
+            <value>Flower</value>
+          </text>
+          <text id="/data/Observation/type:option1">
+            <value>Tree</value>
+          </text>
+          <text id="/data/Observation/type:option2">
+            <value>Herb</value>
+          </text>
+          <text id="/data/Observation/type:option3">
+            <value>Shrub</value>
+          </text>
+          <text id="/data/Observation/type:option4">
+            <value>Bee</value>
+          </text>
+          <text id="/data/Observation/type:option5">
+            <value>Bird</value>
+          </text>
+          <text id="/data/Observation/type:option6">
+            <value>Other</value>
+          </text>
+          <text id="/data/Observation/edible:label">
+            <value>Edible?</value>
+          </text>
+          <text id="/data/Observation/edible:option0">
+            <value>Yes</value>
+          </text>
+          <text id="/data/Observation/edible:option1">
+            <value>NO</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/Observation/location_description" type="string"/>
+      <bind nodeset="/data/Observation/notes" type="string"/>
+      <bind nodeset="/data/Observation/type" type="select"/>
+      <bind nodeset="/data/Observation/edible" type="select1"/>
+    </model>
+  </h:head>
+  <h:body>
+    <group appearance="field-list">
+      <label ref="jr:itext('/data/Observation:label')"/>
+      <input ref="/data/Observation/location_description">
+        <label ref="jr:itext('/data/Observation/location_description:label')"/>
+        <hint ref="jr:itext('/data/Observation/location_description:hint')"/>
+      </input>
+      <input ref="/data/Observation/notes">
+        <label ref="jr:itext('/data/Observation/notes:label')"/>
+        <hint ref="jr:itext('/data/Observation/notes:hint')"/>
+      </input>
+      <select ref="/data/Observation/type">
+        <label ref="jr:itext('/data/Observation/type:label')"/>
+        <item>
+          <label ref="jr:itext('/data/Observation/type:option0')"/>
+          <value>flower</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Observation/type:option1')"/>
+          <value>tree</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Observation/type:option2')"/>
+          <value>herb</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Observation/type:option3')"/>
+          <value>shrub</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Observation/type:option4')"/>
+          <value>bee</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Observation/type:option5')"/>
+          <value>bird</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Observation/type:option6')"/>
+          <value>other</value>
+        </item>
+      </select>
+      <select1 ref="/data/Observation/edible">
+        <label ref="jr:itext('/data/Observation/edible:label')"/>
+        <item>
+          <label ref="jr:itext('/data/Observation/edible:option0')"/>
+          <value>yes</value>
+        </item>
+        <item>
+          <label ref="jr:itext('/data/Observation/edible:option1')"/>
+          <value>no</value>
+        </item>
+      </select1>
+    </group>
+  </h:body>
+</h:html>
