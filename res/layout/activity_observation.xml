@@ -5,7 +5,8 @@
 <Button
     android:id="@+id/plant_change_button"
     android:layout_width="fill_parent"
-    android:layout_height="100dp" >
+    android:layout_height="100dp"
+    android:visibility="gone" >
 
 </Button>
     
@@ -19,7 +20,8 @@
            android:background="@color/main_theme_color"
            android:minHeight="100dp"
            android:minWidth="100dp"
-           android:scaleType="centerInside" />
+           android:scaleType="centerInside"
+           android:visibility="gone" />
 
     <TextView
         android:id="@+id/common_name"
@@ -29,7 +31,8 @@
         android:layout_alignTop="@+id/plant_thumbnail"
         android:layout_marginLeft="100dp"
         android:text="Select Plant"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/taxon"
@@ -43,10 +46,11 @@
         android:id="@+id/observation_fragment_container"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/plant_thumbnail"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:orientation="vertical" >
+        android:layout_below="@+id/plant_thumbnail"
+        android:orientation="vertical"
+         >
 
     </LinearLayout>
 

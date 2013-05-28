@@ -136,9 +136,9 @@ public class Observer extends Collect implements LocationListener {
 		//Copy testing ODK XMLs from assets
 		File assetDir = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/");
 		assetDir.mkdirs();
-		File  assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/OAT.xml");
+		File  assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/Detroit.xml");
 		try {    
-            InputStream in = assets.open("OAT.xml");
+            InputStream in = assets.open("Detroit.xml");
             FileOutputStream f = new FileOutputStream(assetDestination); 
             byte[] buffer = new byte[1024];
             int len1 = 0;
@@ -379,7 +379,7 @@ public class Observer extends Collect implements LocationListener {
 	public String odkXmlForProject(){
 		//Project project = getProject();
 		
-		return "Wildflowers of Detroit.xml";
+		return "Detroit.xml";
 		/*
 		if(project.name.equals("Yosemite Project 2") ){
 			return "CalfloraSimple.xml";

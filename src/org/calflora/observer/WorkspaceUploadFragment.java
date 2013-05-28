@@ -1,5 +1,7 @@
 package org.calflora.observer;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -21,7 +23,10 @@ import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceReques
 import net.smart_json_database.JSONEntity;
 import net.smart_json_database.Order;
 import net.smart_json_database.SearchFields;
+import net.winterroot.rhus.api.RhusApi;
+import net.winterroot.rhus.api.RhusApiResponse;
 import net.winterroot.rhus.util.DWHostUnreachableException;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,15 +142,24 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				e.printStackTrace();
 				continue;
 			} 
+			
+			if(o.record_sent == 1){
+				if(o.thumbnail_sent == 1){
+					uploadThumbnail(o, indexInListView);
+				} else {
+					uploadImage(o, indexInListView);
+				}
+				continue;
+			}
 
-			SpringAndroidSpiceRequest<APIResponseUpload> request = null;
-			request = Observer.observerAPI.getUploadRequest(o, getActivity());
+			SpringAndroidSpiceRequest<RhusApiResponse> request = null;
+			request = RhusApi.uploadObservationRequest(o);
 			
 			final WorkspaceActivity activity = (WorkspaceActivity) getActivity();	
 			
 			//final Toast toast = Toast.makeText( activity, "Uploaded record" , Toast.LENGTH_LONG );
 
-			class UploadRequestListener implements RequestListener< APIResponseUpload > {
+			class RhusRequestListener implements RequestListener< RhusApiResponse > {
 
 				private JSONEntity observationEntity; // TODO Ultimately this should be class Observation,
 				// but to make this convienient, we need to integrate Jackson into
@@ -153,7 +167,7 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				
 				private int index;
 
-				public UploadRequestListener(JSONEntity observationEntity, int index){
+				public RhusRequestListener(JSONEntity observationEntity, int index){
 					this.observationEntity = observationEntity;
 					this.index = index;
 				}
@@ -175,19 +189,28 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 				}
 
 				@Override
-				public void onRequestSuccess( APIResponseUpload response ) {
+				public void onRequestSuccess( RhusApiResponse response ) {
 
-					if(response.status.equals("ERROR") ){
-						Toast.makeText( activity, "Error during request: " + response.message, Toast.LENGTH_LONG ).show();
+					if(! response.ok ){
+						Toast.makeText( activity, "Error during request: Not OK", Toast.LENGTH_LONG ).show();
 						return;
 
+		        	} else {
+						Toast.makeText( activity, "Record Data Upload Succeeded", Toast.LENGTH_LONG ).show();
 		        	}
+					 
 					
 					try {
-						observationEntity.put("uploaded", 1);
+						
+						observationEntity.put("record_sent", 1);
+						observationEntity.put("documentId", response.id);
+						observationEntity.put("revision", response.rev);
 						Observer.database.store(observationEntity);
+						
 						Observation o = Observation.loadObservationFromEntity(observationEntity);
-						o.removeAllAttachments(getActivity());
+						//Now Upload the Attachments
+						uploadThumbnail(o, index);
+
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -201,35 +224,14 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					//toast.show();
-				    activity.updatePendingTotal();
-
-					currentPosition++;
-					int progress = (currentPosition * 100 / pendingObservations );
-					progressBar.setProgress( progress );
-					
-					if(currentPosition == pendingObservations){
-						
-						updateUploadButton();
-						
-						SearchFields search = SearchFields.Where("uploaded", 0);
-						Collection<JSONEntity> entities =  Observer.database.fetchByFields(search);
-						pendingObservations = entities.size();
-						if(pendingObservations == 0){
-							Observer.toast("All pending observations have been uploaded!", getActivity());
-							
-							// Delete attachments for uploaded observations
-						}
-					}
-					
-					adapter.setRowUploaded(index);
-					adapter.notifyDataSetChanged();
+				
 
 				}
+
+
 			}
 			 
-			//int rowIndex = 
-			 activity.getSpiceManager().execute( request, null, DurationInMillis.NEVER, new UploadRequestListener(entity, indexInListView) );
+			 activity.getSpiceManager().execute( request, null, DurationInMillis.NEVER, new RhusRequestListener(entity, indexInListView) );
 			 indexInListView--;
 		}
 	}
@@ -237,5 +239,122 @@ public class WorkspaceUploadFragment extends WorkspaceListFragment {
 	public void notifyListChanged(){
 		adapter.notifyDataSetChanged();
 	}
+	
+	private void uploadThumbnail(final Observation o, final int index) {
+		// TODO Auto-generated method stub
+		FileInputStream inputStream = null;
+		try {
+			String path = o.getAttachmentPath("thumbnail", getActivity());
+			inputStream = new FileInputStream(path);
+		} catch (FileNotFoundException e) {
+			Toast.makeText( getActivity(), "Thumbnail Not Found", Toast.LENGTH_LONG ).show();
+			e.printStackTrace();
+			return;
+		}
+		
+		SpringAndroidSpiceRequest<RhusApiResponse> request = null;
+		request = RhusApi.uploadAttachmentRequest(o.documentId, o.revision, "thumb.jpg", inputStream);
+
+		class RhusRequestListener implements RequestListener< RhusApiResponse > {
+
+			@Override
+			public void onRequestFailure(SpiceException arg0) {
+				Toast.makeText( getActivity(), "Failed to upload Thumbnail", Toast.LENGTH_LONG ).show();
+
+			}
+
+			@Override
+			public void onRequestSuccess(RhusApiResponse arg0) {
+				Toast.makeText( getActivity(), "Uploaded Thumbnail", Toast.LENGTH_LONG ).show();
+				o.revision = arg0.rev;
+				o.thumbnail_sent = 1;
+				try {
+					o.storeObservation();
+					uploadImage(o, index);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+		( (WorkspaceActivity) getActivity() ).getSpiceManager().execute( request, null, DurationInMillis.NEVER, new RhusRequestListener() );
+
+			
+	
+
+	}
+	
+	private void uploadImage(final Observation o, final int index) {
+		// TODO Auto-generated method stub
+		FileInputStream inputStream = null;
+		try {
+			String path = o.getAttachmentPath("photo1", getActivity());
+			inputStream = new FileInputStream(path);
+		} catch (FileNotFoundException e) {
+			Toast.makeText( getActivity(), "Thumbnail Not Found", Toast.LENGTH_LONG ).show();
+			e.printStackTrace();
+			return;
+		}
+		
+		SpringAndroidSpiceRequest<RhusApiResponse> request = null;
+		request = RhusApi.uploadAttachmentRequest(o.documentId, o.revision, "medium.jpg", inputStream);
+
+		class RhusRequestListener implements RequestListener< RhusApiResponse > {
+
+			@Override
+			public void onRequestFailure(SpiceException arg0) {
+				Toast.makeText( getActivity(), "Failed to upload Photo", Toast.LENGTH_LONG ).show();
+
+			}
+
+			@Override
+			public void onRequestSuccess(RhusApiResponse arg0) {
+				Toast.makeText( getActivity(), "Uploaded Photo", Toast.LENGTH_LONG ).show();
+				o.image_sent = 1;
+				o.uploaded = 1;
+				o.revision = arg0.rev;
+
+				try {
+					o.storeObservation();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//toast.show();
+			    ((WorkspaceActivity) getActivity()).updatePendingTotal();
+
+				currentPosition++;
+				int progress = (currentPosition * 100 / pendingObservations );
+				progressBar.setProgress( progress );
+				
+				if(currentPosition == pendingObservations){
+					
+					updateUploadButton();
+					
+					SearchFields search = SearchFields.Where("uploaded", 0);
+					Collection<JSONEntity> entities =  Observer.database.fetchByFields(search);
+					pendingObservations = entities.size();
+					if(pendingObservations == 0){
+						Observer.toast("All pending observations have been uploaded!", getActivity());
+						
+					}
+				}
+				
+				adapter.setRowUploaded(index);
+				adapter.notifyDataSetChanged();
+
+			}
+
+		}
+		( (WorkspaceActivity) getActivity() ).getSpiceManager().execute( request, null, DurationInMillis.NEVER, new RhusRequestListener() );
+
+			
+	
+
+	}
+
 
 }

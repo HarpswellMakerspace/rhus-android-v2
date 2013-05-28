@@ -168,7 +168,7 @@ public class WorkspaceListFragment extends Fragment {
 	}
 	
 	public Collection<JSONEntity> getEntities(){
-		SearchFields search = SearchFields.Where("type", "observation").Where("uploaded", 0);
+		SearchFields search = SearchFields.Where("type", "observation");//.Where("uploaded", 0);
 		Collection<JSONEntity> entities = Observer.database.fetchByFields(search, new Order());
 		return entities;
 	}

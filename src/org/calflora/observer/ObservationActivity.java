@@ -99,7 +99,7 @@ ActionBar.TabListener, FormLoaderListener {
 		setContentView(R.layout.activity_observation);
 
 		String instancePath = null;
-		mFormPath = Environment.getExternalStorageDirectory().toString() + "/Calflora/" + Observer.getInstance().odkXmlForProject(); //OAT.xml";
+		mFormPath = Environment.getExternalStorageDirectory().toString() + "/Calflora/" + Observer.getInstance().odkXmlForProject();
 		mFormLoaderTask = new FormLoaderTask(instancePath, null, null);
 		mFormLoaderTask.setFormLoaderListener(this);
 		mFormLoaderTask.execute(mFormPath);

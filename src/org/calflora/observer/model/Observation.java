@@ -1,8 +1,6 @@
 package org.calflora.observer.model;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,14 +15,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.smart_json_database.JSONEntity;
-import net.winterroot.rhus.util.RHImage;
 
 import org.calflora.observer.Observer;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.json.JSONException;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,14 +28,22 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL) 
 public class Observation {
+	
+	public JSONEntity entity = null;
 
 	// Instance variables for all observations
 	public double latitude;
 	public double longitude;
 	public int uploaded;
+	public int record_sent = 0;
+	public int thumbnail_sent = 0;
+	public int image_sent = 0;
 	public String date_added;
 	public int timestamp_added;
+	public String documentId = "";
+	public String revision = "";
 
 	// Dynamic lists of observation specific data
 	public Map<String, Object> fields;	
@@ -47,6 +51,8 @@ public class Observation {
 	
 	public static Observation loadObservationFromEntity(JSONEntity entity) throws JSONException, JsonParseException, JsonMappingException, IOException{
 		Observation o = new Observation();
+		
+		o.entity = entity;
 		
 		// Observation o = Observer.mapper.readValue(entity.getData().toString(), Observation.class);
 		// TODO ? The object mapping for the Observation class need to be refactored so we can use Jackson here
@@ -58,6 +64,13 @@ public class Observation {
 		o.date_added = entity.getString("date_added");
 		o.timestamp_added = entity.getInt("timestamp_added");
 		o.uploaded = entity.getInt("uploaded");
+		o.record_sent = entity.getInt("record_sent");
+		o.revision = entity.getString("revision");
+		o.documentId = entity.getString("documentId");
+		o.thumbnail_sent = entity.getInt("thumbnail_sent");
+		o.image_sent = entity.getInt("image_sent");
+
+
 		List<String> ivars = Arrays.asList("type", "latitude", "longitude", "date_added", "timestamp_added", "uploaded");
 		
 		Collection<String> keys = entity.dataKeys();
@@ -132,7 +145,7 @@ public class Observation {
 		
 		String localPath = null;
 		for(Attachment a : attachments){
-			if(a.name == name){
+			if(a.name.contentEquals(name)){
 				localPath = a.localPath;
 				break;
 			}
@@ -147,7 +160,9 @@ public class Observation {
 	
 	public void storeObservation() throws JSONException{
 		
-		JSONEntity record = new JSONEntity();
+		if(entity == null){
+			entity = new JSONEntity();
+		}
 		
 		// Prepare values
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd hh:mm");
@@ -155,32 +170,37 @@ public class Observation {
 		Long tsLong = System.currentTimeMillis()/1000;
 		
 		// TODO: JSON Database should be moved to Project
-		record.put("type", "observation");
-		record.put("latitude", latitude);
-		record.put("longitude", longitude);
-		record.put("date_added", format);
-		record.put("timestamp_added", tsLong);
-		record.put("uploaded", 0);
+		entity.put("type", "observation");
+		entity.put("latitude", latitude);
+		entity.put("longitude", longitude);
+		entity.put("date_added", format);
+		entity.put("timestamp_added", tsLong);
+		entity.put("uploaded", uploaded);
+		entity.put("record_sent", record_sent);
+		entity.put("documentId", documentId);
+		entity.put("revision", revision);
+		entity.put("thumbnail_sent", thumbnail_sent);
+		entity.put("image_sent", image_sent);
 
 		for(String key : fields.keySet()){
 			String value = (String) fields.get(key);
 			if(value != null){
-				record.put(key, value);
+				entity.put(key, value);
 			}
 		}
 		
-		int id = Observer.database.store(record);
-		record = Observer.database.fetchById(id);
+		int id = Observer.database.store(entity);
+		entity = Observer.database.fetchById(id);
 		
 		//Store the attachments
 		for(Attachment a : attachments){
 			// TODO this process could be automated within smart json database
 			JSONEntity attachmentEntity = a.getJSONEntity();
 			int attachmentId = Observer.database.store(attachmentEntity);
-			record.addIdToHasMany("attachments", attachmentId);
+			entity.addIdToHasMany("attachments", attachmentId);
 		}
 		
-		Observer.database.store(record);
+		Observer.database.store(entity);
 		
 	}
 	

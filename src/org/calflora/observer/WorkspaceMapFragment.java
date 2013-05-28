@@ -111,7 +111,7 @@ public class WorkspaceMapFragment extends MapFragment {
 			map.setMyLocationEnabled(true);
 
 			// Custom offline layer.
-			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+			//map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
 
 			// Custom offline layer.
 			//TileOverlayOptions tp = new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "true_marble_california"));
@@ -123,6 +123,7 @@ public class WorkspaceMapFragment extends MapFragment {
 			Observer.toast("Google Maps Not Available", getActivity());
 		}
 		
+		/*
 		button.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -133,14 +134,9 @@ public class WorkspaceMapFragment extends MapFragment {
 			}
 			
 		});
+		*/
 		
-		
-		
-		// and if we don't have either, move to the project center
-		// -119.784,37.6747 Yosemite
-		LatLng latLng = new LatLng(Observer.instance.getProject().center_lat, Observer.instance.getProject().center_lng);
-		latLng = new LatLng(37.6747, -119.784);
-		map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
+	
 	}
 
 	
@@ -206,7 +202,7 @@ public class WorkspaceMapFragment extends MapFragment {
 
 	public void addMarkersFromDatabase(){
 		
-		SearchFields search = SearchFields.Where("type", "observation").Where("uploaded", 0);
+		SearchFields search = SearchFields.Where("type", "observation");//.Where("uploaded", 0);
 		Collection<JSONEntity> points = Observer.database.fetchByFields(search);
 		for( JSONEntity p: points){
 			addMarker(p);

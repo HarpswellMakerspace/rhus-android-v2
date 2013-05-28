@@ -150,7 +150,7 @@ public class ObservationMainFragment extends ObservationODKFragment {
 			map.setMyLocationEnabled(false);
 
 			// Custom offline layer.
-			map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
+			//map.addTileOverlay(new TileOverlayOptions().tileProvider(new OfflineMapTileProvider(getResources().getAssets(), "yosemiteoffice")));
 
 			LatLng latLng = new LatLng( Observer.getInstance().getLastLocation().getLatitude(), Observer.getInstance().getLastLocation().getLongitude());
 			map.moveCamera( CameraUpdateFactory.newLatLngZoom(latLng, 13) );
