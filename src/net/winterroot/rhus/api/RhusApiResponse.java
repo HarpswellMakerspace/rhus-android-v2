@@ -2,7 +2,7 @@ package net.winterroot.rhus.api;
 
 public class RhusApiResponse {
 
-	boolean ok;
-	String id;
-	String rev;
+	public boolean ok;
+	public String id;
+	public String rev;
 }
