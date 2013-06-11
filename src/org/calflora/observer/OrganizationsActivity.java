@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.winterroot.android.wildflowers.R;
+
 import org.calflora.observer.api.APIResponseOrganization;
 import org.calflora.observer.api.APIResponseOrganizations;
 import org.calflora.observer.api.IdNameItem;

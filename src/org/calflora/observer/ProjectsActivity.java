@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.winterroot.android.wildflowers.R;
 import net.winterroot.rhus.util.DWHostUnreachableException;
 
 import org.calflora.observer.api.APIResponseOrganizations;

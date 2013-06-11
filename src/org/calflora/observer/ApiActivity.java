@@ -1,6 +1,8 @@
 package org.calflora.observer;
 
 
+import net.winterroot.android.wildflowers.R;
+
 import com.octo.android.robospice.JacksonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 

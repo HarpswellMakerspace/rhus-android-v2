@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import net.winterroot.android.wildflowers.R;
+
 import org.calflora.observer.model.Observation;
 import org.calflora.observer.model.Plant;
 import org.calflora.observer.model.Project;

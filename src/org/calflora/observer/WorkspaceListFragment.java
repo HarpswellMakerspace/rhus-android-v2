@@ -15,6 +15,7 @@ import org.json.JSONException;
 import net.smart_json_database.JSONEntity;
 import net.smart_json_database.Order;
 import net.smart_json_database.SearchFields;
+import net.winterroot.android.wildflowers.R;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -2,6 +2,8 @@ package org.calflora.observer;
 
 import java.io.IOException;
 
+import net.winterroot.android.wildflowers.R;
+
 import org.calflora.observer.model.Organization;
 import org.calflora.observer.model.Project;
 

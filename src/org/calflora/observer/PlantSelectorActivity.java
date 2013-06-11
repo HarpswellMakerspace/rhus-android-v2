@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.winterroot.android.wildflowers.R;
 import net.winterroot.rhus.util.DataBaseHelper;
 
 import android.content.Context;

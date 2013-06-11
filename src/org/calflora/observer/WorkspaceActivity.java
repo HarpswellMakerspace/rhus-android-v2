@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import net.smart_json_database.JSONEntity;
 import net.smart_json_database.SearchFields;
+import net.winterroot.android.wildflowers.R;
 import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.calflora.observer"
+    package="net.winterroot.android.wildflowers"
     android:versionCode="39"
-    android:versionName=".6" >
+    android:versionName="3.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="7"
         android:targetSdkVersion="17" />
 
     <permission
@@ -43,7 +43,7 @@
         android:theme="@style/Theme.Workspace" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAlu0reGu9zqOh-I0fuvzfREuv9DJ8QzLo" />
+            android:value="AIzaSyBXtoeB7PSHn3sMbC29bmpciie9ziK8N_g" />
 
         <service
             android:name="com.octo.android.robospice.JacksonSpringAndroidSpiceService"

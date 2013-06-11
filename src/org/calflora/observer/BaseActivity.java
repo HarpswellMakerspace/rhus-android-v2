@@ -1,5 +1,7 @@
 package org.calflora.observer;
 
+import net.winterroot.android.wildflowers.R;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.app.Activity;

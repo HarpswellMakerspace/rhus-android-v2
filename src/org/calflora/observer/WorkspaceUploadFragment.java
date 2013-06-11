@@ -23,6 +23,7 @@ import com.octo.android.robospice.request.springandroid.SpringAndroidSpiceReques
 import net.smart_json_database.JSONEntity;
 import net.smart_json_database.Order;
 import net.smart_json_database.SearchFields;
+import net.winterroot.android.wildflowers.R;
 import net.winterroot.rhus.api.RhusApi;
 import net.winterroot.rhus.api.RhusApiResponse;
 import net.winterroot.rhus.util.DWHostUnreachableException;

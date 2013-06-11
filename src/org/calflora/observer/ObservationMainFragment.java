@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import net.winterroot.android.wildflowers.R;
 import net.winterroot.rhus.util.DWUtilities;
 
 import org.calflora.map.OfflineMapTileProvider;

@@ -1,5 +1,7 @@
 package org.calflora.observer;
 
+import net.winterroot.android.wildflowers.R;
+
 import org.calflora.observer.model.Organization;
 
 import android.os.Bundle;

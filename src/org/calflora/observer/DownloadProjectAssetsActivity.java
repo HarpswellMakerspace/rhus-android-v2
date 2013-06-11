@@ -1,5 +1,6 @@
 package org.calflora.observer;
 
+import net.winterroot.android.wildflowers.R;
 import android.os.Bundle;
 import android.os.Handler;
 import android.content.Intent;
