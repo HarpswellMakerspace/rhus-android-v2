@@ -46,9 +46,10 @@ public class Observer extends Collect implements LocationListener {
 	private static final String DB_NAME = "px137.sqlite"; //Hard coded for testing, this is Yosemite
 	private static final String ALL_CALIFORNIA_DB_NAME = "px0.sqlite"; //Hard coded for testing, this is Yosemite
 
-	
 	public static final String ORGANIZATION_PREFERENCE = "ORGANIZATION_PREFERENCE";
 	public static final String PROJECT_PREFERENCE = "PROJECT_PREFERENCE";
+	
+	public static final String ODK_XML_STORAGE_DIRECTORY = "WildflowersOfDetroit";
 
 	// ODK Settings
 	public static final String ODK_ROOT = Environment.getExternalStorageDirectory()
@@ -134,9 +135,9 @@ public class Observer extends Collect implements LocationListener {
 		APIKey = settings.getString(API_KEY_PREF, null);
 		
 		//Copy testing ODK XMLs from assets
-		File assetDir = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/");
+		File assetDir = new File(Environment.getExternalStorageDirectory().toString() + "/" + ODK_XML_STORAGE_DIRECTORY + "/");
 		assetDir.mkdirs();
-		File  assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/Detroit.xml");
+		File  assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/" + ODK_XML_STORAGE_DIRECTORY + "/Detroit.xml");
 		try {    
             InputStream in = assets.open("Detroit.xml");
             FileOutputStream f = new FileOutputStream(assetDestination); 
@@ -150,7 +151,7 @@ public class Observer extends Collect implements LocationListener {
             Log.d("CopyFileFromAssetsToSD", e.getMessage());
         }
 		
-		assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/Calflora/CalfloraSimple.xml");
+		assetDestination = new File(Environment.getExternalStorageDirectory().toString() + "/" + ODK_XML_STORAGE_DIRECTORY + "/CalfloraSimple.xml");
 		try {    
             InputStream in = assets.open("CalfloraSimple.xml");
             FileOutputStream f = new FileOutputStream(assetDestination); 
