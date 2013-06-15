@@ -165,16 +165,19 @@ public class Observer extends Collect implements LocationListener {
             Log.d("CopyFileFromAssetsToSD", e.getMessage());
         }
 	
+		
 		SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		if( false == sharedpreferences.getBoolean("firstLaunch", false)) {
-			try {
-				DataBaseHelper projectDatabaseHelper = new DataBaseHelper(getBaseContext(), DB_NAME);
-				projectDatabaseHelper.createDataBase();
-				DataBaseHelper allPlantsDatabaseHelper = new DataBaseHelper(getBaseContext(), ALL_CALIFORNIA_DB_NAME);
-				allPlantsDatabaseHelper.createDataBase();
+		/*	
+		 * try {
+				//DataBaseHelper projectDatabaseHelper = new DataBaseHelper(getBaseContext(), DB_NAME);
+				//projectDatabaseHelper.createDataBase();
+				//DataBaseHelper allPlantsDatabaseHelper = new DataBaseHelper(getBaseContext(), ALL_CALIFORNIA_DB_NAME);
+				//allPlantsDatabaseHelper.createDataBase();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			*/
 		}
 		sharedpreferences.edit().putBoolean("firstLaunch", true).commit();
 		
@@ -187,7 +190,7 @@ public class Observer extends Collect implements LocationListener {
 		}
 		
 		Observer.plantsListDatabase = SQLiteDatabase.openDatabase(getApplicationContext().getDatabasePath(DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.NO_LOCALIZED_COLLATORS);
-		Observer.allPlantsListDatabase = SQLiteDatabase.openDatabase(getApplicationContext().getDatabasePath(ALL_CALIFORNIA_DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+		//Observer.allPlantsListDatabase = SQLiteDatabase.openDatabase(getApplicationContext().getDatabasePath(ALL_CALIFORNIA_DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY | SQLiteDatabase.NO_LOCALIZED_COLLATORS);
 
 		
 		LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
